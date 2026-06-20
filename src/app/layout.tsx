@@ -1,0 +1,39 @@
+import type { Metadata } from "next";
+import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
+import "./globals.css";
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "Yuvan Avinash | Creative Developer",
+  description: "High-end scrollytelling portfolio showcasing interactive web development, graphics, and performance optimization.",
+  keywords: ["Creative Developer", "Next.js", "WebGL", "Framer Motion", "Canvas Scroll Animation"],
+  authors: [{ name: "Yuvan Avinash" }],
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" className="scroll-smooth">
+      <body
+        className={`${outfit.variable} ${plusJakartaSans.variable} font-sans antialiased bg-[#0d0d0d] text-neutral-100`}
+      >
+        {children}
+      </body>
+    </html>
+  );
+}
+
