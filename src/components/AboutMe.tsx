@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useMotionValue, useTransform } from "framer-motion";
-import { useState, useRef } from "react";
+import { motion, useMotionValue, useTransform, useInView } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
 import { Sparkles, Terminal, Activity } from "lucide-react";
 import Link from "next/link";
 
@@ -14,7 +14,29 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function AboutMe() {
   const cardRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const [photoError, setPhotoError] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [autoFlipped, setAutoFlipped] = useState(false);
+  const hasAutoFlipped = useRef(false);
+
+  const inView = useInView(containerRef, { once: false, amount: 0.15 });
+
+  useEffect(() => {
+    if (inView && !hasAutoFlipped.current) {
+      hasAutoFlipped.current = true;
+      const timerStart = setTimeout(() => {
+        setAutoFlipped(true);
+        const timerRevert = setTimeout(() => {
+          setAutoFlipped(false);
+        }, 2000);
+        return () => clearTimeout(timerRevert);
+      }, 800);
+      return () => clearTimeout(timerStart);
+    }
+  }, [inView]);
 
   // Framer Motion motion values for 3D tilt
   const x = useMotionValue(0);
@@ -37,21 +59,27 @@ export default function AboutMe() {
     x.set(mouseX);
     y.set(mouseY);
     setCoords({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+
+    // Calculate percentage coordinates relative to card size for holographic shine
+    const percentX = ((e.clientX - rect.left) / width) * 100;
+    const percentY = ((e.clientY - rect.top) / height) * 100;
+    setMousePos({ x: percentX, y: percentY });
   };
 
   const handleMouseLeave = () => {
     x.set(0);
     y.set(0);
+    setMousePos({ x: 50, y: 50 });
   };
 
   return (
-    <section id="about" className="relative bg-transparent px-6 py-24 md:py-32 z-20 border-t border-white/5">
+    <section id="about" ref={containerRef} className="relative bg-transparent px-6 py-24 md:py-32 z-20 border-t border-white/5 overflow-hidden">
       {/* Glow Effect */}
       <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
+
           {/* Left: Bio Narrative */}
           <div className="lg:col-span-7 flex flex-col justify-center">
             <span className="text-xs font-mono font-bold text-blue-400 uppercase tracking-[0.25em] mb-4 flex items-center gap-2">
@@ -95,79 +123,432 @@ export default function AboutMe() {
             </div>
           </div>
 
-          {/* Right: Holographic 3D Interactive Card */}
-          <div className="lg:col-span-5 flex justify-center items-center">
+          {/* Right: Holographic 3D Interactive Card (Lanyard ID Pass) */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-start pt-6 relative min-h-[580px]">
+
+            {/* Lanyard Assembly Wrapper: handles scroll-triggered drop, bounce, and infinite swaying */}
             <motion.div
-              ref={cardRef}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
               style={{
-                rotateX,
-                rotateY,
-                transformStyle: "preserve-3d",
+                transformOrigin: "top center",
               }}
-              className="relative w-full max-w-[360px] h-[420px] rounded-3xl hologram-card p-8 flex flex-col justify-between cursor-pointer overflow-hidden transition-all duration-300 border border-blue-500/20 group"
+              animate={inView ? {
+                y: 0,
+                rotate: [-3.5, 3.5],
+              } : {
+                y: -750, // Starts completely hidden above the top boundary of the About section
+                rotate: 0,
+              }}
+              transition={{
+                y: { type: "spring", stiffness: 28, damping: 13, mass: 1.15, delay: 0.2 },
+                rotate: { repeat: Infinity, repeatType: "reverse", duration: 3.2, ease: "easeInOut", delay: 0.2 }
+              }}
+              className="flex flex-col items-center justify-start relative w-full pt-[100px]"
             >
-              {/* Card Radial Mouse Highlight */}
+
+              {/* 1. Lanyard Wire extending to top of About section (braided steel style cable) */}
               <div
-                className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
+                className="absolute bottom-full w-[3.5px] h-[260px] pointer-events-none overflow-visible flex flex-col justify-end"
                 style={{
-                  background: `radial-gradient(220px circle at ${coords.x}px ${coords.y}px, rgba(0, 102, 255, 0.15), transparent 80%)`,
+                  left: "calc(50% - 1.75px)",
+                  background: "linear-gradient(90deg, #1b1b1c 0%, #4a4a4d 30%, #8c8c93 50%, #4a4a4d 70%, #1b1b1c 100%)",
+                  boxShadow: "0 0 6px rgba(0,0,0,0.6), inset 0 0 2px rgba(255,255,255,0.1)",
+                  borderRadius: "2px",
                 }}
-              />
+              >
+                {/* Glowing Electrical Core inside the wire */}
+                <motion.div
+                  className="absolute top-0 bottom-0 w-[1.5px] bg-cyan-400 shadow-[0_0_6px_#22d3ee,0_0_12px_#06b6d4]"
+                  style={{ left: "calc(50% - 0.75px)" }}
+                  animate={{
+                    opacity: [0.3, 0.9, 0.4, 1, 0.2, 0.9, 0.3],
+                    scaleX: [1, 1.4, 0.8, 1.3, 1],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
 
-              {/* Hologram Scanner Line */}
-              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-blue-500/80 to-transparent shadow-[0_0_8px_#0066ff] animate-[pulse_2s_infinite] pointer-events-none z-10" />
+                {/* Moving Electric Pulse Sparks traveling UP the wire */}
+                {[...Array(3)].map((_, idx) => (
+                  <motion.div
+                    key={idx}
+                    className="absolute w-1.5 h-1.5 rounded-full bg-cyan-200"
+                    style={{
+                      left: "calc(50% - 3px)",
+                      boxShadow: "0 0 8px #22d3ee, 0 0 16px #0891b2",
+                    }}
+                    animate={{
+                      bottom: ["0%", "100%"],
+                      opacity: [0, 1, 1, 0],
+                    }}
+                    transition={{
+                      duration: 1.8 + idx * 0.4,
+                      repeat: Infinity,
+                      ease: "linear",
+                      delay: idx * 0.7,
+                    }}
+                  />
+                ))}
 
-              {/* Grid Background Overlay */}
-              <div 
-                className="absolute inset-0 opacity-[0.03] pointer-events-none z-0"
+                {/* Crackling Wire Spark particles along the wire */}
+                {inView && [...Array(5)].map((_, i) => (
+                  <motion.div
+                    key={`wire-spark-${i}`}
+                    className="absolute w-1 h-1 bg-cyan-300 rounded-full"
+                    style={{
+                      left: "50%",
+                      bottom: `${15 + i * 18}%`,
+                      boxShadow: "0 0 6px #22d3ee",
+                    }}
+                    animate={{
+                      x: [0, (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 30],
+                      y: [0, (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 30],
+                      opacity: [0, 1, 0],
+                      scale: [0.5, 1.3, 0.1],
+                    }}
+                    transition={{
+                      duration: 0.3 + Math.random() * 0.4,
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      delay: Math.random() * 1.8,
+                      repeatDelay: Math.random() * 2.2,
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* 2. Metal crimp clamp / sleeve */}
+              <div
+                className="w-9 h-5 border border-neutral-600/30 rounded-sm shadow-lg z-20 -mt-0.5 flex items-center justify-center relative pointer-events-none"
                 style={{
-                  backgroundImage: "radial-gradient(#0066ff 1px, transparent 1px)",
-                  backgroundSize: "20px 20px"
+                  background: "linear-gradient(90deg, #55555a 0%, #9999a0 30%, #ffffff 50%, #9999a0 70%, #55555a 100%)",
                 }}
-              />
-
-              {/* Card Header */}
-              <div className="flex justify-between items-start z-10">
-                <div>
-                  <h3 className="text-2xl font-black text-white font-heading tracking-tight">YUVAN AVINASH</h3>
-                  <p className="text-[10px] font-mono text-blue-400 font-bold uppercase mt-1">developer.profile // active</p>
-                </div>
-                <div className="p-2.5 bg-blue-500/10 border border-blue-500/20 rounded-xl">
-                  <Sparkles className="w-5 h-5 text-blue-400" />
-                </div>
+              >
+                {/* Clamp details - crimp indentation line */}
+                <div className="w-full h-[1.5px] bg-black/40 absolute top-1/2 -translate-y-1/2" />
               </div>
 
-              {/* Card Mid Info */}
-              <div className="space-y-4 z-10" style={{ transform: "translateZ(30px)" }}>
-                <div>
-                  <div className="text-[9px] font-mono text-neutral-400 uppercase tracking-widest">AFFILIATION</div>
-                  <div className="text-sm font-bold text-white mt-0.5">SRM Institute of Science & Technology</div>
-                  <div className="text-xs text-neutral-300">Ramapuram Campus, Chennai</div>
-                </div>
-                <div>
-                  <div className="text-[9px] font-mono text-neutral-400 uppercase tracking-widest">STUDY TIMELINE</div>
-                  <div className="text-sm font-bold text-white mt-0.5">B.Tech CSE (2025 - 2029)</div>
-                </div>
-              </div>
+              {/* 3. Steel key ring / split ring loop */}
+              <svg width="24" height="24" viewBox="0 0 24 24" className="z-20 -mt-1.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] pointer-events-none">
+                <defs>
+                  <linearGradient id="ring-metal" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#444" />
+                    <stop offset="25%" stopColor="#aaa" />
+                    <stop offset="50%" stopColor="#fff" />
+                    <stop offset="75%" stopColor="#888" />
+                    <stop offset="100%" stopColor="#333" />
+                  </linearGradient>
+                </defs>
+                <circle cx="12" cy="12" r="9" fill="none" stroke="url(#ring-metal)" strokeWidth="2" />
+                <circle cx="12" cy="12" r="7.5" fill="none" stroke="#111" strokeWidth="0.5" />
+              </svg>
 
-              {/* Card Footer Status */}
-              <div className="z-10 pt-4 border-t border-blue-500/15 flex items-center justify-between" style={{ transform: "translateZ(20px)" }}>
-                <div className="flex items-center gap-2">
-                  <span className="relative flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                  </span>
-                  <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider">
-                    CURRENTLY BUILDING
-                  </span>
+              {/* 4. Swivel Carabiner Trigger Snap Hook Clip */}
+              <svg width="28" height="42" viewBox="0 0 28 42" className="z-30 -mt-2 drop-shadow-[0_3px_5px_rgba(0,0,0,0.6)] pointer-events-none">
+                <defs>
+                  <linearGradient id="clip-metal" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#555" />
+                    <stop offset="20%" stopColor="#bbb" />
+                    <stop offset="40%" stopColor="#fff" />
+                    <stop offset="60%" stopColor="#888" />
+                    <stop offset="80%" stopColor="#ddd" />
+                    <stop offset="100%" stopColor="#333" />
+                  </linearGradient>
+                </defs>
+
+                {/* Swivel D-loop connector at top */}
+                <rect x="9" y="0" width="10" height="5" rx="1.5" fill="url(#clip-metal)" stroke="#222" strokeWidth="0.5" />
+
+                {/* Swivel neck ring */}
+                <path d="M10 5h8v3h-8z" fill="url(#clip-metal)" stroke="#222" strokeWidth="0.5" />
+
+                {/* Main solid steel hook body that wraps down through slot */}
+                <path
+                  d="M14 8c-3 0-5.5 3-5.5 8c0 5 2.5 10 4 14.5c1 3.5 2 7 3.5 8.5c1.5 1.5 3 0.5 3.5-1.5c0.8-3 1.5-6.5 1.5-10c0-4.5-1-8.5-2.5-11.5"
+                  fill="none"
+                  stroke="url(#clip-metal)"
+                  strokeWidth="3.2"
+                  strokeLinecap="round"
+                />
+
+                {/* Spring gate latch clip arm */}
+                <line x1="17.5" y1="12" x2="13" y2="28" stroke="#444" strokeWidth="1.2" strokeLinecap="round" />
+
+                {/* Trigger thumb lever toggle */}
+                <rect x="7" y="14" width="2" height="4" rx="0.5" fill="url(#clip-metal)" stroke="#222" strokeWidth="0.5" transform="rotate(-15 7 14)" />
+              </svg>
+
+              {/* Electric Sparks around trigger clip connection */}
+              {inView && (
+                <div className="absolute top-[115px] w-16 h-16 pointer-events-none z-40 flex items-center justify-center">
+                  {[...Array(6)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-1.5 h-1.5 bg-cyan-300 rounded-full"
+                      style={{
+                        boxShadow: "0 0 6px #22d3ee, 0 0 12px #06b6d4",
+                      }}
+                      animate={{
+                        x: [0, (Math.random() - 0.5) * 55, (Math.random() - 0.5) * 75],
+                        y: [0, (Math.random() - 0.5) * 55, (Math.random() - 0.5) * 75],
+                        opacity: [0, 1, 1, 0],
+                        scale: [0.4, 1.3, 0.1],
+                      }}
+                      transition={{
+                        duration: 0.3 + Math.random() * 0.4,
+                        repeat: Infinity,
+                        repeatType: "loop",
+                        delay: Math.random() * 1.5,
+                        repeatDelay: Math.random() * 1.2,
+                      }}
+                    />
+                  ))}
+                  <motion.div
+                    className="absolute w-7 h-7 rounded-full bg-cyan-400/10 blur-sm pointer-events-none"
+                    animate={{
+                      scale: [0.8, 1.4, 0.9, 1.3, 0.8],
+                      opacity: [0.2, 0.7, 0.3, 0.6, 0.2],
+                    }}
+                    transition={{
+                      duration: 1.8,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
                 </div>
-                <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                  <Activity className="w-3.5 h-3.5 text-blue-400" /> CARESYNC AI
-                </div>
+              )}
+
+              {/* Interactive Flip Card Badge Container */}
+              <div style={{ perspective: 1200 }} className="w-full max-w-[310px] h-[485px] -mt-1.5 z-10">
+                <motion.div
+                  onMouseMove={handleMouseMove}
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => { setIsHovered(false); handleMouseLeave(); }}
+                  style={{
+                    rotateX: (isHovered || autoFlipped) ? 0 : rotateX,
+                    rotateY: (isHovered || autoFlipped) ? 0 : rotateY,
+                    transformStyle: "preserve-3d",
+                  }}
+                  className="w-full h-full cursor-pointer"
+                >
+                  <motion.div
+                    ref={cardRef}
+                    animate={{ rotateY: (isHovered || autoFlipped) ? 180 : 0 }}
+                    transition={{ type: "spring", stiffness: 75, damping: 15 }}
+                    style={{
+                      transformStyle: "preserve-3d",
+                      width: "100%",
+                      height: "100%"
+                    }}
+                    className="relative w-full h-full"
+                  >
+
+                    {/* ================= CARD FRONT ================= */}
+                    <div
+                      className="absolute inset-0 w-full h-full rounded-[24px] p-5 flex flex-col justify-between border border-neutral-800 bg-[#121213] shadow-[0_20px_45px_rgba(0,0,0,0.7)]"
+                      style={{
+                        backfaceVisibility: "hidden",
+                        WebkitBackfaceVisibility: "hidden",
+                        backgroundImage: "radial-gradient(circle at 50% 0%, #1e1e20 0%, #121213 100%)",
+                      }}
+                    >
+                      {/* Subtle card grid print overlay */}
+                      <div
+                        className="absolute inset-0 rounded-[24px] opacity-[0.02] pointer-events-none"
+                        style={{
+                          backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+                          backgroundSize: "20px 20px"
+                        }}
+                      />
+
+                      {/* Hole eyelet at top center */}
+                      <div className="w-12 h-3.5 rounded-full bg-black border border-neutral-800/80 ring-2 ring-neutral-900/40 mx-auto flex-shrink-0 relative overflow-hidden flex items-center justify-center">
+                        <div className="absolute inset-[1.5px] rounded-full border-[1.5px] border-neutral-700/60" />
+                      </div>
+
+                      {/* Card Header (Logo & Event details) */}
+                      <div className="flex justify-between items-start mt-3 mb-2 flex-shrink-0">
+                        {/* Serif Twnty Style Logo */}
+                        <div className="font-serif italic font-extrabold text-xl text-white tracking-tighter leading-none select-none">
+                          yvn<span className="text-blue-500 font-sans font-bold">.</span>
+                        </div>
+                        {/* University / Event details */}
+                        <div className="text-right font-mono text-[7px] text-neutral-400 leading-tight tracking-wider uppercase max-w-[170px]">
+                          <div className="text-white font-bold tracking-widest text-[7.5px] mb-0.5">SRM IST RAMAPURAM</div>
+                          <div className="opacity-80">COMP. SCIENCE ENGINEERING</div>
+                          <div className="opacity-60">CHENNAI // REG_NO: 2026</div>
+                        </div>
+                      </div>
+
+                      {/* Big Photograph Container */}
+                      <div className="w-full h-52 rounded-xl border border-neutral-800 bg-neutral-950 overflow-hidden relative flex-shrink-0 flex items-center justify-center">
+                        {/* Retro Grid / Bracket styling inside frame */}
+                        <div className="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t border-l border-neutral-700 pointer-events-none z-10" />
+                        <div className="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t border-r border-neutral-700 pointer-events-none z-10" />
+                        <div className="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b border-l border-neutral-700 pointer-events-none z-10" />
+                        <div className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b border-r border-neutral-700 pointer-events-none z-10" />
+                        <div className="absolute inset-0 bg-gradient-to-tr from-black/40 via-transparent to-white/10 z-10 pointer-events-none" />
+
+                        {!photoError ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src="/yuvan_profile.jpg"
+                            alt="Yuvan Avinash"
+                            onError={() => setPhotoError(true)}
+                            className="w-full h-full object-cover grayscale contrast-[1.04] brightness-95"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center text-neutral-500 font-mono p-4 text-center">
+                            <Sparkles className="w-7 h-7 text-neutral-700 mb-2 animate-pulse" />
+                            <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-300">PHOTO_REQUIRED</span>
+                            <span className="text-[7px] text-neutral-600 mt-1.5 leading-normal">Place image in:<br />/public/yuvan_profile.jpg</span>
+                          </div>
+                        )}
+
+                      </div>
+
+                      {/* Card Main content details */}
+                      <div className="flex flex-col justify-center flex-grow mt-3">
+                        {/* Thin Separator Line */}
+                        <div className="w-full h-[1px] bg-neutral-800/80 mb-3" />
+
+                        {/* Big Bold Speaker Type Typography */}
+                        <div className="text-left leading-none">
+                          <span className="text-[8px] font-mono font-bold text-blue-400 uppercase tracking-[0.25em] block mb-1">
+                            PRIMARY ROLE
+                          </span>
+                          <h3 className="text-[28px] font-black text-white font-heading tracking-tighter uppercase leading-tight select-none">
+                            DEVELOPER
+                          </h3>
+                          <p className="text-[9px] font-mono text-neutral-400 font-medium uppercase tracking-[0.1em] mt-1 select-none">
+                            FULL-STACK DEVELOPMENT
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Card Access security label */}
+                      <div className="pt-2.5 mt-auto border-t border-neutral-800/80 flex flex-col items-start gap-0.5 flex-shrink-0">
+                        <div className="text-[10px] font-black text-white tracking-[0.2em] uppercase font-heading select-none">
+                          ACCESS ALL AREAS
+                        </div>
+                        <div className="text-[7.5px] font-mono text-neutral-500 uppercase tracking-widest select-none">
+                          SYS_SEC_LEVEL: 04 // REF_ID: 178204
+                        </div>
+                      </div>
+
+                      {/* Card Footer Details */}
+                      <div className="flex justify-between items-end mt-2 text-[7px] font-mono text-neutral-600 tracking-wider flex-shrink-0 select-none">
+                        <span>WWW.YUVANAVINASH.DEV</span>
+                        <span className="text-right text-xs font-bold text-neutral-500 font-serif italic">1.</span>
+                      </div>
+
+                      {/* Holographic Sheen Reflection Overlay */}
+                      <div
+                        className="absolute inset-0 rounded-[24px] pointer-events-none opacity-20 mix-blend-overlay transition-opacity duration-300"
+                        style={{
+                          background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, rgba(255,255,255,0.18) 0%, transparent 65%), linear-gradient(135deg, rgba(59,130,246,0) 0%, rgba(59,130,246,0.08) 40%, rgba(34,211,238,0.12) 50%, rgba(168,85,247,0.08) 60%, rgba(255,255,255,0) 100%)`,
+                          backgroundBlendMode: "screen",
+                        }}
+                      />
+                    </div>
+
+                    {/* ================= CARD BACK ================= */}
+                    <div
+                      className="absolute inset-0 w-full h-full rounded-[24px] p-5 flex flex-col justify-between border border-neutral-800 bg-[#121213] shadow-[0_20px_45px_rgba(0,0,0,0.7)]"
+                      style={{
+                        backfaceVisibility: "hidden",
+                        WebkitBackfaceVisibility: "hidden",
+                        transform: "rotateY(180deg)",
+                        backgroundImage: "radial-gradient(circle at 50% 0%, #1e1e20 0%, #121213 100%)",
+                      }}
+                    >
+                      {/* Subtle card grid print overlay */}
+                      <div
+                        className="absolute inset-0 rounded-[24px] opacity-[0.02] pointer-events-none"
+                        style={{
+                          backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+                          backgroundSize: "20px 20px"
+                        }}
+                      />
+
+                      {/* Hole eyelet at top center */}
+                      <div className="w-12 h-3.5 rounded-full bg-black border border-neutral-800/80 ring-2 ring-neutral-900/40 mx-auto flex-shrink-0 relative overflow-hidden flex items-center justify-center">
+                        <div className="absolute inset-[1.5px] rounded-full border-[1.5px] border-neutral-700/60" />
+                      </div>
+
+                      {/* Back Header */}
+                      <div className="flex justify-between items-center text-[8px] font-mono text-neutral-500 uppercase tracking-widest mt-3 mb-4 flex-shrink-0 select-none">
+                        <span>[ PASS_BACK // SECURITY ]</span>
+                        <span className="text-emerald-500 font-bold flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                          SYS_SEC_OK
+                        </span>
+                      </div>
+
+                      {/* Focus Matrices */}
+                      <div className="space-y-5 font-mono text-[10.5px] leading-relaxed flex-grow mt-2 select-none">
+                        <div>
+                          <div className="text-[8px] text-blue-400 font-bold uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                            PRIMARY FOCUS
+                          </div>
+                          <ul className="space-y-1.5 text-neutral-300 pl-3">
+                            <li className="flex items-center gap-2">
+                              <span className="text-neutral-600 text-[8px]">▶</span> Full-Stack Development
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <span className="text-neutral-600 text-[8px]">▶</span> Web Applications
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <span className="text-neutral-600 text-[8px]">▶</span> UI/UX Engineering
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="pt-2 border-t border-neutral-900">
+                          <div className="text-[8px] text-cyan-400 font-bold uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
+                            SECONDARY INTERESTS
+                          </div>
+                          <ul className="space-y-1.5 text-neutral-300 pl-3">
+                            <li className="flex items-center gap-2">
+                              <span className="text-neutral-600 text-[8px]">▶</span> Automation
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <span className="text-neutral-600 text-[8px]">▶</span> IoT Systems
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <span className="text-neutral-600 text-[8px]">▶</span> Artificial Intelligence
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Barcode at bottom */}
+                      <div className="w-full h-9 bg-neutral-950 border border-neutral-900 rounded px-2.5 py-1.5 flex items-center justify-between opacity-80 mt-auto select-none">
+                        <div className="flex gap-[1.5px] items-stretch h-full flex-1">
+                          {[1.5, 3, 1, 4.5, 1.5, 3, 1, 1.5, 4.5, 1.5, 3, 1.5, 3, 1, 4.5, 1.5, 3, 1.5, 3, 1.5, 1, 4.5, 1.5, 3, 1].map((w, i) => (
+                            <span key={i} className="bg-neutral-600" style={{ width: `${w}px` }} />
+                          ))}
+                        </div>
+                        <span className="text-[7.5px] font-mono text-neutral-500 ml-3 tracking-widest">Y.A.26-2026</span>
+                      </div>
+
+                      {/* Holographic Sheen Reflection Overlay for Back Side */}
+                      <div
+                        className="absolute inset-0 rounded-[24px] pointer-events-none opacity-20 mix-blend-overlay transition-opacity duration-300"
+                        style={{
+                          background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, rgba(255,255,255,0.18) 0%, transparent 65%), linear-gradient(135deg, rgba(59,130,246,0) 0%, rgba(59,130,246,0.08) 40%, rgba(34,211,238,0.12) 50%, rgba(168,85,247,0.08) 60%, rgba(255,255,255,0) 100%)`,
+                          backgroundBlendMode: "screen",
+                        }}
+                      />
+                    </div>
+
+                  </motion.div>
+                </motion.div>
               </div>
-              
             </motion.div>
           </div>
 

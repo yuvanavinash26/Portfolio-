@@ -123,14 +123,6 @@ export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
-  const [time, setTime] = useState("");
-
-  useEffect(() => {
-    const tick = () => setTime(new Date().toLocaleTimeString("en-US", { hour12: false }));
-    tick();
-    const t = setInterval(tick, 1000);
-    return () => clearInterval(t);
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -278,12 +270,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Live clock */}
-            <div className="font-mono text-[11px] text-neutral-700 flex items-center gap-2 pt-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              SYS_TIME: <span className="text-emerald-700">{time}</span>
-              &nbsp;|&nbsp; NODE: <span className="text-emerald-700">srmist.csec</span>
-            </div>
           </div>
 
           {/* ── Right column — Terminal card ── */}
@@ -303,7 +289,6 @@ export default function Contact() {
                     yuvan@portfolio: <span className="text-neutral-500">~/contact</span>
                   </span>
                 </div>
-                <span className="text-[10px] font-mono text-neutral-700">{time}</span>
               </div>
 
               <div className="px-6 md:px-8 py-7">
@@ -416,13 +401,6 @@ export default function Contact() {
 
         </div>
 
-        {/* Footer */}
-        <div className="mt-24 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[11px] font-mono text-neutral-600 gap-4 select-none">
-          <span>© 2026 Yuvan Avinash — crafted with curiosity and code.</span>
-          <span className="flex items-center gap-1.5 text-emerald-800 uppercase tracking-widest">
-            <Terminal className="w-3 h-3" /> srmist.csec.node
-          </span>
-        </div>
       </div>
     </section>
   );

@@ -94,8 +94,52 @@ export default function Overlay({ scrollYProgress }: OverlayProps) {
           </span>
         </h2>
         <p className="mt-4 text-xs md:text-sm text-neutral-200 max-w-md md:ml-auto font-medium leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-          Constructing robust architectures using Python, Robotic Process Automation (RPA), workflow systems, and modern React environments.
+          Creating software that works smarter, not harder—combining automation, full-stack development, and AI-driven solutions to solve real-world challenges.
         </p>
+
+        {/* Capabilities HUD Widget */}
+        <div className="mt-6 p-5 rounded-2xl border border-cyan-500/30 bg-[#04090b]/80 backdrop-blur-md shadow-[0_0_25px_rgba(6,182,212,0.12)] md:ml-auto w-full max-w-sm pointer-events-auto relative group overflow-hidden">
+          {/* Neon Corner Brackets */}
+          <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-cyan-400/80" />
+          <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t-2 border-r-2 border-cyan-400/80" />
+          <div className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b-2 border-l-2 border-cyan-400/80" />
+          <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b-2 border-r-2 border-cyan-400/80" />
+
+          <div className="flex items-center justify-between text-[10px] text-cyan-400 font-bold tracking-wider mb-4 border-b border-cyan-500/20 pb-2">
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+              CAPABILITIES_MATRIX.SYS
+            </span>
+            <span className="text-neutral-500 text-[9px]">[ACTIVE]</span>
+          </div>
+
+          <div className="space-y-3 font-mono text-left">
+            {[
+              { name: "Python", val: 90, color: "from-cyan-500 to-blue-500", glow: "rgba(34,211,238,0.25)" },
+              { name: "JavaScript", val: 80, color: "from-cyan-500 to-indigo-500", glow: "rgba(56,189,248,0.25)" },
+              { name: "Automation", val: 85, color: "from-emerald-500 to-cyan-500", glow: "rgba(16,185,129,0.25)" },
+              { name: "React / Next.js", val: 80, color: "from-blue-500 to-cyan-400", glow: "rgba(59,130,246,0.25)" },
+              { name: "Problem Solving", val: 95, color: "from-cyan-400 to-emerald-400", glow: "rgba(34,211,238,0.25)" }
+            ].map(skill => (
+              <div key={skill.name} className="space-y-1.5">
+                <div className="flex justify-between text-[11px] text-neutral-300">
+                  <span className="font-semibold">{skill.name}</span>
+                  <span className="text-cyan-400 font-bold">{skill.val}%</span>
+                </div>
+                {/* Micro-designed glowing progress bar */}
+                <div className="h-1.5 w-full bg-white/[0.04] border border-white/[0.06] rounded-full overflow-hidden p-[0.5px]">
+                  <motion.div
+                    className={`h-full rounded-full bg-gradient-to-r ${skill.color}`}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${skill.val}%` }}
+                    transition={{ delay: 0.3, duration: 1.2, ease: "easeOut" }}
+                    style={{ boxShadow: `0 0 6px ${skill.glow}` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </motion.div>
 
       {/* Scroll indicator */}

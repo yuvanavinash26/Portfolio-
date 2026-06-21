@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { useScroll, useSpring } from "framer-motion";
+import { useScroll, useSpring, useTransform, motion } from "framer-motion";
 import Overlay from "./Overlay";
 
 interface ScrollyCanvasProps {
@@ -23,6 +23,9 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
     target: containerRef,
     offset: ["start start", "end end"],
   });
+
+  // Fade vignettes to 0% opacity near the end of scroll to fully reveal the clean face cut
+  const vignetteOpacity = useTransform(scrollYProgress, [0.88, 0.96], [1, 0]);
 
   // Inertia spring filter to smooth out trackpad/wheel increments and prevent frame stuttering
   const smoothProgress = useSpring(scrollYProgress, {
@@ -203,8 +206,19 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
           style={{ display: "block" }}
         />
         
-        {/* Softer left gradient vignette. The black screen is removed so your face is fully visible on the left and right */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent z-[5] pointer-events-none" />
+        {/* Ambient vignettes to make overlay fonts fully visible against the canvas backside */}
+        <motion.div 
+          style={{ opacity: vignetteOpacity }}
+          className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/35 to-transparent z-[5] pointer-events-none" 
+        />
+        <motion.div 
+          style={{ opacity: vignetteOpacity }}
+          className="absolute inset-0 bg-gradient-to-l from-black/85 via-black/35 to-transparent z-[5] pointer-events-none" 
+        />
+        <motion.div 
+          style={{ opacity: vignetteOpacity }}
+          className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent z-[5] pointer-events-none h-40 bottom-0 top-auto" 
+        />
 
         <Overlay scrollYProgress={scrollYProgress} />
       </div>

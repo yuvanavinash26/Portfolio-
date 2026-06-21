@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
+import { motion } from "framer-motion";
 import Preloader from "@/components/Preloader";
 import ScrollyCanvas from "@/components/ScrollyCanvas";
 import Certifications from "@/components/Certifications";
@@ -14,10 +14,23 @@ import InteractiveTerminal from "@/components/InteractiveTerminal";
 import GitHubHeatmap from "@/components/GitHubHeatmap";
 import BeyondCoding from "@/components/BeyondCoding";
 import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
+
+const SECTION_BG_COLORS: Record<string, { color1: string; color2: string }> = {
+  home: { color1: "#000000", color2: "#010a24" },
+  about: { color1: "#010105", color2: "#070526" },
+  skills: { color1: "#020106", color2: "#14052b" },
+  experience: { color1: "#000302", color2: "#03201b" },
+  hackathons: { color1: "#030200", color2: "#221503" },
+  github: { color1: "#010006", color2: "#18052f" },
+  certifications: { color1: "#040001", color2: "#25050f" },
+  contact: { color1: "#000201", color2: "#032012" },
+};
 
 export default function Home() {
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState("home");
 
   // Always scroll to top on page load / reload
   useEffect(() => {
@@ -30,29 +43,64 @@ export default function Home() {
     }
   }, []);
 
-  // Monitor the scroll progress of the entire page
-  const { scrollYProgress } = useScroll();
+  // Track active section to dynamically shift page background colors
+  useEffect(() => {
+    const handleScroll = () => {
+      if ((window as any).isNavigating) return;
 
-  // Color 1: Base metallic tone for liquid chrome look
-  const color1 = useTransform(
-    scrollYProgress,
-    [0, 0.3, 0.5, 0.75, 1.0],
-    ["#000000", "#01010a", "#020412", "#00081a", "#000000"]
-  );
+      const sections = ["home", "about", "skills", "experience", "hackathons", "github", "certifications", "contact"];
+      let currentSection = "home";
+      let closestSection = "home";
+      let closestDistance = Infinity;
 
-  // Color 2: Highlight metallic tone for liquid chrome look
-  const color2 = useTransform(
-    scrollYProgress,
-    [0, 0.3, 0.5, 0.75, 1.0],
-    ["#030718", "#06133a", "#0c1b4b", "#031d4d", "#02071a"]
-  );
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          const triggerPoint = 160;
 
-  // Combine into a premium liquid chrome gradient
-  const background = useMotionTemplate`linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
+          if (rect.top <= triggerPoint && rect.bottom >= triggerPoint) {
+            currentSection = section;
+            closestDistance = -1;
+            break;
+          }
+
+          const distance = Math.abs(rect.top - triggerPoint);
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestSection = section;
+          }
+        }
+      }
+
+      if (closestDistance !== -1) {
+        currentSection = closestSection;
+      }
+      setActiveSection(currentSection);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll-nav-complete", handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll-nav-complete", handleScroll);
+    };
+  }, []);
+
+  const activeColors = SECTION_BG_COLORS[activeSection] || SECTION_BG_COLORS.home;
 
   return (
     <motion.main 
-      style={{ background }}
+      animate={{
+        "--bg-color-1": activeColors.color1,
+        "--bg-color-2": activeColors.color2,
+      } as any}
+      transition={{ duration: 1.2, ease: "easeInOut" }}
+      style={{
+        background: "linear-gradient(135deg, var(--bg-color-1) 0%, var(--bg-color-2) 100%)"
+      }}
       className="relative min-h-screen transition-colors duration-500"
     >
       {/* Premium Preloader overlay */}
@@ -76,6 +124,7 @@ export default function Home() {
         <Certifications />
         <BeyondCoding />
         <Contact />
+        <Footer />
       </div>
     </motion.main>
   );
