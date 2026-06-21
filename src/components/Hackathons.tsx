@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Award, Zap, Target } from "lucide-react";
+import { Award, Zap, Target, FolderGit2 } from "lucide-react";
 
-interface HackathonItem {
+interface PortfolioItem {
   eventName: string;
   projectName: string;
   teamName: string;
@@ -12,9 +12,10 @@ interface HackathonItem {
   technologies: string[];
   outcome: string;
   isFeatured?: boolean;
+  type: "Hackathon Entry" | "Standalone Project";
 }
 
-const HACKATHONS: HackathonItem[] = [
+const PORTFOLIO_ITEMS: PortfolioItem[] = [
   {
     eventName: "HealthTech Innovation Challenge",
     projectName: "CARESYNC AI",
@@ -23,7 +24,8 @@ const HACKATHONS: HackathonItem[] = [
     role: "Team Lead & Full Stack Developer",
     technologies: ["Next.js", "React", "AI APIs", "Data Visualization", "Real-Time Systems"],
     outcome: "Outstanding Prototype Winner",
-    isFeatured: true
+    isFeatured: true,
+    type: "Hackathon Entry"
   },
   {
     eventName: "Eco-Sustainability Hackathon",
@@ -32,7 +34,28 @@ const HACKATHONS: HackathonItem[] = [
     problemStatement: "A smart sustainability platform developed during a 48-hour hackathon that monitors energy and water consumption using analytics to identify inefficiencies and reduce wastage.",
     role: "Full Stack Developer",
     technologies: ["Python", "Data Analytics", "Dashboard Systems", "Flask"],
-    outcome: "Finalist & Best Analytics Award"
+    outcome: "Finalist & Best Analytics Award",
+    type: "Hackathon Entry"
+  },
+  {
+    eventName: "Independent Engineering Experiment",
+    projectName: "Skill Gap Navigator",
+    teamName: "Individual Project",
+    problemStatement: "An AI-powered career guidance engine comparing student profiles with global job descriptions to generate personalized step-by-step learning roadmaps.",
+    role: "Sole Creator",
+    technologies: ["AI APIs", "Node.js", "Vector Databases", "Express"],
+    outcome: "Active Showcase",
+    type: "Standalone Project"
+  },
+  {
+    eventName: "Interactive Scrollytelling Interface",
+    projectName: "Portfolio Website",
+    teamName: "Individual Project",
+    problemStatement: "A high-performance scrollytelling visual resume utilizing custom Canvas shaders, framer-motion choreographies, and responsive dynamic navigation.",
+    role: "Lead Designer & Developer",
+    technologies: ["Next.js", "Framer Motion", "Tailwind CSS", "Canvas Render"],
+    outcome: "Active Showcase",
+    type: "Standalone Project"
   }
 ];
 
@@ -46,19 +69,19 @@ export default function Hackathons() {
         {/* Header */}
         <div className="mb-16 md:mb-24 text-center md:text-left">
           <span className="text-xs font-mono font-bold text-blue-400 uppercase tracking-[0.25em] flex items-center justify-center md:justify-start gap-2">
-            <Award className="w-4 h-4" /> [ HACKATHONS & COMPETITIONS ]
+            <Award className="w-4 h-4" /> [ PORTFOLIO // PROJECTS & HACKATHONS ]
           </span>
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-white uppercase mt-4 font-heading">
-            Competitive <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Hackathons</span>
+            Projects & <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Hackathons</span>
           </h2>
           <p className="mt-6 text-sm md:text-base text-neutral-200 max-w-2xl font-medium leading-relaxed">
-            Where ideas transform into functional software under tight deadlines.
+            A comprehensive archive of engineering prototypes, competition entries, and standalone web tools.
           </p>
         </div>
 
-        {/* Hackathon Cards Grid */}
+        {/* Cards Grid */}
         <div className="space-y-8">
-          {HACKATHONS.map((item, index) => (
+          {PORTFOLIO_ITEMS.map((item, index) => (
             <motion.div
               key={item.projectName}
               initial={{ opacity: 0, y: 40 }}
@@ -71,17 +94,26 @@ export default function Hackathons() {
                   : "glass-panel border-white/5 bg-black/40 hover:border-blue-500/20"
               }`}
             >
-              {/* Featured Badge */}
-              {item.isFeatured && (
-                <div className="absolute top-6 right-6 md:top-8 md:right-8 bg-blue-500/20 border border-blue-500/40 text-blue-400 text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-full flex items-center gap-1.5">
-                  <Zap className="w-3.5 h-3.5 fill-blue-400/20" /> FEATURED SHOWCASE
-                </div>
-              )}
+              {/* Type Badge */}
+              <div className="absolute top-6 right-6 md:top-8 md:right-8 flex items-center gap-2">
+                <span className={`text-[9px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${
+                  item.type === "Hackathon Entry"
+                    ? "bg-purple-500/10 border-purple-500/30 text-purple-300"
+                    : "bg-blue-500/10 border-blue-500/30 text-blue-300"
+                }`}>
+                  {item.type}
+                </span>
+                {item.isFeatured && (
+                  <span className="bg-amber-500/20 border border-amber-500/40 text-amber-400 text-[9px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full flex items-center gap-1">
+                    <Zap className="w-3 h-3 fill-amber-400/20" /> FEATURED
+                  </span>
+                )}
+              </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Column 1: Event & Roles */}
                 <div className="lg:col-span-4 space-y-4">
-                  <div className="text-xs font-mono font-bold text-blue-400 uppercase tracking-widest">
+                  <div className="text-xs font-mono font-bold text-neutral-400 uppercase tracking-widest">
                     {item.eventName}
                   </div>
                   <h3 className="text-3xl md:text-4xl font-black text-white font-heading tracking-tight">

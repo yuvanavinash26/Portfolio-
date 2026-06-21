@@ -3,6 +3,14 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useState, useRef } from "react";
 import { Sparkles, Terminal, Activity } from "lucide-react";
+import Link from "next/link";
+
+const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
 
 export default function AboutMe() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -68,6 +76,22 @@ export default function AboutMe() {
               <p>
                 My long-term vision is to build impactful technology products and eventually launch innovative startups that solve meaningful problems at scale.
               </p>
+            </div>
+
+            {/* Subpage CTA Actions */}
+            <div className="mt-8 flex flex-wrap gap-4 z-30">
+              <Link
+                href="/terminal"
+                className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-blue-400 hover:text-white px-5 py-3 border border-blue-500/20 bg-blue-500/5 rounded-full hover:bg-blue-500 hover:border-blue-500 hover:shadow-[0_0_15px_rgba(59,130,246,0.35)] transition-all duration-300"
+              >
+                <Terminal className="w-4 h-4" /> Launch Dev Terminal
+              </Link>
+              <Link
+                href="/github"
+                className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-cyan-400 hover:text-white px-5 py-3 border border-cyan-500/20 bg-cyan-500/5 rounded-full hover:bg-cyan-500 hover:border-cyan-500 hover:shadow-[0_0_15px_rgba(34,211,238,0.35)] transition-all duration-300"
+              >
+                <GithubIcon className="w-4 h-4" /> View Git Heatmap
+              </Link>
             </div>
           </div>
 

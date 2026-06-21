@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 import Preloader from "@/components/Preloader";
 import ScrollyCanvas from "@/components/ScrollyCanvas";
-import Projects from "@/components/Projects";
+import Certifications from "@/components/Certifications";
 import DynamicIslandNav from "@/components/DynamicIslandNav";
 import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
@@ -18,6 +18,17 @@ import Contact from "@/components/Contact";
 export default function Home() {
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Always scroll to top on page load / reload
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Remove any hash so the browser doesn't auto-scroll to a section
+      if (window.location.hash) {
+        history.replaceState(null, "", window.location.pathname);
+      }
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+  }, []);
 
   // Monitor the scroll progress of the entire page
   const { scrollYProgress } = useScroll();
@@ -62,11 +73,10 @@ export default function Home() {
         <Hackathons />
         <InteractiveTerminal />
         <GitHubHeatmap />
+        <Certifications />
         <BeyondCoding />
-        <Projects />
         <Contact />
       </div>
     </motion.main>
   );
 }
-
