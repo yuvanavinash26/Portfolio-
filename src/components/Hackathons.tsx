@@ -351,40 +351,40 @@ export default function Hackathons() {
         
         {/* Dynamic World Fullscreen Background morphs (housed inside sticky container to remain fixed in viewport) */}
         <div className="absolute inset-0 pointer-events-none z-0">
-          {/* Step 0: Intro */}
+          {/* Step 0: Intro — deep royal blue */}
           <div
-            className="absolute inset-0 bg-gradient-to-b from-[#000000] via-[#020204] to-[#04040a] transition-opacity duration-1000 bg-[linear-gradient(rgba(255,255,255,0.008)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.008)_1px,transparent_1px)] bg-[size:40px_40px]"
-            style={{ opacity: activeStep === 0 ? 1 : 0 }}
+            className="absolute inset-0 transition-opacity duration-1000"
+            style={{ opacity: activeStep === 0 ? 1 : 0, background: "linear-gradient(to bottom, #020a1a, #0a1f52, #020a1a)" }}
           />
-          {/* Step 1: CareSync */}
+          {/* Step 1: CareSync — golden yellow */}
           <div
-            className="absolute inset-0 bg-gradient-to-b from-[#000208] via-[#011424] to-[#000208] transition-opacity duration-1000 bg-[radial-gradient(rgba(34,211,238,0.015)_1px,transparent_1px)] bg-[size:24px_24px]"
-            style={{ opacity: activeStep === 1 ? 1 : 0 }}
+            className="absolute inset-0 transition-opacity duration-1000"
+            style={{ opacity: activeStep === 1 ? 1 : 0, background: "linear-gradient(to bottom, #120e00, #3d2f00, #120e00)" }}
           />
-          {/* Step 2: Studo */}
+          {/* Step 2: Studo — royal blue */}
           <div
-            className="absolute inset-0 bg-gradient-to-b from-[#020008] via-[#0d0729] to-[#020008] transition-opacity duration-1000 bg-[radial-gradient(rgba(99,102,241,0.015)_1px,transparent_1px)] bg-[size:24px_24px]"
-            style={{ opacity: activeStep === 2 ? 1 : 0 }}
+            className="absolute inset-0 transition-opacity duration-1000"
+            style={{ opacity: activeStep === 2 ? 1 : 0, background: "linear-gradient(to bottom, #020a1a, #0c2461, #020a1a)" }}
           />
-          {/* Step 3: EduMind */}
+          {/* Step 3: EduMind — golden yellow */}
           <div
-            className="absolute inset-0 bg-gradient-to-b from-[#040008] via-[#1b062b] to-[#040008] transition-opacity duration-1000 bg-[radial-gradient(rgba(217,70,239,0.015)_1px,transparent_1px)] bg-[size:24px_24px]"
-            style={{ opacity: activeStep === 3 ? 1 : 0 }}
+            className="absolute inset-0 transition-opacity duration-1000"
+            style={{ opacity: activeStep === 3 ? 1 : 0, background: "linear-gradient(to bottom, #120e00, #4a3800, #120e00)" }}
           />
-          {/* Step 4: EcoGrid */}
+          {/* Step 4: EcoGrid — royal blue */}
           <div
-            className="absolute inset-0 bg-gradient-to-b from-[#000502] via-[#021f0b] to-[#000502] transition-opacity duration-1000 bg-[radial-gradient(rgba(16,185,129,0.015)_1px,transparent_1px)] bg-[size:24px_24px]"
-            style={{ opacity: activeStep === 4 ? 1 : 0 }}
+            className="absolute inset-0 transition-opacity duration-1000"
+            style={{ opacity: activeStep === 4 ? 1 : 0, background: "linear-gradient(to bottom, #020a1a, #0e2d6b, #020a1a)" }}
           />
-          {/* Step 5: DarkBid */}
+          {/* Step 5: DarkBid — golden yellow */}
           <div
-            className="absolute inset-0 bg-gradient-to-b from-[#050200] via-[#1f0f02] to-[#050200] transition-opacity duration-1000 bg-[radial-gradient(rgba(245,158,11,0.015)_1px,transparent_1px)] bg-[size:24px_24px]"
-            style={{ opacity: activeStep === 5 ? 1 : 0 }}
+            className="absolute inset-0 transition-opacity duration-1000"
+            style={{ opacity: activeStep === 5 ? 1 : 0, background: "linear-gradient(to bottom, #120e00, #3d2f00, #120e00)" }}
           />
-          {/* Step 6: Outro Orbit */}
+          {/* Step 6: Outro Orbit — deep navy */}
           <div
-            className="absolute inset-0 bg-gradient-to-b from-[#000000] via-[#010103] to-[#000000] transition-opacity duration-1000 bg-[radial-gradient(rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:32px_32px]"
-            style={{ opacity: activeStep === 6 ? 1 : 0 }}
+            className="absolute inset-0 transition-opacity duration-1000"
+            style={{ opacity: activeStep === 6 ? 1 : 0, background: "linear-gradient(to bottom, #010712, #040e2b, #010712)" }}
           />
 
           {/* Giant Parallax Background Text */}

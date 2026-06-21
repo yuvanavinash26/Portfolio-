@@ -273,13 +273,16 @@ function FloatingIcons() {
 
 // ================= ANIMATED COUNTER HELPER =================
 
-function AnimatedCounter({ target, suffix = "+" }: { target: number; suffix?: string }) {
+function AnimatedCounter({ target, suffix = "+", suffixClass = "text-blue-500" }: { target: number; suffix?: string; suffixClass?: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
+  const inView = useInView(ref, { once: false, margin: "-50px" });
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView) {
+      setCount(0);
+      return;
+    }
     let startTime: number | null = null;
     const duration = 1500;
 
@@ -302,9 +305,9 @@ function AnimatedCounter({ target, suffix = "+" }: { target: number; suffix?: st
   }, [target, inView]);
 
   return (
-    <span ref={ref} className="font-heading font-black text-3xl md:text-4xl text-white">
+    <span ref={ref} className="font-heading font-black text-4xl md:text-5xl text-white tracking-tight">
       {count}
-      <span className="text-blue-500 font-sans">{suffix}</span>
+      <span className={`${suffixClass} font-sans ml-0.5`}>{suffix}</span>
     </span>
   );
 }
@@ -551,53 +554,86 @@ export default function Skills() {
           </div>
 
           {/* Right Column: Status Dashboard Metrics Grid */}
-          <div className="w-full lg:w-[65%] grid grid-cols-2 gap-4">
+          <div className="w-full lg:w-[65%] grid grid-cols-2 gap-5">
             
-            {/* Metric 01 */}
-            <div className="p-6 rounded-2xl border border-white/5 bg-[#08090a]/70 backdrop-blur-md relative overflow-hidden shadow-xl flex flex-col justify-between h-[150px] group hover:border-blue-500/25 transition-colors duration-300">
-              <div className="flex justify-between items-start">
-                <FolderOpen className="w-8 h-8 text-blue-500" />
-                <span className="text-[9px] font-mono text-neutral-500 uppercase tracking-widest">// REPOS</span>
+            {/* Metric 01: Projects Built (Cyan) — with Visit Projects button */}
+            <div className="p-6 rounded-2xl border border-white/5 bg-[#08090a]/50 backdrop-blur-md relative overflow-hidden shadow-xl flex flex-col justify-between h-[155px] group hover:border-cyan-500/30 hover:bg-[#08090a]/80 hover:shadow-[0_0_25px_rgba(34,211,238,0.1)] transition-all duration-500 transform hover:-translate-y-1">
+              {/* Background Glow */}
+              <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 group-hover:scale-150 transition-all duration-700 pointer-events-none" />
+              
+              <div className="flex justify-between items-start z-10">
+                <div className="p-2.5 bg-neutral-900/80 rounded-xl border border-white/5 group-hover:border-cyan-500/30 group-hover:bg-cyan-500/5 transition-all duration-500">
+                  <FolderOpen className="w-6.5 h-6.5 text-cyan-400 group-hover:scale-110 transition-transform duration-500" />
+                </div>
+                <span className="text-[9px] font-mono text-neutral-500 group-hover:text-cyan-400/70 transition-colors duration-500 uppercase tracking-widest">// REPOS</span>
               </div>
-              <div>
-                <AnimatedCounter target={25} />
-                <span className="text-xs font-mono font-bold text-neutral-400 block uppercase tracking-wider mt-1">Projects Built</span>
+
+              {/* Counter + Visit Button inline */}
+              <div className="z-10 flex items-end justify-between gap-3">
+                <div>
+                  <AnimatedCounter target={20} suffixClass="text-cyan-400" />
+                  <span className="text-xs font-mono font-bold text-neutral-400 group-hover:text-neutral-300 transition-colors duration-500 block uppercase tracking-wider mt-1.5">Projects Built</span>
+                </div>
+                <button
+                  onClick={() => {
+                    const el = document.getElementById("hackathons");
+                    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                  className="shrink-0 flex items-center gap-1 px-3 py-2 border border-cyan-500/20 bg-cyan-500/5 hover:bg-cyan-500/20 text-cyan-300 hover:text-white rounded-xl font-mono text-[9px] font-extrabold uppercase tracking-wider transition-all duration-300 hover:shadow-[0_0_15px_rgba(34,211,238,0.25)] hover:border-cyan-400/50 cursor-pointer mb-0.5"
+                >
+                  Visit Projects ↗
+                </button>
               </div>
             </div>
 
-            {/* Metric 02 */}
-            <div className="p-6 rounded-2xl border border-white/5 bg-[#08090a]/70 backdrop-blur-md relative overflow-hidden shadow-xl flex flex-col justify-between h-[150px] group hover:border-blue-500/25 transition-colors duration-300">
-              <div className="flex justify-between items-start">
-                <Code2 className="w-8 h-8 text-blue-500" />
-                <span className="text-[9px] font-mono text-neutral-500 uppercase tracking-widest">// COMMITS</span>
+            {/* Metric 02: OS Contributions (Emerald) */}
+            <div className="p-6 rounded-2xl border border-white/5 bg-[#08090a]/50 backdrop-blur-md relative overflow-hidden shadow-xl flex flex-col justify-between h-[155px] group hover:border-emerald-500/30 hover:bg-[#08090a]/80 hover:shadow-[0_0_25px_rgba(16,185,129,0.1)] transition-all duration-500 transform hover:-translate-y-1">
+              {/* Background Glow */}
+              <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 group-hover:scale-150 transition-all duration-700 pointer-events-none" />
+              
+              <div className="flex justify-between items-start z-10">
+                <div className="p-2.5 bg-neutral-900/80 rounded-xl border border-white/5 group-hover:border-emerald-500/30 group-hover:bg-emerald-500/5 transition-all duration-500">
+                  <Code2 className="w-6.5 h-6.5 text-emerald-400 group-hover:scale-110 transition-transform duration-500" />
+                </div>
+                <span className="text-[9px] font-mono text-neutral-500 group-hover:text-emerald-400/70 transition-colors duration-500 uppercase tracking-widest">// COMMITS</span>
               </div>
-              <div>
-                <AnimatedCounter target={80} />
-                <span className="text-xs font-mono font-bold text-neutral-400 block uppercase tracking-wider mt-1">OS Contributions</span>
-              </div>
-            </div>
-
-            {/* Metric 03 */}
-            <div className="p-6 rounded-2xl border border-white/5 bg-[#08090a]/70 backdrop-blur-md relative overflow-hidden shadow-xl flex flex-col justify-between h-[150px] group hover:border-blue-500/25 transition-colors duration-300">
-              <div className="flex justify-between items-start">
-                <Award className="w-8 h-8 text-blue-500" />
-                <span className="text-[9px] font-mono text-neutral-500 uppercase tracking-widest">// EVENT BUILD</span>
-              </div>
-              <div>
-                <AnimatedCounter target={6} />
-                <span className="text-xs font-mono font-bold text-neutral-400 block uppercase tracking-wider mt-1">Hackathons Participated</span>
+              <div className="z-10">
+                <AnimatedCounter target={10} suffixClass="text-emerald-400" />
+                <span className="text-xs font-mono font-bold text-neutral-400 group-hover:text-neutral-300 transition-colors duration-500 block uppercase tracking-wider mt-1.5">OS Contributions</span>
               </div>
             </div>
 
-            {/* Metric 04 */}
-            <div className="p-6 rounded-2xl border border-white/5 bg-[#08090a]/70 backdrop-blur-md relative overflow-hidden shadow-xl flex flex-col justify-between h-[150px] group hover:border-blue-500/25 transition-colors duration-300">
-              <div className="flex justify-between items-start">
-                <BookOpen className="w-8 h-8 text-blue-500" />
-                <span className="text-[9px] font-mono text-neutral-500 uppercase tracking-widest">// FRAMEWORKS</span>
+            {/* Metric 03: Hackathons Participated (Amber) */}
+            <div className="p-6 rounded-2xl border border-white/5 bg-[#08090a]/50 backdrop-blur-md relative overflow-hidden shadow-xl flex flex-col justify-between h-[155px] group hover:border-amber-500/30 hover:bg-[#08090a]/80 hover:shadow-[0_0_25px_rgba(245,158,11,0.1)] transition-all duration-500 transform hover:-translate-y-1">
+              {/* Background Glow */}
+              <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl group-hover:bg-amber-500/10 group-hover:scale-150 transition-all duration-700 pointer-events-none" />
+              
+              <div className="flex justify-between items-start z-10">
+                <div className="p-2.5 bg-neutral-900/80 rounded-xl border border-white/5 group-hover:border-amber-500/30 group-hover:bg-amber-500/5 transition-all duration-500">
+                  <Award className="w-6.5 h-6.5 text-amber-400 group-hover:scale-110 transition-transform duration-500" />
+                </div>
+                <span className="text-[9px] font-mono text-neutral-500 group-hover:text-amber-400/70 transition-colors duration-500 uppercase tracking-widest">// EVENT BUILD</span>
               </div>
-              <div>
-                <AnimatedCounter target={18} />
-                <span className="text-xs font-mono font-bold text-neutral-400 block uppercase tracking-wider mt-1">Tech Learned</span>
+              <div className="z-10">
+                <AnimatedCounter target={5} suffixClass="text-amber-400" />
+                <span className="text-xs font-mono font-bold text-neutral-400 group-hover:text-neutral-300 transition-colors duration-500 block uppercase tracking-wider mt-1.5">Hackathons Participated</span>
+              </div>
+            </div>
+
+            {/* Metric 04: Tech Learned (Indigo) */}
+            <div className="p-6 rounded-2xl border border-white/5 bg-[#08090a]/50 backdrop-blur-md relative overflow-hidden shadow-xl flex flex-col justify-between h-[155px] group hover:border-indigo-500/30 hover:bg-[#08090a]/80 hover:shadow-[0_0_25px_rgba(99,102,241,0.1)] transition-all duration-500 transform hover:-translate-y-1">
+              {/* Background Glow */}
+              <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 group-hover:scale-150 transition-all duration-700 pointer-events-none" />
+              
+              <div className="flex justify-between items-start z-10">
+                <div className="p-2.5 bg-neutral-900/80 rounded-xl border border-white/5 group-hover:border-indigo-500/30 group-hover:bg-indigo-500/5 transition-all duration-500">
+                  <BookOpen className="w-6.5 h-6.5 text-indigo-400 group-hover:scale-110 transition-transform duration-500" />
+                </div>
+                <span className="text-[9px] font-mono text-neutral-500 group-hover:text-indigo-400/70 transition-colors duration-500 uppercase tracking-widest">// FRAMEWORKS</span>
+              </div>
+              <div className="z-10">
+                <AnimatedCounter target={18} suffixClass="text-indigo-400" />
+                <span className="text-xs font-mono font-bold text-neutral-400 group-hover:text-neutral-300 transition-colors duration-500 block uppercase tracking-wider mt-1.5">Tech Learned</span>
               </div>
             </div>
 

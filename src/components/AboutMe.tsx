@@ -25,17 +25,23 @@ export default function AboutMe() {
   const inView = useInView(containerRef, { once: false, amount: 0.15 });
 
   useEffect(() => {
+    let timerStart: NodeJS.Timeout;
+    let timerRevert: NodeJS.Timeout;
+
     if (inView && !hasAutoFlipped.current) {
       hasAutoFlipped.current = true;
-      const timerStart = setTimeout(() => {
+      timerStart = setTimeout(() => {
         setAutoFlipped(true);
-        const timerRevert = setTimeout(() => {
+        timerRevert = setTimeout(() => {
           setAutoFlipped(false);
         }, 2000);
-        return () => clearTimeout(timerRevert);
-      }, 800);
-      return () => clearTimeout(timerStart);
+      }, 2200); // Wait for the lanyard spring landing animation to fully place down and settle
     }
+
+    return () => {
+      if (timerStart) clearTimeout(timerStart);
+      if (timerRevert) clearTimeout(timerRevert);
+    };
   }, [inView]);
 
   // Framer Motion motion values for 3D tilt
