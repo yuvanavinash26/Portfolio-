@@ -20,7 +20,6 @@ export default function AboutMe() {
   const [photoError, setPhotoError] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [autoFlipped, setAutoFlipped] = useState(false);
-  const hasAutoFlipped = useRef(false);
 
   const inView = useInView(containerRef, { once: false, amount: 0.15 });
 
@@ -28,14 +27,15 @@ export default function AboutMe() {
     let timerStart: NodeJS.Timeout;
     let timerRevert: NodeJS.Timeout;
 
-    if (inView && !hasAutoFlipped.current) {
-      hasAutoFlipped.current = true;
+    if (inView) {
       timerStart = setTimeout(() => {
         setAutoFlipped(true);
         timerRevert = setTimeout(() => {
           setAutoFlipped(false);
         }, 2000);
       }, 2200); // Wait for the lanyard spring landing animation to fully place down and settle
+    } else {
+      setAutoFlipped(false);
     }
 
     return () => {

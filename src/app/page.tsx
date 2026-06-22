@@ -91,7 +91,7 @@ export default function Home() {
   const activeColors = SECTION_BG_COLORS[activeSection] || SECTION_BG_COLORS.home;
 
   return (
-    <motion.main 
+    <motion.main
       animate={{
         "--bg-color-1": activeColors.color1,
         "--bg-color-2": activeColors.color2,

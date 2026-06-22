@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence, useTransform } from "framer-motion";
-import { Terminal, ExternalLink, Activity, BookOpen, Layers, Zap, Cpu, Award, Globe, Database, Play, ChevronLeft, ChevronRight } from "lucide-react";
+import { Terminal, ExternalLink, Activity, BookOpen, Zap, Cpu, Globe, Database, Play } from "lucide-react";
 
 interface ProjectData {
   id: number;
@@ -431,9 +431,9 @@ export default function Hackathons() {
 
   const [activeStep, setActiveStep] = useState(0);
   // Photo rail rAF state
-  const railTrackRef  = useRef<HTMLDivElement>(null);
+  const railTrackRef = useRef<HTMLDivElement>(null);
   const railOffsetRef = useRef(0);
-  const railRafRef    = useRef<number | null>(null);
+  const railRafRef = useRef<number | null>(null);
   const railPausedRef = useRef(false);
   const [railHoverL, setRailHoverL] = useState(false);
   const [railHoverR, setRailHoverR] = useState(false);
@@ -464,14 +464,14 @@ export default function Hackathons() {
 
   // rAF loop for the photo rail
   const RAIL_CARD_W = 454; // card width + gap
-  const RAIL_TOTAL  = JOURNEY_IMAGES.length * RAIL_CARD_W;
+  const RAIL_TOTAL = JOURNEY_IMAGES.length * RAIL_CARD_W;
   useEffect(() => {
     railOffsetRef.current = RAIL_TOTAL;
     const tick = () => {
       if (!railPausedRef.current) {
         railOffsetRef.current += 3.5;
         if (railOffsetRef.current >= RAIL_TOTAL * 2) railOffsetRef.current -= RAIL_TOTAL;
-        if (railOffsetRef.current <  RAIL_TOTAL)     railOffsetRef.current += RAIL_TOTAL;
+        if (railOffsetRef.current < RAIL_TOTAL) railOffsetRef.current += RAIL_TOTAL;
         if (railTrackRef.current) {
           railTrackRef.current.style.transform = `translateX(-${railOffsetRef.current}px)`;
         }
@@ -485,7 +485,7 @@ export default function Hackathons() {
   const skipRail = (dir: "fwd" | "back") => {
     railOffsetRef.current += dir === "fwd" ? RAIL_CARD_W * 3 : -RAIL_CARD_W * 3;
     if (railOffsetRef.current >= RAIL_TOTAL * 2) railOffsetRef.current -= RAIL_TOTAL;
-    if (railOffsetRef.current <  RAIL_TOTAL)     railOffsetRef.current += RAIL_TOTAL;
+    if (railOffsetRef.current < RAIL_TOTAL) railOffsetRef.current += RAIL_TOTAL;
     if (railTrackRef.current) {
       railTrackRef.current.style.transform = `translateX(-${railOffsetRef.current}px)`;
     }
@@ -495,11 +495,11 @@ export default function Hackathons() {
 
   const activeColorClass =
     activeStep === 1 ? "text-cyan-400" :
-    activeStep === 2 ? "text-emerald-400" :
-    activeStep === 3 ? "text-amber-400" :
-    activeStep === 4 ? "text-indigo-400" :
-    activeStep === 5 ? "text-fuchsia-400" :
-    "text-neutral-600";
+      activeStep === 2 ? "text-emerald-400" :
+        activeStep === 3 ? "text-amber-400" :
+          activeStep === 4 ? "text-indigo-400" :
+            activeStep === 5 ? "text-fuchsia-400" :
+              "text-neutral-600";
 
   return (
     <section
@@ -507,7 +507,8 @@ export default function Hackathons() {
       ref={containerRef}
       className="relative bg-transparent h-[800vh] w-full z-20 border-t border-white/5"
     >
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes infiniteScroll {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
@@ -520,8 +521,8 @@ export default function Hackathons() {
       `}} />
 
       {/* Sticky Viewport */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between px-6 py-8 md:px-16 md:py-12 relative z-10">
-        
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between px-6 py-8 md:px-16 md:py-10 relative z-10">
+
         {/* Dynamic World Fullscreen Background morphs (housed inside sticky container to remain fixed in viewport) */}
         <div className="absolute inset-0 pointer-events-none z-0">
           {/* Step 0: Intro — deep royal blue */}
@@ -589,24 +590,24 @@ export default function Hackathons() {
           </div>
 
           {/* Memphis Design Corner Shapes */}
-          <div 
+          <div
             className={`absolute inset-0 pointer-events-none overflow-hidden transition-all duration-1000 ${activeColorClass} opacity-30`}
             style={{
               filter: "drop-shadow(0 0 6px currentColor)",
             }}
           >
-            
+
             {/* Top-Left Corner Vector */}
-            <motion.div 
+            <motion.div
               style={{ y: yParallax1 }}
               className="absolute top-6 left-6 w-32 h-32 md:w-48 md:h-48"
             >
               <svg viewBox="0 0 200 200" className="w-full h-full fill-none stroke-current" strokeWidth="1.5">
                 <rect x="20" y="20" width="100" height="100" transform="rotate(15 70 70)" strokeDasharray="3,3" />
                 <path d="M40,50 L90,100 M50,40 L100,90 M60,30 L110,80" opacity="0.7" />
-                {Array.from({ length: 3 }).map((_, r) => 
+                {Array.from({ length: 3 }).map((_, r) =>
                   Array.from({ length: 3 }).map((_, c) => (
-                    <circle key={`r-${r}-c-${c}`} cx={140 + c*14} cy={60 + r*14} r="2.5" className="fill-current stroke-none" />
+                    <circle key={`r-${r}-c-${c}`} cx={140 + c * 14} cy={60 + r * 14} r="2.5" className="fill-current stroke-none" />
                   ))
                 )}
                 <path d="M 30 160 A 30 30 0 0 1 90 160" />
@@ -614,7 +615,7 @@ export default function Hackathons() {
             </motion.div>
 
             {/* Top-Right Corner Vector */}
-            <motion.div 
+            <motion.div
               style={{ y: yParallax2 }}
               className="absolute top-6 right-6 w-32 h-32 md:w-48 md:h-48"
             >
@@ -623,7 +624,7 @@ export default function Hackathons() {
                 <path d="M 20,52 Q 35,37 50,52 T 80,52 T 110,52" />
                 <path d="M 20,64 Q 35,49 50,64 T 80,64 T 110,64" />
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <rect key={`pill-${i}`} x={130 + i*12} y={30} width="6" height="24" rx="3" className="fill-current stroke-none" />
+                  <rect key={`pill-${i}`} x={130 + i * 12} y={30} width="6" height="24" rx="3" className="fill-current stroke-none" />
                 ))}
                 <path d="M150,90 C150,70 180,70 180,90 L180,160 L150,160 Z" />
                 <circle cx="165" cy="120" r="10" className="fill-current stroke-none" />
@@ -631,7 +632,7 @@ export default function Hackathons() {
             </motion.div>
 
             {/* Bottom-Left Corner Vector */}
-            <motion.div 
+            <motion.div
               style={{ y: yParallax2 }}
               className="absolute bottom-12 left-6 w-32 h-32 md:w-48 md:h-48"
             >
@@ -647,7 +648,7 @@ export default function Hackathons() {
             </motion.div>
 
             {/* Bottom-Right Corner Vector */}
-            <motion.div 
+            <motion.div
               style={{ y: yParallax1 }}
               className="absolute bottom-12 right-6 w-32 h-32 md:w-48 md:h-48"
             >
@@ -722,53 +723,6 @@ export default function Hackathons() {
                         <RailCard key={i} img={img} />
                       ))}
                     </div>
-                  </div>
-
-                  {/* Arrows — left & right extremes below the strip */}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8, padding: "0 4px" }}>
-                    {/* ◀ */}
-                    <button
-                      onClick={() => skipRail("back")}
-                      onMouseEnter={() => setRailHoverL(true)}
-                      onMouseLeave={() => setRailHoverL(false)}
-                      aria-label="Scroll left"
-                      style={{
-                        width: 36, height: 36,
-                        borderRadius: 8,
-                        border: `1px solid ${railHoverL ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.1)"}`,
-                        background: railHoverL ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.03)",
-                        color: railHoverL ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.35)",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        cursor: "pointer", outline: "none", boxShadow: "none",
-                        transform: railHoverL ? "scale(1.06)" : "scale(1)",
-                        transition: "all 0.18s ease",
-                        backdropFilter: "blur(8px)",
-                      }}
-                    >
-                      <ChevronLeft size={16} strokeWidth={2} />
-                    </button>
-
-                    {/* ▶ */}
-                    <button
-                      onClick={() => skipRail("fwd")}
-                      onMouseEnter={() => setRailHoverR(true)}
-                      onMouseLeave={() => setRailHoverR(false)}
-                      aria-label="Scroll right"
-                      style={{
-                        width: 36, height: 36,
-                        borderRadius: 8,
-                        border: `1px solid ${railHoverR ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.1)"}`,
-                        background: railHoverR ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.03)",
-                        color: railHoverR ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.35)",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        cursor: "pointer", outline: "none", boxShadow: "none",
-                        transform: railHoverR ? "scale(1.06)" : "scale(1)",
-                        transition: "all 0.18s ease",
-                        backdropFilter: "blur(8px)",
-                      }}
-                    >
-                      <ChevronRight size={16} strokeWidth={2} />
-                    </button>
                   </div>
                 </div>
 
@@ -1025,11 +979,10 @@ export default function Hackathons() {
               <button
                 key={idx}
                 onClick={() => scrollToStep(idx)}
-                className={`relative flex items-center justify-center transition-all duration-300 ${
-                  activeStep === idx 
-                    ? "w-7 h-3.5 border border-blue-500/40 bg-blue-500/10 rounded text-blue-400 font-bold" 
+                className={`relative flex items-center justify-center transition-all duration-300 ${activeStep === idx
+                    ? "w-7 h-3.5 border border-blue-500/40 bg-blue-500/10 rounded text-blue-400 font-bold"
                     : "w-2.5 h-2.5 rounded-full border border-neutral-700 bg-neutral-900 hover:border-blue-500/50"
-                }`}
+                  }`}
               >
                 {activeStep === idx && (
                   <span className="text-[8px] leading-none">0{idx}</span>

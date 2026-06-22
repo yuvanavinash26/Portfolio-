@@ -1,7 +1,7 @@
 "use client";
 
 import emailjs from "@emailjs/browser";
-import { Mail, Terminal, MessageSquare, ArrowRight, Loader2 } from "lucide-react";
+import { Mail, Terminal, MessageSquare, ArrowRight, Loader2, Phone } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
 const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -24,9 +24,9 @@ const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const EMAILJS_SERVICE_ID  = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID  || "";
+const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "";
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "";
-const EMAILJS_PUBLIC_KEY  = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY  || "";
+const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "";
 
 /* Blinking cursor component */
 function Cursor({ active }: { active: boolean }) {
@@ -220,19 +220,6 @@ export default function Contact() {
                 <span className="text-emerald-600">$ </span>cat contact_info.txt
               </p>
 
-              {/* LinkedIn */}
-              <div className="flex items-center gap-4 rounded-xl border border-white/[0.07] bg-[#080e0b]/60 px-5 py-3.5 group hover:border-emerald-500/25 hover:bg-emerald-500/[0.04] transition-all duration-200">
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                  <LinkedinIcon className="w-3.5 h-3.5 text-emerald-400" />
-                </div>
-                <div>
-                  <p className="text-[9px] text-neutral-600 uppercase tracking-widest mb-0.5"><span className="text-emerald-700">[linkedin]</span></p>
-                  <a href="https://www.linkedin.com/in/yuvan-avinash" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-neutral-300 group-hover:text-emerald-300 transition-colors tracking-wider">
-                    in/yuvan-avinash
-                  </a>
-                </div>
-              </div>
-
               {/* Email */}
               <div className="flex items-center gap-4 rounded-xl border border-white/[0.07] bg-[#080e0b]/60 px-5 py-3.5 group hover:border-emerald-500/25 hover:bg-emerald-500/[0.04] transition-all duration-200">
                 <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center flex-shrink-0">
@@ -246,6 +233,19 @@ export default function Contact() {
                   </a>
                 </div>
               </div>
+
+              {/* Phone */}
+              <div className="flex items-center gap-4 rounded-xl border border-white/[0.07] bg-[#080e0b]/60 px-5 py-3.5 group hover:border-emerald-500/25 hover:bg-emerald-500/[0.04] transition-all duration-200">
+                <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-3.5 h-3.5 text-amber-400" />
+                </div>
+                <div>
+                  <p className="text-[9px] text-neutral-600 uppercase tracking-widest mb-0.5"><span className="text-amber-700">[phone]</span></p>
+                  <a href="tel:9363484782" className="text-sm font-bold text-neutral-300 group-hover:text-amber-300 transition-colors tracking-wider">
+                    +91 93634 84782
+                  </a>
+                </div>
+              </div>
             </div>
 
             {/* Socials */}
@@ -255,9 +255,9 @@ export default function Contact() {
               </p>
               <div className="flex flex-wrap gap-2">
                 {[
-                  { name: "linkedin",  icon: <LinkedinIcon className="w-3 h-3" />,   url: "https://www.linkedin.com/in/yuvan-avinash" },
-                  { name: "github",    icon: <GithubIcon className="w-3 h-3" />,     url: "https://github.com/yuvanavinash26" },
-                  { name: "instagram", icon: <InstagramIcon className="w-3 h-3" />,  url: "https://instagram.com" },
+                  { name: "linkedin", icon: <LinkedinIcon className="w-3 h-3" />, url: "https://www.linkedin.com/in/yuvan-avinash" },
+                  { name: "github", icon: <GithubIcon className="w-3 h-3" />, url: "https://github.com/yuvanavinash26" },
+                  { name: "instagram", icon: <InstagramIcon className="w-3 h-3" />, url: "https://instagram.com" },
                 ].map((s) => (
                   <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded border border-white/[0.07] bg-white/[0.02] hover:bg-emerald-500/8 hover:border-emerald-500/30 text-neutral-500 hover:text-emerald-400 text-[11px] font-mono transition-all duration-200">
