@@ -52,6 +52,82 @@ const PROJECTS: Project[] = [
   }
 ];
 
+const JOURNEY_IMAGES = [
+  "/project-01.jpg",
+  "/project-02.jpg",
+  "/project-03.jpg",
+  "/project-04.jpg",
+  "/project-05.jpg",
+  "/project-06.jpg",
+  "/project-07.jpg",
+  "/project-08.jpg",
+  "/project-09.jpg",
+  "/project-10.jpg",
+  "/project-11.jpg",
+  "/project-12.jpg",
+  "/project-13.jpg",
+  "/project-14.jpg",
+  "/project-15.jpg",
+];
+
+function PhotoRail() {
+  // Duplicate to create seamless infinite loop
+  const images = [...JOURNEY_IMAGES, ...JOURNEY_IMAGES];
+  const [paused, setPaused] = useState(false);
+
+  return (
+    <div
+      className="relative w-full overflow-hidden"
+      style={{ maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes railScroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .rail-track {
+          display: flex;
+          width: max-content;
+          gap: 16px;
+          animation: railScroll 55s linear infinite;
+        }
+        .rail-track.paused {
+          animation-play-state: paused;
+        }
+      `}} />
+
+      <div className={`rail-track${paused ? " paused" : ""}`}>
+        {images.map((src, i) => (
+          <div
+            key={i}
+            className="relative flex-shrink-0 w-[260px] h-[180px] md:w-[320px] md:h-[220px] rounded-2xl overflow-hidden border border-white/5 group"
+            style={{
+              boxShadow: "0 4px 30px rgba(0,0,0,0.5)",
+            }}
+          >
+            <img
+              src={src}
+              alt=""
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              onError={(e) => {
+                const el = e.currentTarget.parentElement;
+                if (el) {
+                  el.style.background = "linear-gradient(135deg, rgba(59,130,246,0.08), rgba(6,182,212,0.05))";
+                  el.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:10px;color:rgba(255,255,255,0.15);letter-spacing:0.15em;border:1px solid rgba(255,255,255,0.04);border-radius:16px;">${src.replace("/", "").replace(".jpg", "")}</div>`;
+                }
+              }}
+            />
+            {/* Subtle glass shine overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent pointer-events-none rounded-2xl" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Card({ project }: { project: Project }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -128,8 +204,25 @@ function Card({ project }: { project: Project }) {
 
 export default function Projects() {
   return (
-    <section id="projects" className="relative bg-transparent px-6 py-24 md:py-36 border-t border-white/5 z-20">
-      <div className="max-w-6xl mx-auto">
+    <section id="projects" className="relative bg-transparent pt-20 pb-24 md:pt-28 md:pb-36 border-t border-white/5 z-20">
+
+      {/* ── Project Journey Photo Rail ── */}
+      <div className="mb-20 md:mb-28">
+        {/* Label */}
+        <div className="flex items-center gap-3 px-6 md:px-16 mb-8">
+          <div className="h-px flex-1 max-w-[40px] bg-white/10" />
+          <span className="text-[10px] font-mono font-bold text-blue-400/80 uppercase tracking-[0.3em]">
+            Project Memories &amp; Journey
+          </span>
+          <div className="h-px flex-1 bg-white/10" />
+        </div>
+
+        {/* Full-width scrolling rail — NO padding so it bleeds edge-to-edge */}
+        <PhotoRail />
+      </div>
+
+      {/* ── Featured Projects Grid ── */}
+      <div className="max-w-6xl mx-auto px-6">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-6">
           <div>

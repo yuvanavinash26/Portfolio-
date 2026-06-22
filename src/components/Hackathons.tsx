@@ -125,6 +125,84 @@ const PROJECTS: ProjectData[] = [
   }
 ];
 
+const JOURNEY_IMAGES = [
+  {
+    src: "/project-01.jpg",
+    title: "Hackathon Brainstorm",
+    caption: "Late-night whiteboard session mapping system architectures and APIs."
+  },
+  {
+    src: "/project-02.jpg",
+    title: "CARESYNC AI Demo",
+    caption: "Demonstrating our predictive healthcare hospital digital twin system."
+  },
+  {
+    src: "/project-03.jpg",
+    title: "Pitching Session",
+    caption: "Presenting our smart operational dashboard live to the industry jury."
+  },
+  {
+    src: "/project-04.jpg",
+    title: "Late Night Coding",
+    caption: "Refining Next.js rendering loops and dashboard state integrations."
+  },
+  {
+    src: "/project-05.jpg",
+    title: "Saveetha Victory",
+    caption: "Proud team moment securing first place at the Saveetha Hackathon."
+  },
+  {
+    src: "/project-06.jpg",
+    title: "EcoGrid Prototype",
+    caption: "Deploying resource usage algorithms and sustainability charts."
+  },
+  {
+    src: "/project-07.jpg",
+    title: "Wireframing UI",
+    caption: "Designing high-fidelity dark-themed console layout layouts."
+  },
+  {
+    src: "/project-08.jpg",
+    title: "DarkBid Engine Test",
+    caption: "Running stress tests on real-time decentralized bidding operations."
+  },
+  {
+    src: "/project-09.jpg",
+    title: "Database Architecture",
+    caption: "Structuring relationships for collaborative student networks."
+  },
+  {
+    src: "/project-10.jpg",
+    title: "Studo Workspace",
+    caption: "Testing integration of exam planners and study note widgets."
+  },
+  {
+    src: "/project-11.jpg",
+    title: "AI Workshop",
+    caption: "Leading a developer webinar on neural network fundamentals."
+  },
+  {
+    src: "/project-12.jpg",
+    title: "Debugging Flow",
+    caption: "Profiling rendering performance issues on the terminal canvas."
+  },
+  {
+    src: "/project-13.jpg",
+    title: "Startup Discussion",
+    caption: "Aligning on core business modules with founders and investors."
+  },
+  {
+    src: "/project-14.jpg",
+    title: "EduMind AI Launch",
+    caption: "Demonstrating automatic study guide generation for peers."
+  },
+  {
+    src: "/project-15.jpg",
+    title: "Final Deployment",
+    caption: "Pushing code to production and celebrating team success."
+  }
+];
+
 // SVG Animations inside device mockups
 function CareSyncVisual() {
   return (
@@ -303,15 +381,16 @@ export default function Hackathons() {
   const yParallax2 = useTransform(scrollYProgress, [0, 1], ["0px", "60px"]);
 
   const [activeStep, setActiveStep] = useState(0);
+  const [railPaused, setRailPaused] = useState(false);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     let step = 0;
-    if (latest < 0.14) step = 0;
-    else if (latest < 0.28) step = 1;
-    else if (latest < 0.42) step = 2;
-    else if (latest < 0.56) step = 3;
-    else if (latest < 0.70) step = 4;
-    else if (latest < 0.84) step = 5;
+    if (latest < 0.143) step = 0;
+    else if (latest < 0.286) step = 1;
+    else if (latest < 0.429) step = 2;
+    else if (latest < 0.572) step = 3;
+    else if (latest < 0.715) step = 4;
+    else if (latest < 0.858) step = 5;
     else step = 6; // Outro Orbit
 
     if (step !== activeStep) {
@@ -323,16 +402,16 @@ export default function Hackathons() {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
+
     // Distribute offsets matching the 7-step boundaries
-    const offsetPercent = [0.05, 0.21, 0.35, 0.49, 0.63, 0.77, 0.92];
+    const offsetPercent = [0.05, 0.20, 0.34, 0.48, 0.62, 0.76, 0.92];
     const targetScroll = scrollTop + rect.top + (offsetPercent[stepIndex] * rect.height);
     window.scrollTo({ top: targetScroll, behavior: "smooth" });
   };
 
   const activeProject = activeStep >= 1 && activeStep <= 5 ? PROJECTS[activeStep - 1] : null;
 
-  const activeColorClass = 
+  const activeColorClass =
     activeStep === 1 ? "text-cyan-400" :
     activeStep === 2 ? "text-emerald-400" :
     activeStep === 3 ? "text-amber-400" :
@@ -344,8 +423,33 @@ export default function Hackathons() {
     <section
       id="hackathons"
       ref={containerRef}
-      className="relative bg-transparent h-[650vh] w-full z-20 border-t border-white/5"
+      className="relative bg-transparent h-[800vh] w-full z-20 border-t border-white/5"
     >
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes infiniteScroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-infinite-scroll {
+          display: flex;
+          width: max-content;
+          animation: infiniteScroll 45s linear infinite;
+        }
+        @keyframes railScroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .rail-track {
+          display: flex;
+          width: max-content;
+          gap: 14px;
+          animation: railScroll 50s linear infinite;
+        }
+        .rail-track.rail-paused {
+          animation-play-state: paused;
+        }
+      `}} />
+
       {/* Sticky Viewport */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between px-6 py-8 md:px-16 md:py-12 relative z-10">
         
@@ -356,35 +460,40 @@ export default function Hackathons() {
             className="absolute inset-0 transition-opacity duration-1000"
             style={{ opacity: activeStep === 0 ? 1 : 0, background: "linear-gradient(to bottom, #020a1a, #0a1f52, #020a1a)" }}
           />
-          {/* Step 1: CareSync — golden yellow */}
+          {/* Step 1: CareSync */}
           <div
             className="absolute inset-0 transition-opacity duration-1000"
-            style={{ opacity: activeStep === 1 ? 1 : 0, background: "linear-gradient(to bottom, #120e00, #3d2f00, #120e00)" }}
+            style={{ opacity: activeStep === 1 ? 1 : 0, background: "linear-gradient(to bottom, #01091a, #051c4f, #01091a)" }}
           />
-          {/* Step 2: Studo — royal blue */}
+          {/* Step 2: EcoGrid */}
           <div
             className="absolute inset-0 transition-opacity duration-1000"
-            style={{ opacity: activeStep === 2 ? 1 : 0, background: "linear-gradient(to bottom, #020a1a, #0c2461, #020a1a)" }}
+            style={{ opacity: activeStep === 2 ? 1 : 0, background: "linear-gradient(to bottom, #001205, #002d0b, #001205)" }}
           />
-          {/* Step 3: EduMind — golden yellow */}
+          {/* Step 3: DarkBid */}
           <div
             className="absolute inset-0 transition-opacity duration-1000"
-            style={{ opacity: activeStep === 3 ? 1 : 0, background: "linear-gradient(to bottom, #120e00, #4a3800, #120e00)" }}
+            style={{ opacity: activeStep === 3 ? 1 : 0, background: "linear-gradient(to bottom, #140d00, #382400, #140d00)" }}
           />
-          {/* Step 4: EcoGrid — royal blue */}
+          {/* Step 4: Studo */}
           <div
             className="absolute inset-0 transition-opacity duration-1000"
-            style={{ opacity: activeStep === 4 ? 1 : 0, background: "linear-gradient(to bottom, #020a1a, #0e2d6b, #020a1a)" }}
+            style={{ opacity: activeStep === 4 ? 1 : 0, background: "linear-gradient(to bottom, #08011c, #240c5e, #08011c)" }}
           />
-          {/* Step 5: DarkBid — golden yellow */}
+          {/* Step 5: EduMind */}
           <div
             className="absolute inset-0 transition-opacity duration-1000"
-            style={{ opacity: activeStep === 5 ? 1 : 0, background: "linear-gradient(to bottom, #120e00, #3d2f00, #120e00)" }}
+            style={{ opacity: activeStep === 5 ? 1 : 0, background: "linear-gradient(to bottom, #170116, #40073e, #170116)" }}
           />
-          {/* Step 6: Outro Orbit — deep navy */}
+          {/* Step 6: Project Journey */}
           <div
             className="absolute inset-0 transition-opacity duration-1000"
-            style={{ opacity: activeStep === 6 ? 1 : 0, background: "linear-gradient(to bottom, #010712, #040e2b, #010712)" }}
+            style={{ opacity: activeStep === 6 ? 1 : 0, background: "linear-gradient(to bottom, #010410, #0c1a40, #010410)" }}
+          />
+          {/* Step 7: Outro Orbit — deep navy */}
+          <div
+            className="absolute inset-0 transition-opacity duration-1000"
+            style={{ opacity: activeStep === 7 ? 1 : 0, background: "linear-gradient(to bottom, #010712, #040e2b, #010712)" }}
           />
 
           {/* Giant Parallax Background Text */}
@@ -508,20 +617,57 @@ export default function Hackathons() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -30 }}
                 transition={{ duration: 0.6 }}
-                className="max-w-3xl text-center flex flex-col items-center gap-6 z-10"
+                className="w-full flex flex-col items-center gap-3 z-10"
               >
-                <span className="text-[11px] font-mono font-bold text-blue-400 uppercase tracking-[0.25em] px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.1)]">
-                  [ SECTION DOCK // ARCHIVE ]
-                </span>
-                <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-white uppercase font-heading leading-none">
-                  PROJECT ARCHIVE
-                </h2>
-                <p className="text-sm md:text-base text-neutral-300 max-w-2xl font-medium leading-relaxed">
-                  A selection of my projects, products, and hackathon builds that showcase my journey as a full-stack developer. Each project reflects a unique challenge, a learning experience, and my passion for building technology that creates real-world impact.
-                </p>
+                {/* Title Block */}
+                <div className="text-center flex flex-col items-center gap-2">
+                  <span className="text-[11px] font-mono font-bold text-blue-400 uppercase tracking-[0.25em] px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+                    [ SECTION DOCK // ARCHIVE ]
+                  </span>
+                  <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-white uppercase font-heading leading-none">
+                    PROJECT ARCHIVE
+                  </h2>
+                  <p className="text-sm md:text-base text-neutral-300 max-w-2xl font-medium leading-relaxed mt-1">
+                    A selection of my projects, products, and hackathon builds that showcase my journey as a full-stack developer. Each project reflects a unique challenge, a learning experience, and my passion for building technology that creates real-world impact.
+                  </p>
+                </div>
+
+                {/* ── Photo Rail — below description, bleeds edge-to-edge ── */}
+                <div
+                  className="w-[calc(100%+3rem)] md:w-[calc(100%+8rem)] -mx-6 md:-mx-16 overflow-hidden mt-2"
+                  style={{ maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}
+                  onMouseEnter={() => setRailPaused(true)}
+                  onMouseLeave={() => setRailPaused(false)}
+                >
+                  <div className={`rail-track${railPaused ? " rail-paused" : ""}`}>
+                    {[...JOURNEY_IMAGES, ...JOURNEY_IMAGES].map((img, i) => (
+                      <div
+                        key={i}
+                        className="relative flex-shrink-0 w-[280px] h-[190px] md:w-[360px] md:h-[240px] rounded-2xl overflow-hidden border border-white/5 group"
+                        style={{ boxShadow: "0 4px 30px rgba(0,0,0,0.6)" }}
+                      >
+                        <img
+                          src={img.src}
+                          alt=""
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          onError={(e) => {
+                            const el = e.currentTarget.parentElement;
+                            if (el) {
+                              el.style.background = "linear-gradient(135deg, rgba(59,130,246,0.08), rgba(6,182,212,0.05))";
+                              el.style.border = "1px solid rgba(255,255,255,0.04)";
+                              e.currentTarget.style.display = "none";
+                            }
+                          }}
+                        />
+                        {/* Glass shine */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
                 {/* Quick Showcase Navigation Chips */}
-                <div className="flex flex-wrap justify-center gap-2 mt-2">
+                <div className="flex flex-wrap justify-center gap-2 mt-1">
                   {PROJECTS.map((p, idx) => (
                     <button
                       key={p.id}
@@ -537,7 +683,7 @@ export default function Hackathons() {
                 <motion.div
                   animate={{ y: [0, 8, 0] }}
                   transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                  className="mt-6 flex flex-col items-center gap-2 text-[9px] font-mono text-neutral-500 uppercase tracking-widest cursor-pointer"
+                  className="flex flex-col items-center gap-2 text-[9px] font-mono text-neutral-500 uppercase tracking-widest cursor-pointer"
                   onClick={() => scrollToStep(1)}
                 >
                   <span>Scroll to Explore</span>
