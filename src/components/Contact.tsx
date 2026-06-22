@@ -220,17 +220,15 @@ export default function Contact() {
                 <span className="text-emerald-600">$ </span>cat contact_info.txt
               </p>
 
-              {/* Phone */}
+              {/* LinkedIn */}
               <div className="flex items-center gap-4 rounded-xl border border-white/[0.07] bg-[#080e0b]/60 px-5 py-3.5 group hover:border-emerald-500/25 hover:bg-emerald-500/[0.04] transition-all duration-200">
                 <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21L8.5 10.5a11.042 11.042 0 005.064 5.063l1.107-1.724a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
+                  <LinkedinIcon className="w-3.5 h-3.5 text-emerald-400" />
                 </div>
                 <div>
-                  <p className="text-[9px] text-neutral-600 uppercase tracking-widest mb-0.5"><span className="text-emerald-700">[phone]</span></p>
-                  <a href="tel:+919363484782" className="text-sm font-bold text-neutral-300 group-hover:text-emerald-300 transition-colors tracking-wider">
-                    +91 93634 84782
+                  <p className="text-[9px] text-neutral-600 uppercase tracking-widest mb-0.5"><span className="text-emerald-700">[linkedin]</span></p>
+                  <a href="https://www.linkedin.com/in/yuvan-avinash" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-neutral-300 group-hover:text-emerald-300 transition-colors tracking-wider">
+                    in/yuvan-avinash
                   </a>
                 </div>
               </div>

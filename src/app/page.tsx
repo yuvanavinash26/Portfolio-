@@ -12,7 +12,6 @@ import AboutMe from "@/components/AboutMe";
 import Hackathons from "@/components/Hackathons";
 import InteractiveTerminal from "@/components/InteractiveTerminal";
 import GitHubHeatmap from "@/components/GitHubHeatmap";
-import BeyondCoding from "@/components/BeyondCoding";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -122,7 +121,6 @@ export default function Home() {
         <InteractiveTerminal />
         <GitHubHeatmap />
         <Certifications />
-        <BeyondCoding />
         <Contact />
         <Footer />
       </div>

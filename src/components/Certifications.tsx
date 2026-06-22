@@ -1,128 +1,286 @@
 "use client";
 
-import { Award, ExternalLink, ShieldCheck, Cpu, Code2 } from "lucide-react";
+import { useRef } from "react";
+import { Award, CheckCircle, Brain, Calendar, Shield } from "lucide-react";
 import { motion } from "framer-motion";
 
-interface Certification {
-  title: string;
-  issuer: string;
-  issueDate: string;
-  credentialId: string;
-  verifyLink: string;
-  category: string;
-  tags: string[];
-  color: string;
-  borderColor: string;
-  iconColor: string;
-  icon: React.ReactNode;
-}
+const ACHIEVEMENTS = [
+  "Highest Academic Honors Recipient",
+  "Open Source Contributor @ GirlScript & Social Summer of Code",
+  "Active Hackathon Participant & Dashboard Builder",
+  "Development Domain Member at CodeKrafters",
+  "Passionate Builder & Tech Innovator"
+];
 
-const CERTIFICATIONS: Certification[] = [
+const ADDITIONAL_CERTS = [
   {
-    title: "AWS Certified Developer – Associate",
-    issuer: "Amazon Web Services (AWS)",
-    issueDate: "2026",
-    credentialId: "AWS-DEV-102938",
-    verifyLink: "https://aws.amazon.com/verification",
-    category: "Cloud Credentials",
-    tags: ["AWS", "Serverless", "Cloud Security", "DynamoDB"],
-    color: "from-orange-500/10 to-amber-600/10",
-    borderColor: "group-hover:border-orange-500/40",
-    iconColor: "text-orange-400",
-    icon: <Cpu className="w-5 h-5" />
+    title: "Artificial Intelligence Fundamentals",
+    issuer: "IBM / Cognitive Class",
+    date: "2024",
+    skills: "Python, Neural Networks, Deep Learning Models"
   },
   {
-    title: "Google Cloud – Data Analytics Insights",
-    issuer: "Google Cloud (GCP)",
-    issueDate: "2025",
-    credentialId: "GCP-ANA-884499",
-    verifyLink: "https://google.acredible.com",
-    category: "Systems & Data Insights",
-    tags: ["GCP", "BigQuery", "Data Analytics", "Cloud Run"],
-    color: "from-cyan-500/10 to-blue-600/10",
-    borderColor: "group-hover:border-cyan-500/40",
-    iconColor: "text-cyan-400",
-    icon: <Code2 className="w-5 h-5" />
+    title: "Cloud Computing Architect",
+    issuer: "AWS Academy",
+    date: "2025",
+    skills: "Cloud Architecture, EC2, S3, IAM Roles"
+  },
+  {
+    title: "Machine Learning Foundations",
+    issuer: "Stanford / Coursera",
+    date: "2025",
+    skills: "Supervised Learning, Regressions, Cost Functions"
+  },
+  {
+    title: "Data Analytics Specialist",
+    issuer: "Google Career Certificates",
+    date: "2025",
+    skills: "SQL, R Programming, Tableau Dashboards"
+  },
+  {
+    title: "Advanced Full-Stack Engineering",
+    issuer: "Meta / Coursera",
+    date: "2026",
+    skills: "React, Next.js, Django, Database Optimization"
   }
 ];
 
+const BEYOND_CODING = [
+  "Exploring startup ideas and business frameworks",
+  "Learning emerging automation tools & RPA nodes",
+  "Participating in collaborative tech webinars",
+  "Contributing to community library structures",
+  "Networking with developers, founders, & designers"
+];
+
+const cardVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1 }
+};
+
 export default function Certifications() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
   return (
-    <section id="certifications" className="relative bg-transparent px-6 py-24 md:py-36 border-t border-white/5 z-20">
-      {/* Glow Effect */}
-      <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
+    <section
+      id="certifications"
+      ref={sectionRef}
+      className="relative bg-[#040001] px-6 py-24 md:py-36 border-t border-white/5 z-20 overflow-hidden"
+    >
+      {/* Liquid Chrome keyframes injection */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes liquidChrome {
+          0% { background-position: 0% 50%; filter: hue-rotate(0deg); }
+          50% { background-position: 100% 50%; filter: hue-rotate(180deg); }
+          100% { background-position: 0% 50%; filter: hue-rotate(360deg); }
+        }
+        .animate-liquid-chrome {
+          background-size: 200% 200%;
+          animation: liquidChrome 18s ease-in-out infinite;
+        }
+      `}} />
 
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-6">
-          <div>
-            <span className="text-xs font-mono font-bold text-blue-400 uppercase tracking-[0.25em] flex items-center gap-2">
-              <Award className="w-4 h-4" /> [ CREDENTIALS & INSIGHTS ]
-            </span>
-            <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-white uppercase mt-4 font-heading">
-              Credentials & <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Insights</span>
-            </h2>
-          </div>
-          <p className="text-sm text-neutral-200 max-w-sm font-medium leading-relaxed">
-            Validated technical credentials and system performance insights across frontend frameworks, backend microservices, and databases.
-          </p>
+      {/* 1. Background Ambient Lights, Grid & Particles */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* Holographic Glowing Hues */}
+        <div className="absolute left-[15%] top-[15%] w-[350px] h-[350px] md:w-[650px] md:h-[650px] bg-blue-500/10 rounded-full blur-[140px] mix-blend-screen z-0 animate-pulse" />
+        <div className="absolute right-[20%] bottom-[15%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-cyan-500/10 rounded-full blur-[120px] mix-blend-screen z-0" />
+        <div className="absolute left-[40%] bottom-[5%] w-[300px] h-[300px] md:w-[450px] md:h-[450px] bg-purple-500/5 rounded-full blur-[130px] mix-blend-screen z-0 animate-pulse" />
+        
+        {/* Liquid Chrome Iridescent Shifting Glow */}
+        <div 
+          className="absolute inset-0 z-0 opacity-[0.14] mix-blend-screen pointer-events-none filter blur-[120px] animate-liquid-chrome"
+          style={{
+            background: "radial-gradient(circle at 20% 30%, #3b82f6 0%, #a855f7 35%, #d1d5db 70%, transparent 100%), radial-gradient(circle at 80% 70%, #00ffff 0%, #ff007f 40%, #4f46e5 75%, transparent 100%)",
+          }}
+        />
+
+        {/* Retro tech grid pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.02] pointer-events-none" 
+          style={{
+            backgroundImage: "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
+            backgroundSize: "36px 36px"
+          }}
+        />
+
+        {/* Ambient Floating Light Particles */}
+        <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
+          {[...Array(15)].map((_, i) => {
+            const duration = 10 + (i % 4) * 3;
+            const delay = (i % 3) * 2.5;
+            const size = 3 + (i % 3) * 1.5;
+            const left = 10 + (i * 7) % 80;
+            return (
+              <motion.div
+                key={`particle-${i}`}
+                className="absolute rounded-full bg-cyan-400/20"
+                style={{
+                  width: size,
+                  height: size,
+                  left: `${left}%`,
+                  bottom: "-5%",
+                  boxShadow: "0 0 10px rgba(34,211,238,0.2)",
+                }}
+                animate={{
+                  y: ["0vh", "-110vh"],
+                  x: ["0px", `${(i % 2 === 0 ? 1 : -1) * 20}px`, "0px"],
+                  opacity: [0, 0.6, 0.6, 0],
+                }}
+                transition={{
+                  duration: duration,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: delay,
+                }}
+              />
+            );
+          })}
         </div>
+      </div>
 
-        {/* Grid Layout (exactly 2 cards) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {CERTIFICATIONS.map((cert, index) => (
+      {/* 2. Content Layout */}
+      <div className="max-w-6xl mx-auto relative z-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          
+          {/* Left Side: Info Column (Sticky Column on Desktop) */}
+          <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-6">
+            <span className="text-xs font-mono font-bold text-blue-400 uppercase tracking-[0.25em] flex items-center gap-2">
+              <Award className="w-4.5 h-4.5" /> [ CREDENTIALS ]
+            </span>
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-white uppercase font-heading leading-tight">
+              Credentials &<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-400 animate-pulse">
+                Learning
+              </span>
+            </h2>
+            <div className="h-1 w-20 bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500 rounded" />
+            <p className="text-sm text-neutral-300 font-medium leading-relaxed max-w-sm">
+              Continuous upskilling log mapped to industry competencies. Ranging from Artificial Intelligence to cloud infrastructure and full-stack software architectures.
+            </p>
+          </div>
+
+          {/* Right Side: Horizontal static cards layout (staggered fade-in on enter, hover effect only) */}
+          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-6 relative w-full select-none pr-0">
+            
+            {/* Column 1: Key Achievements */}
             <motion.div
-              key={cert.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`relative overflow-hidden rounded-2xl border border-white/5 bg-black/40 p-8 group transition-all duration-500 hover:-translate-y-1 flex flex-col justify-between min-h-[280px] hover:shadow-[0_0_20px_rgba(59,130,246,0.05)]`}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+              className="w-full relative border border-white/[0.05] bg-[#07090c]/70 backdrop-blur-3xl rounded-[28px] p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_30px_60px_rgba(0,0,0,0.85)] hover:border-emerald-500/30 hover:bg-[#07090c]/85 hover:shadow-[0_20px_50px_rgba(16,185,129,0.1)] transition-all duration-300 overflow-hidden flex flex-col justify-between min-h-[460px] md:min-h-[500px]"
             >
-              {/* Radial background glow on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${cert.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0`} />
-
-              <div className="relative z-10">
-                {/* Header */}
-                <div className="flex justify-between items-start mb-6">
-                  <div className={`p-3 bg-white/5 border border-white/10 rounded-xl transition-all duration-300 ${cert.iconColor} group-hover:bg-white/10`}>
-                    {cert.icon}
+              {/* Top border shine */}
+              <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div>
+                <div className="flex items-center gap-3.5 mb-6">
+                  <div className="p-2.5 bg-emerald-500/10 rounded-xl text-emerald-400 border border-emerald-500/20 group-hover:scale-110 transition-transform duration-300">
+                    <Award className="w-5 h-5" />
                   </div>
-                  <a
-                    href={cert.verifyLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-neutral-400 hover:text-white transition-colors duration-300 p-2"
-                  >
-                    <ExternalLink className="w-4.5 h-4.5" />
-                  </a>
+                  <div>
+                    <h3 className="text-base font-bold text-white font-heading">Achievements</h3>
+                    <p className="text-[9px] font-mono text-neutral-400 uppercase tracking-widest mt-0.5">MILESTONES & HONORS</p>
+                  </div>
                 </div>
-
-                {/* Category & Title */}
-                <span className="text-[10px] font-mono tracking-widest text-blue-400 font-bold uppercase">
-                  {cert.category}
-                </span>
-                <h3 className="text-xl font-bold tracking-tight text-white mt-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-blue-300 transition-all duration-300 font-heading">
-                  {cert.title}
-                </h3>
-                <p className="text-neutral-400 font-mono text-[10px] mt-2 flex items-center gap-1.5 uppercase">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> {cert.issuer} • ID: {cert.credentialId}
-                </p>
-              </div>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-2 mt-8 relative z-10">
-                {cert.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-[9px] font-mono font-bold px-2.5 py-1 bg-white/5 border border-white/5 rounded-full text-neutral-200 hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-white transition-all duration-300"
-                  >
-                    {tag}
-                  </span>
-                ))}
+                
+                <ul className="space-y-4">
+                  {ACHIEVEMENTS.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-3 text-xs text-neutral-200 font-semibold leading-relaxed">
+                      <CheckCircle className="w-4.5 h-4.5 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </motion.div>
-          ))}
+
+            {/* Column 2: Technical Certifications */}
+            <motion.div
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+              className="w-full relative border border-white/[0.05] bg-[#07090c]/70 backdrop-blur-3xl rounded-[28px] p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_30px_60px_rgba(0,0,0,0.85)] hover:border-cyan-500/35 hover:bg-[#07090c]/85 hover:shadow-[0_20px_50px_rgba(6,182,212,0.1)] transition-all duration-500 overflow-hidden flex flex-col justify-between min-h-[460px] md:min-h-[500px]"
+            >
+              <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div>
+                <div className="flex items-center gap-3.5 mb-6">
+                  <div className="p-2.5 bg-cyan-500/10 rounded-xl text-cyan-400 border border-cyan-500/20 group-hover:scale-110 transition-transform duration-300">
+                    <Shield className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-white font-heading">Technical Certs</h3>
+                    <p className="text-[9px] font-mono text-neutral-400 uppercase tracking-widest mt-0.5">VERIFIED PATHWAYS</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {ADDITIONAL_CERTS.map((cert, idx) => (
+                    <div key={idx} className="border-b border-white/5 pb-3.5 last:border-0 last:pb-0 space-y-1.5">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <h4 className="text-xs text-white font-bold">{cert.title}</h4>
+                          <p className="text-[9px] text-neutral-400 font-medium">
+                            Issuer: <span className="text-neutral-200">{cert.issuer}</span>
+                          </p>
+                        </div>
+                        <div className="text-neutral-500 flex items-center gap-1 text-[9px] font-mono shrink-0">
+                          <Calendar className="w-3 h-3 text-neutral-600" />
+                          {cert.date}
+                        </div>
+                      </div>
+                      
+                      <div className="text-[9px] font-mono text-neutral-400">
+                        Skills: <span className="text-cyan-400 font-semibold">{cert.skills}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Column 3: Beyond Coding */}
+            <motion.div
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+              className="w-full relative border border-white/[0.05] bg-[#07090c]/70 backdrop-blur-3xl rounded-[28px] p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_30px_60px_rgba(0,0,0,0.85)] hover:border-indigo-500/35 hover:bg-[#07090c]/85 hover:shadow-[0_20px_50px_rgba(99,102,241,0.1)] transition-all duration-500 overflow-hidden flex flex-col justify-between min-h-[460px] md:min-h-[500px]"
+            >
+              <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div>
+                <div className="flex items-center gap-3.5 mb-6">
+                  <div className="p-2.5 bg-indigo-500/10 rounded-xl text-indigo-400 border border-indigo-500/20 group-hover:scale-110 transition-transform duration-300">
+                    <Brain className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-white font-heading">Beyond Coding</h3>
+                    <p className="text-[9px] font-mono text-neutral-400 uppercase tracking-widest mt-0.5">INTEREST MATRIX</p>
+                  </div>
+                </div>
+
+                <ul className="space-y-4">
+                  {BEYOND_CODING.map((fact, idx) => (
+                    <li key={idx} className="flex items-start gap-3 text-xs text-neutral-200 font-semibold leading-relaxed">
+                      <span className="text-indigo-400 font-bold font-mono shrink-0 mt-0.5">#0{idx + 1}</span>
+                      <span>{fact}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+
+          </div>
         </div>
       </div>
     </section>

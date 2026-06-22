@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Terminal, Mail, Phone, MapPin, ArrowUp } from "lucide-react";
+import { Terminal, Mail, MapPin, ArrowUp } from "lucide-react";
 
 const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -175,14 +175,6 @@ export default function Footer() {
               >
                 <Mail className="w-3.5 h-3.5 text-cyan-500 group-hover:text-cyan-400" />
                 <span className="break-all">yuvanavinash26@gmail.com</span>
-              </a>
-
-              <a
-                href="tel:+919363484782"
-                className="flex items-center gap-2.5 hover:text-emerald-300 transition-colors group"
-              >
-                <Phone className="w-3.5 h-3.5 text-emerald-500 group-hover:text-emerald-400" />
-                <span>+91 93634 84782</span>
               </a>
 
               <div className="flex items-center gap-2.5">
