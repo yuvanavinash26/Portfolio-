@@ -255,9 +255,9 @@ export default function Contact() {
               </p>
               <div className="flex flex-wrap gap-2">
                 {[
-                  { name: "linkedin", icon: <LinkedinIcon className="w-3 h-3" />, url: "https://www.linkedin.com/in/yuvan-avinash" },
-                  { name: "github", icon: <GithubIcon className="w-3 h-3" />, url: "https://github.com/yuvanavinash26" },
-                  { name: "instagram", icon: <InstagramIcon className="w-3 h-3" />, url: "https://instagram.com" },
+                  { name: "github",    icon: <GithubIcon className="w-3 h-3" />,     url: "https://github.com/yuvanavinash26" },
+                  { name: "yuvan__nash_", icon: <InstagramIcon className="w-3 h-3" />,  url: "https://www.instagram.com/yuvan__nash_?igsh=MTRld2Y0NWU5Y2J6Nw==" },
+                  { name: "linkedin",  icon: <LinkedinIcon className="w-3 h-3" />,   url: "https://www.linkedin.com/in/yuvan-avinash" },
                 ].map((s) => (
                   <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded border border-white/[0.07] bg-white/[0.02] hover:bg-emerald-500/8 hover:border-emerald-500/30 text-neutral-500 hover:text-emerald-400 text-[11px] font-mono transition-all duration-200">

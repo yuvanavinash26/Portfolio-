@@ -250,7 +250,7 @@ export default function Footer() {
               <GithubIcon className="w-4 h-4" />
             </a>
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/yuvan__nash_?igsh=MTRld2Y0NWU5Y2J6Nw=="
               target="_blank"
               rel="noopener noreferrer"
               className="text-neutral-600 hover:text-rose-400 transition-colors p-1"
