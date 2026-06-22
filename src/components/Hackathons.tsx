@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence, useTransform } from "framer-motion";
-import { Terminal, ExternalLink, Activity, BookOpen, Layers, Zap, Cpu, Award, Globe, Database, Play } from "lucide-react";
+import { Terminal, ExternalLink, Activity, BookOpen, Layers, Zap, Cpu, Award, Globe, Database, Play, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ProjectData {
   id: number;
@@ -369,6 +369,55 @@ const renderVisualComponent = (title: string) => {
   }
 };
 
+function RailCard({ img }: { img: { src: string; title: string; caption: string } }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        flexShrink: 0,
+        width: 440,
+        height: 285,
+        borderRadius: 18,
+        overflow: "hidden",
+        border: hovered ? "1.5px solid rgba(6,182,212,0.7)" : "1.5px solid rgba(255,255,255,0.08)",
+        boxShadow: hovered
+          ? "0 0 0 2px rgba(6,182,212,0.25), 0 14px 50px rgba(6,182,212,0.22)"
+          : "0 6px 36px rgba(0,0,0,0.65)",
+        position: "relative",
+        transform: hovered ? "scale(1.04) translateY(-5px)" : "scale(1)",
+        transition: "all 0.32s cubic-bezier(0.22,1,0.36,1)",
+      }}
+    >
+      <img
+        src={img.src}
+        alt={img.title}
+        style={{
+          width: "100%", height: "100%",
+          objectFit: "cover",
+          display: "block",
+          transform: hovered ? "scale(1.08)" : "scale(1)",
+          transition: "transform 0.5s cubic-bezier(0.22,1,0.36,1)",
+        }}
+        onError={(e) => {
+          const el = e.currentTarget.parentElement;
+          if (el) {
+            el.style.background = "linear-gradient(135deg, rgba(6,182,212,0.07), rgba(59,130,246,0.05))";
+            e.currentTarget.style.display = "none";
+          }
+        }}
+      />
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "linear-gradient(to bottom, rgba(255,255,255,0.04) 0%, transparent 60%)",
+        pointerEvents: "none",
+        borderRadius: 16,
+      }} />
+    </div>
+  );
+}
+
 export default function Hackathons() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -381,7 +430,13 @@ export default function Hackathons() {
   const yParallax2 = useTransform(scrollYProgress, [0, 1], ["0px", "60px"]);
 
   const [activeStep, setActiveStep] = useState(0);
-  const [railPaused, setRailPaused] = useState(false);
+  // Photo rail rAF state
+  const railTrackRef  = useRef<HTMLDivElement>(null);
+  const railOffsetRef = useRef(0);
+  const railRafRef    = useRef<number | null>(null);
+  const railPausedRef = useRef(false);
+  const [railHoverL, setRailHoverL] = useState(false);
+  const [railHoverR, setRailHoverR] = useState(false);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     let step = 0;
@@ -402,11 +457,38 @@ export default function Hackathons() {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    // Distribute offsets matching the 7-step boundaries
     const offsetPercent = [0.05, 0.20, 0.34, 0.48, 0.62, 0.76, 0.92];
     const targetScroll = scrollTop + rect.top + (offsetPercent[stepIndex] * rect.height);
     window.scrollTo({ top: targetScroll, behavior: "smooth" });
+  };
+
+  // rAF loop for the photo rail
+  const RAIL_CARD_W = 454; // card width + gap
+  const RAIL_TOTAL  = JOURNEY_IMAGES.length * RAIL_CARD_W;
+  useEffect(() => {
+    railOffsetRef.current = RAIL_TOTAL;
+    const tick = () => {
+      if (!railPausedRef.current) {
+        railOffsetRef.current += 3.5;
+        if (railOffsetRef.current >= RAIL_TOTAL * 2) railOffsetRef.current -= RAIL_TOTAL;
+        if (railOffsetRef.current <  RAIL_TOTAL)     railOffsetRef.current += RAIL_TOTAL;
+        if (railTrackRef.current) {
+          railTrackRef.current.style.transform = `translateX(-${railOffsetRef.current}px)`;
+        }
+      }
+      railRafRef.current = requestAnimationFrame(tick);
+    };
+    railRafRef.current = requestAnimationFrame(tick);
+    return () => { if (railRafRef.current) cancelAnimationFrame(railRafRef.current); };
+  }, [RAIL_TOTAL]);
+
+  const skipRail = (dir: "fwd" | "back") => {
+    railOffsetRef.current += dir === "fwd" ? RAIL_CARD_W * 3 : -RAIL_CARD_W * 3;
+    if (railOffsetRef.current >= RAIL_TOTAL * 2) railOffsetRef.current -= RAIL_TOTAL;
+    if (railOffsetRef.current <  RAIL_TOTAL)     railOffsetRef.current += RAIL_TOTAL;
+    if (railTrackRef.current) {
+      railTrackRef.current.style.transform = `translateX(-${railOffsetRef.current}px)`;
+    }
   };
 
   const activeProject = activeStep >= 1 && activeStep <= 5 ? PROJECTS[activeStep - 1] : null;
@@ -434,19 +516,6 @@ export default function Hackathons() {
           display: flex;
           width: max-content;
           animation: infiniteScroll 45s linear infinite;
-        }
-        @keyframes railScroll {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .rail-track {
-          display: flex;
-          width: max-content;
-          gap: 14px;
-          animation: railScroll 50s linear infinite;
-        }
-        .rail-track.rail-paused {
-          animation-play-state: paused;
         }
       `}} />
 
@@ -632,37 +701,74 @@ export default function Hackathons() {
                   </p>
                 </div>
 
-                {/* ── Photo Rail — below description, bleeds edge-to-edge ── */}
+                {/* ── Photo Rail — strip above, arrows below ── */}
                 <div
-                  className="w-[calc(100%+3rem)] md:w-[calc(100%+8rem)] -mx-6 md:-mx-16 overflow-hidden mt-2"
-                  style={{ maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}
-                  onMouseEnter={() => setRailPaused(true)}
-                  onMouseLeave={() => setRailPaused(false)}
+                  style={{ width: "calc(100% + 3rem)", marginLeft: "-1.5rem", marginTop: 8 }}
+                  onMouseEnter={() => { railPausedRef.current = true; }}
+                  onMouseLeave={() => { railPausedRef.current = false; }}
                 >
-                  <div className={`rail-track${railPaused ? " rail-paused" : ""}`}>
-                    {[...JOURNEY_IMAGES, ...JOURNEY_IMAGES].map((img, i) => (
-                      <div
-                        key={i}
-                        className="relative flex-shrink-0 w-[280px] h-[190px] md:w-[360px] md:h-[240px] rounded-2xl overflow-hidden border border-white/5 group"
-                        style={{ boxShadow: "0 4px 30px rgba(0,0,0,0.6)" }}
-                      >
-                        <img
-                          src={img.src}
-                          alt=""
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          onError={(e) => {
-                            const el = e.currentTarget.parentElement;
-                            if (el) {
-                              el.style.background = "linear-gradient(135deg, rgba(59,130,246,0.08), rgba(6,182,212,0.05))";
-                              el.style.border = "1px solid rgba(255,255,255,0.04)";
-                              e.currentTarget.style.display = "none";
-                            }
-                          }}
-                        />
-                        {/* Glass shine */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none" />
-                      </div>
-                    ))}
+                  {/* Scrolling strip */}
+                  <div style={{
+                    overflow: "hidden",
+                    maskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+                    paddingTop: 12, paddingBottom: 12,
+                  }}>
+                    <div
+                      ref={railTrackRef}
+                      style={{ display: "flex", gap: 14, width: "max-content", willChange: "transform" }}
+                    >
+                      {[...JOURNEY_IMAGES, ...JOURNEY_IMAGES, ...JOURNEY_IMAGES].map((img, i) => (
+                        <RailCard key={i} img={img} />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Arrows — left & right extremes below the strip */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8, padding: "0 4px" }}>
+                    {/* ◀ */}
+                    <button
+                      onClick={() => skipRail("back")}
+                      onMouseEnter={() => setRailHoverL(true)}
+                      onMouseLeave={() => setRailHoverL(false)}
+                      aria-label="Scroll left"
+                      style={{
+                        width: 36, height: 36,
+                        borderRadius: 8,
+                        border: `1px solid ${railHoverL ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.1)"}`,
+                        background: railHoverL ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.03)",
+                        color: railHoverL ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.35)",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        cursor: "pointer", outline: "none", boxShadow: "none",
+                        transform: railHoverL ? "scale(1.06)" : "scale(1)",
+                        transition: "all 0.18s ease",
+                        backdropFilter: "blur(8px)",
+                      }}
+                    >
+                      <ChevronLeft size={16} strokeWidth={2} />
+                    </button>
+
+                    {/* ▶ */}
+                    <button
+                      onClick={() => skipRail("fwd")}
+                      onMouseEnter={() => setRailHoverR(true)}
+                      onMouseLeave={() => setRailHoverR(false)}
+                      aria-label="Scroll right"
+                      style={{
+                        width: 36, height: 36,
+                        borderRadius: 8,
+                        border: `1px solid ${railHoverR ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.1)"}`,
+                        background: railHoverR ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.03)",
+                        color: railHoverR ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.35)",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        cursor: "pointer", outline: "none", boxShadow: "none",
+                        transform: railHoverR ? "scale(1.06)" : "scale(1)",
+                        transition: "all 0.18s ease",
+                        backdropFilter: "blur(8px)",
+                      }}
+                    >
+                      <ChevronRight size={16} strokeWidth={2} />
+                    </button>
                   </div>
                 </div>
 
