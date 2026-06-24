@@ -15,7 +15,7 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [images, setImages] = useState<HTMLImageElement[]>([]);
-  
+
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const currentIndexRef = useRef<number>(0);
 
@@ -99,7 +99,7 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
         if (active) {
           setImages(loadedImages);
           imagesRef.current = loadedImages;
-          
+
           // Draw the very first frame immediately
           setTimeout(() => {
             if (loadedImages[0]) {
@@ -134,7 +134,7 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
 
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
-      
+
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
 
@@ -205,19 +205,19 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
           className="h-full w-full object-cover block opacity-95 transition-opacity duration-300"
           style={{ display: "block" }}
         />
-        
+
         {/* Ambient vignettes to make overlay fonts fully visible against the canvas backside */}
-        <motion.div 
+        <motion.div
           style={{ opacity: vignetteOpacity }}
-          className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/35 to-transparent z-[5] pointer-events-none" 
+          className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/35 to-transparent z-[5] pointer-events-none"
         />
-        <motion.div 
+        <motion.div
           style={{ opacity: vignetteOpacity }}
-          className="absolute inset-0 bg-gradient-to-l from-black/85 via-black/35 to-transparent z-[5] pointer-events-none" 
+          className="absolute inset-0 bg-gradient-to-l from-black/85 via-black/35 to-transparent z-[5] pointer-events-none"
         />
-        <motion.div 
+        <motion.div
           style={{ opacity: vignetteOpacity }}
-          className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent z-[5] pointer-events-none h-40 bottom-0 top-auto" 
+          className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent z-[5] pointer-events-none h-40 bottom-0 top-auto"
         />
 
         <Overlay scrollYProgress={scrollYProgress} />

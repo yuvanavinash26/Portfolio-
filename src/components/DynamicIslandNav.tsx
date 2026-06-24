@@ -136,14 +136,14 @@ export default function DynamicIslandNav() {
           const rect = el.getBoundingClientRect();
           // Trigger line is 120px from top of viewport
           const triggerPoint = 120;
-          
+
           // If the element spans across the trigger line, it is the active section
           if (rect.top <= triggerPoint && rect.bottom >= triggerPoint) {
             currentSection = section;
             closestDistance = -1;
             break;
           }
-          
+
           // Otherwise, find the section whose boundary is closest to the trigger line
           const distance = Math.abs(rect.top - triggerPoint);
           if (distance < closestDistance) {
@@ -168,10 +168,10 @@ export default function DynamicIslandNav() {
     e.preventDefault();
     const targetId = href.replace("#", "");
     setActiveSection(targetId); // Update active section immediately
-    
+
     // Flag to stop canvas frame updates during smooth scroll
     (window as unknown as { isNavigating: boolean }).isNavigating = true;
-    
+
     const onScrollComplete = () => {
       (window as unknown as { isNavigating: boolean }).isNavigating = false;
       window.dispatchEvent(new Event("scroll-nav-complete"));
@@ -204,22 +204,21 @@ export default function DynamicIslandNav() {
       <motion.div
         layout
         transition={{ type: "spring", stiffness: 220, damping: 25 }}
-        className={`glass-panel flex items-center justify-between overflow-hidden shadow-2xl transition-all duration-700 ${theme.shadow} ${theme.border} ${
-          isScrolled 
-            ? `px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-gradient-to-r ${theme.bg}` 
+        className={`glass-panel flex items-center justify-between overflow-hidden shadow-2xl transition-all duration-700 ${theme.shadow} ${theme.border} ${isScrolled
+            ? `px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-gradient-to-r ${theme.bg}`
             : "px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-full bg-white/5 border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.02)]"
-        }`}
+          }`}
       >
         <div className="flex items-center justify-between w-full">
           {/* Dynamic Island Indicator Dot */}
-          <motion.div 
+          <motion.div
             layoutId="island-dot"
             className="w-2 h-2 rounded-full mr-2 flex-shrink-0 transition-all duration-700"
             style={{ backgroundColor: theme.dotColor }}
             animate={{ scale: [1, 1.3, 1] }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
           />
-          
+
           <div className="flex items-center gap-[2px] xs:gap-1 sm:gap-2 flex-grow justify-around pl-0.5 sm:pl-2">
             {navItems.map((item) => {
               const id = item.href.replace("#", "");
@@ -229,11 +228,10 @@ export default function DynamicIslandNav() {
                   key={item.label}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className={`relative text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] md:text-xs font-mono font-bold tracking-tighter xs:tracking-normal sm:tracking-wide uppercase px-1.5 py-1 sm:px-2.5 sm:py-1.5 rounded-full transition-all duration-300 flex items-center gap-1 sm:gap-1.5 ${
-                    isActive 
-                      ? theme.activeText 
+                  className={`relative text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] md:text-xs font-mono font-bold tracking-tighter xs:tracking-normal sm:tracking-wide uppercase px-1.5 py-1 sm:px-2.5 sm:py-1.5 rounded-full transition-all duration-300 flex items-center gap-1 sm:gap-1.5 ${isActive
+                      ? theme.activeText
                       : "text-neutral-300 hover:text-white"
-                  }`}
+                    }`}
                 >
                   {isActive && (
                     <motion.span

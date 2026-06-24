@@ -980,8 +980,8 @@ export default function Hackathons() {
                 key={idx}
                 onClick={() => scrollToStep(idx)}
                 className={`relative flex items-center justify-center transition-all duration-300 ${activeStep === idx
-                    ? "w-7 h-3.5 border border-blue-500/40 bg-blue-500/10 rounded text-blue-400 font-bold"
-                    : "w-2.5 h-2.5 rounded-full border border-neutral-700 bg-neutral-900 hover:border-blue-500/50"
+                  ? "w-7 h-3.5 border border-blue-500/40 bg-blue-500/10 rounded text-blue-400 font-bold"
+                  : "w-2.5 h-2.5 rounded-full border border-neutral-700 bg-neutral-900 hover:border-blue-500/50"
                   }`}
               >
                 {activeStep === idx && (
