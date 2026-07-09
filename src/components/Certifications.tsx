@@ -366,6 +366,19 @@ export default function Certifications() {
                 },
                 {
                   id: 4,
+                  title: "Web Dev Fundamentals",
+                  issuer: "IBM_SKILLSBUILD",
+                  credId: "f59cb92a-5f76-4f3c-b651-9429320a6b15",
+                  verifyLink: "https://www.credly.com/badges/f59cb92a-5f76-4f3c-b651-9429320a6b15/public_url",
+                  badgeImage: "/badges/ibm-web-development-fundamentals.png",
+                  bg: "bg-[#050608]",
+                  textColor: "text-white",
+                  iconColor: "text-cyan-300",
+                  dividerColor: "border-white/10",
+                  labelColor: "text-white/60"
+                },
+                {
+                  id: 5,
                   title: "Full-Stack Engineer",
                   issuer: "META_COURSES",
                   credId: "META-74921",
@@ -377,7 +390,7 @@ export default function Certifications() {
                   labelColor: "text-neutral-500"
                 },
                 {
-                  id: 5,
+                  id: 6,
                   title: "Machine Learning",
                   issuer: "STANFORD_ONLINE",
                   credId: "STAN-58329",
