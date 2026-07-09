@@ -353,6 +353,19 @@ export default function Certifications() {
                 },
                 {
                   id: 3,
+                  title: "Craft Precise Prompts",
+                  issuer: "IBM_SKILLSBUILD",
+                  credId: "f974e13d-1821-4e12-923e-45bff6a89a1a",
+                  verifyLink: "https://www.credly.com/badges/f974e13d-1821-4e12-923e-45bff6a89a1a/public_url",
+                  badgeImage: "/badges/ibm-prompt-engineering.png",
+                  bg: "bg-[#090a0f]",
+                  textColor: "text-white",
+                  iconColor: "text-cyan-300",
+                  dividerColor: "border-white/10",
+                  labelColor: "text-white/60"
+                },
+                {
+                  id: 4,
                   title: "Full-Stack Engineer",
                   issuer: "META_COURSES",
                   credId: "META-74921",
@@ -364,7 +377,7 @@ export default function Certifications() {
                   labelColor: "text-neutral-500"
                 },
                 {
-                  id: 4,
+                  id: 5,
                   title: "Machine Learning",
                   issuer: "STANFORD_ONLINE",
                   credId: "STAN-58329",
