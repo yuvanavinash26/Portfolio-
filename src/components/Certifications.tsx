@@ -471,7 +471,7 @@ export default function Certifications() {
                           <Shield className="w-3 h-3 text-cyan-400 shrink-0" />
                         </div>
                         <h4 className="text-[13px] md:text-[14px] font-extrabold tracking-tight leading-tight uppercase font-heading">
-                          IBM Badges
+                          Badges
                         </h4>
                         <p className="text-[9px] font-mono text-cyan-400/90 font-bold uppercase mt-1">
                           Hover & Click to See Next
