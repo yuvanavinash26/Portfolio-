@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import Preloader from "@/components/Preloader";
 import ScrollyCanvas from "@/components/ScrollyCanvas";
@@ -30,6 +30,24 @@ export default function Home() {
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [activeSection, setActiveSection] = useState("home");
+
+  // Minimum 3-second preloader display
+  const framesReady = useRef(false);
+  const timerReady = useRef(false);
+
+  const tryDismiss = useCallback(() => {
+    if (framesReady.current && timerReady.current) {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      timerReady.current = true;
+      tryDismiss();
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [tryDismiss]);
 
   // Always scroll to top on page load / reload
   useEffect(() => {
@@ -111,7 +129,10 @@ export default function Home() {
         <div id="home">
           <ScrollyCanvas
             onProgress={setProgress}
-            onLoadingComplete={() => setIsLoading(false)}
+            onLoadingComplete={() => {
+              framesReady.current = true;
+              tryDismiss();
+            }}
           />
         </div>
         <AboutMe />

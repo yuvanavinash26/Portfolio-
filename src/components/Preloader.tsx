@@ -79,6 +79,7 @@ export default function Preloader({ progress, isLoading }: PreloaderProps) {
   const [visibleLines, setVisibleLines] = useState<number>(0);
   const [accessGranted, setAccessGranted] = useState(false);
   const [glitchActive, setGlitchActive] = useState(false);
+  const [clock, setClock] = useState("");
   const logRef = useRef<HTMLDivElement>(null);
 
   // Reveal boot lines based on progress thresholds
@@ -104,6 +105,14 @@ export default function Preloader({ progress, isLoading }: PreloaderProps) {
       logRef.current.scrollTop = logRef.current.scrollHeight;
     }
   }, [visibleLines]);
+
+  // Live clock — client-only to avoid hydration mismatch
+  useEffect(() => {
+    const update = () => setClock(new Date().toLocaleTimeString("en-US", { hour12: false }));
+    update();
+    const t = setInterval(update, 1000);
+    return () => clearInterval(t);
+  }, []);
 
   // Random glitch flashes
   useEffect(() => {
@@ -310,7 +319,7 @@ export default function Preloader({ progress, isLoading }: PreloaderProps) {
 
           {/* Ambient corner decorations */}
           <div className="absolute top-6 left-6 z-20 text-[9px] font-mono text-neutral-700 select-none pointer-events-none">
-            <div>SYS.CLOCK: {new Date().toLocaleTimeString("en-US", { hour12: false })}</div>
+            <div>SYS.CLOCK: {clock}</div>
             <div className="mt-1">MEM: 16384MB</div>
           </div>
           <div className="absolute bottom-6 right-6 z-20 text-[9px] font-mono text-neutral-700 text-right select-none pointer-events-none">
