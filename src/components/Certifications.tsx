@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { Award, CheckCircle, Brain, Calendar, Shield } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { Award, CheckCircle, Brain, Calendar, Shield, Layers } from "lucide-react";
 import { motion } from "framer-motion";
 
 const ACHIEVEMENTS = [
@@ -60,6 +60,18 @@ const cardVariants = {
 
 export default function Certifications() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [isWalletOpen, setIsWalletOpen] = useState(false);
+  const [activeCardIdx, setActiveCardIdx] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isWalletOpen) {
+        setIsWalletOpen(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isWalletOpen]);
 
   return (
     <section
@@ -280,6 +292,220 @@ export default function Certifications() {
               </div>
             </motion.div>
 
+          </div>
+        </div>
+
+        {/* Centered Large Interactive Wallet Card Stack Section */}
+        <div className="mt-28 pt-20 border-t border-white/5 flex flex-col items-center text-center space-y-12 w-full">
+          <div className="max-w-2xl space-y-4">
+            <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-[0.25em] flex items-center justify-center gap-2">
+              <Layers className="w-4.5 h-4.5" /> [ INTERACTIVE BADGE WALLET ]
+            </span>
+            <h3 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tight font-heading leading-none">
+              Credential Card Wallet
+            </h3>
+            <p className="text-sm md:text-base text-neutral-300 font-medium leading-relaxed max-w-xl mx-auto">
+              Hover or click the badge card sleeve below to expand your wallet. Click the cards to cycle through your verified badges.
+            </p>
+          </div>
+
+          {/* Interactive Stack component centered */}
+          <div className="w-full flex justify-center py-8">
+            {(() => {
+              const CARDS = [
+                {
+                  id: 0,
+                  title: "Cloud Architect",
+                  issuer: "AWS_ACADEMY",
+                  credId: "AWS-99421",
+                  verifyLink: "https://www.credly.com/",
+                  bg: "bg-[#5B63E6]",
+                  textColor: "text-white",
+                  iconColor: "text-orange-400",
+                  dividerColor: "border-white/10",
+                  labelColor: "text-white/60"
+                },
+                {
+                  id: 1,
+                  title: "AI Fundamentals",
+                  issuer: "IBM_SKILLSBUILD",
+                  credId: "0e5e8b99-4149-4bfd-90d6-46517f8310e2",
+                  verifyLink: "https://www.credly.com/badges/0e5e8b99-4149-4bfd-90d6-46517f8310e2/public_url",
+                  badgeImage: "/badges/ibm-ai-fundamentals.png",
+                  bg: "bg-[#0a0a0a]",
+                  textColor: "text-white",
+                  iconColor: "text-cyan-300",
+                  dividerColor: "border-white/10",
+                  labelColor: "text-white/60"
+                },
+                {
+                  id: 2,
+                  title: "AI Foundations",
+                  issuer: "IBM_SKILLSBUILD",
+                  credId: "adddc707-ce87-4640-904e-69294554705d",
+                  verifyLink: "https://www.credly.com/badges/adddc707-ce87-4640-904e-69294554705d/public_url",
+                  badgeImage: "/badges/ibm-ai-foundations.png",
+                  bg: "bg-[#070709]",
+                  textColor: "text-white",
+                  iconColor: "text-cyan-300",
+                  dividerColor: "border-white/10",
+                  labelColor: "text-white/60"
+                },
+                {
+                  id: 3,
+                  title: "Full-Stack Engineer",
+                  issuer: "META_COURSES",
+                  credId: "META-74921",
+                  verifyLink: "https://www.credly.com/",
+                  bg: "bg-[#ffffff]",
+                  textColor: "text-black",
+                  iconColor: "text-blue-600",
+                  dividerColor: "border-neutral-200",
+                  labelColor: "text-neutral-500"
+                },
+                {
+                  id: 4,
+                  title: "Machine Learning",
+                  issuer: "STANFORD_ONLINE",
+                  credId: "STAN-58329",
+                  verifyLink: "https://www.credly.com/",
+                  bg: "bg-[#8c1515]",
+                  textColor: "text-white",
+                  iconColor: "text-amber-400",
+                  dividerColor: "border-white/10",
+                  labelColor: "text-white/60"
+                }
+              ];
+
+              return (
+                <motion.div
+                  initial="tucked"
+                  whileHover="open"
+                  animate={isWalletOpen ? "open" : "tucked"}
+                  onClick={() => {
+                    if (!isWalletOpen) {
+                      setIsWalletOpen(true);
+                    } else {
+                      // Cycle card to the back when clicked in open state
+                      setActiveCardIdx((prev) => (prev + 1) % CARDS.length);
+                    }
+                  }}
+                  className="relative w-[320px] h-[380px] cursor-pointer select-none overflow-visible"
+                >
+                  {CARDS.map((card, i) => {
+                    // Compute stacking order relative to the active card index
+                    const relativeIndex = (i - activeCardIdx + CARDS.length) % CARDS.length;
+                    const isTop = relativeIndex === 0;
+
+                    // Tucked values
+                    const tuckedY = 25 + i * 15;
+                    const tuckedScale = 0.94 + i * 0.02;
+                    const tuckedZIndex = i + 1;
+
+                    // Open fanned-out values
+                    const openY = isTop ? -160 : -45 - relativeIndex * 24;
+                    const openScale = isTop ? 1.0 : 0.95 - relativeIndex * 0.03;
+                    const openRotate = isTop ? 0 : (relativeIndex % 2 === 0 ? 1 : -1) * 3.5 * relativeIndex;
+                    const openZIndex = isTop ? 6 : 6 - relativeIndex;
+
+                    return (
+                      <motion.div
+                        key={card.id}
+                        variants={{
+                          tucked: { y: tuckedY, scale: tuckedScale, rotate: 0, zIndex: tuckedZIndex },
+                          open: { y: openY, scale: openScale, rotate: openRotate, zIndex: openZIndex }
+                        }}
+                        transition={{ type: "spring", stiffness: 220, damping: 20 }}
+                        className={`absolute inset-x-4 h-[210px] rounded-2xl ${card.bg} border border-white/10 p-4 flex flex-col justify-between ${card.textColor} shadow-2xl`}
+                        style={{ pointerEvents: isWalletOpen && !isTop ? "none" : "auto" }}
+                      >
+                        {/* 1. Brand Header */}
+                        <div className="flex justify-between items-center text-[8px] font-mono opacity-80 uppercase tracking-widest">
+                          <span>{card.issuer}</span>
+                          <Award className={`w-3.5 h-3.5 ${card.iconColor}`} />
+                        </div>
+                        
+                        {/* 2. Badge Graphic Centered */}
+                        <div className="flex justify-center my-1.5">
+                          <div className="w-16 h-16 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+                            {card.badgeImage ? (
+                              <img src={card.badgeImage} alt={card.title} className="w-full h-full object-cover" />
+                            ) : (
+                              <Award className={`w-8 h-8 ${card.iconColor}`} />
+                            )}
+                          </div>
+                        </div>
+
+                        {/* 3. Title & ID Centered */}
+                        <div className="text-center px-1">
+                          <h4 className="text-[12px] font-extrabold tracking-tight leading-tight uppercase font-heading">
+                            {card.title}
+                          </h4>
+                          <p className="text-[7px] font-mono opacity-65 mt-0.5 font-semibold">ID: {card.credId.length > 22 ? card.credId.substring(0, 22) + "..." : card.credId}</p>
+                        </div>
+
+                        {/* 4. Action Row */}
+                        <div className={`pt-2 border-t ${card.dividerColor} flex justify-between items-center text-[8px]`}>
+                          <span className="font-mono opacity-60">// SECURE_VERIFY</span>
+                          <a
+                            href={card.verifyLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Stop parent click events from triggering a card cycle
+                            }}
+                            className={`font-mono font-bold hover:underline transition-colors uppercase tracking-wider ${card.textColor}`}
+                          >
+                            Verify Badge ↗
+                          </a>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+
+                  {/* Pocket Cover Card: Black (Google) */}
+                  <div
+                    className="absolute bottom-0 left-0 right-0 h-[210px] bg-[#0a0f1d] border border-white/5 p-4 z-10 flex flex-col justify-between shadow-[0_-15px_30px_rgba(0,0,0,0.85)]"
+                    style={{
+                      borderRadius: "28px 28px 32px 32px",
+                      clipPath: "polygon(0 0, 30% 0, 35% 15px, 65% 15px, 70% 0, 100% 0, 100% 100%, 0 100%)"
+                    }}
+                  >
+                    <div className="flex justify-between items-center text-[8px] font-mono text-neutral-500 uppercase tracking-widest">
+                      <span>GOOGLE_CAREER</span>
+                      <Award className="w-3.5 h-3.5 text-emerald-400" />
+                    </div>
+
+                    {/* Badge Graphic Centered */}
+                    <div className="flex justify-center my-1.5">
+                      <div className="w-16 h-16 rounded-xl border border-white/5 bg-white/5 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+                        <Award className="w-8 h-8 text-emerald-400" />
+                      </div>
+                    </div>
+
+                    <div className="text-center px-1 text-white">
+                      <h4 className="text-[12px] font-extrabold tracking-tight leading-tight uppercase font-heading">
+                        Data Analytics
+                      </h4>
+                      <p className="text-[7px] font-mono text-neutral-500 mt-0.5">ID: GOOG-42219</p>
+                    </div>
+
+                    <div className="pt-2 border-t border-white/5 flex justify-between items-center text-[8px]">
+                      <span className="text-neutral-500 font-mono">// GOOG_COMPLETION</span>
+                      <a
+                        href="https://www.credly.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="font-mono font-bold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider"
+                      >
+                        Verify Badge ↗
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })()}
           </div>
         </div>
       </div>
