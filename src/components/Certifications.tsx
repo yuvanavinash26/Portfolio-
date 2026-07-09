@@ -315,11 +315,12 @@ export default function Certifications() {
               const CARDS = [
                 {
                   id: 0,
-                  title: "Cloud Architect",
-                  issuer: "AWS_ACADEMY",
-                  credId: "AWS-99421",
-                  verifyLink: "https://www.credly.com/",
-                  bg: "bg-[#5B63E6]",
+                  title: "AI Fundamentals",
+                  issuer: "IBM_SKILLSBUILD",
+                  credId: "0e5e8b99-4149-4bfd-90d6-46517f8310e2",
+                  verifyLink: "https://www.credly.com/badges/0e5e8b99-4149-4bfd-90d6-46517f8310e2/public_url",
+                  badgeImage: "/badges/ibm-ai-fundamentals.png",
+                  bg: "bg-[#5B63E6]", // Royal Indigo/Blue (like top card in user's image)
                   textColor: "text-white",
                   iconColor: "text-orange-400",
                   dividerColor: "border-white/10",
@@ -327,77 +328,40 @@ export default function Certifications() {
                 },
                 {
                   id: 1,
-                  title: "AI Fundamentals",
-                  issuer: "IBM_SKILLSBUILD",
-                  credId: "0e5e8b99-4149-4bfd-90d6-46517f8310e2",
-                  verifyLink: "https://www.credly.com/badges/0e5e8b99-4149-4bfd-90d6-46517f8310e2/public_url",
-                  badgeImage: "/badges/ibm-ai-fundamentals.png",
-                  bg: "bg-[#0a0a0a]",
-                  textColor: "text-white",
-                  iconColor: "text-cyan-300",
-                  dividerColor: "border-white/10",
-                  labelColor: "text-white/60"
-                },
-                {
-                  id: 2,
                   title: "AI Foundations",
                   issuer: "IBM_SKILLSBUILD",
                   credId: "adddc707-ce87-4640-904e-69294554705d",
                   verifyLink: "https://www.credly.com/badges/adddc707-ce87-4640-904e-69294554705d/public_url",
                   badgeImage: "/badges/ibm-ai-foundations.png",
-                  bg: "bg-[#070709]",
-                  textColor: "text-white",
-                  iconColor: "text-cyan-300",
-                  dividerColor: "border-white/10",
-                  labelColor: "text-white/60"
-                },
-                {
-                  id: 3,
-                  title: "Craft Precise Prompts",
-                  issuer: "IBM_SKILLSBUILD",
-                  credId: "f974e13d-1821-4e12-923e-45bff6a89a1a",
-                  verifyLink: "https://www.credly.com/badges/f974e13d-1821-4e12-923e-45bff6a89a1a/public_url",
-                  badgeImage: "/badges/ibm-prompt-engineering.png",
-                  bg: "bg-[#090a0f]",
-                  textColor: "text-white",
-                  iconColor: "text-cyan-300",
-                  dividerColor: "border-white/10",
-                  labelColor: "text-white/60"
-                },
-                {
-                  id: 4,
-                  title: "Web Dev Fundamentals",
-                  issuer: "IBM_SKILLSBUILD",
-                  credId: "f59cb92a-5f76-4f3c-b651-9429320a6b15",
-                  verifyLink: "https://www.credly.com/badges/f59cb92a-5f76-4f3c-b651-9429320a6b15/public_url",
-                  badgeImage: "/badges/ibm-web-development-fundamentals.png",
-                  bg: "bg-[#050608]",
-                  textColor: "text-white",
-                  iconColor: "text-cyan-300",
-                  dividerColor: "border-white/10",
-                  labelColor: "text-white/60"
-                },
-                {
-                  id: 5,
-                  title: "Full-Stack Engineer",
-                  issuer: "META_COURSES",
-                  credId: "META-74921",
-                  verifyLink: "https://www.credly.com/",
-                  bg: "bg-[#ffffff]",
+                  bg: "bg-[#ffffff]", // Pristine White (like middle card in user's image)
                   textColor: "text-black",
                   iconColor: "text-blue-600",
                   dividerColor: "border-neutral-200",
                   labelColor: "text-neutral-500"
                 },
                 {
-                  id: 6,
-                  title: "Machine Learning",
-                  issuer: "STANFORD_ONLINE",
-                  credId: "STAN-58329",
-                  verifyLink: "https://www.credly.com/",
-                  bg: "bg-[#8c1515]",
+                  id: 2,
+                  title: "Craft Precise Prompts",
+                  issuer: "IBM_SKILLSBUILD",
+                  credId: "f974e13d-1821-4e12-923e-45bff6a89a1a",
+                  verifyLink: "https://www.credly.com/badges/f974e13d-1821-4e12-923e-45bff6a89a1a/public_url",
+                  badgeImage: "/badges/ibm-prompt-engineering.png",
+                  bg: "bg-[#db2777]", // Premium Deep Rose/Pink (matching prompt badge header)
                   textColor: "text-white",
-                  iconColor: "text-amber-400",
+                  iconColor: "text-pink-200",
+                  dividerColor: "border-white/20",
+                  labelColor: "text-white/60"
+                },
+                {
+                  id: 3,
+                  title: "Web Dev Fundamentals",
+                  issuer: "IBM_SKILLSBUILD",
+                  credId: "f59cb92a-5f76-4f3c-b651-9429320a6b15",
+                  verifyLink: "https://www.credly.com/badges/f59cb92a-5f76-4f3c-b651-9429320a6b15/public_url",
+                  badgeImage: "/badges/ibm-web-development-fundamentals.png",
+                  bg: "bg-[#0b0c10]", // Sleek Matte Black (like bottom pocket sleeve in user's image)
+                  textColor: "text-white",
+                  iconColor: "text-cyan-300",
                   dividerColor: "border-white/10",
                   labelColor: "text-white/60"
                 }
