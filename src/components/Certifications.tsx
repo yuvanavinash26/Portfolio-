@@ -450,7 +450,7 @@ export default function Certifications() {
                     );
                   })}
 
-                  {/* Pocket Cover Card: Black (Google) */}
+                  {/* Pocket Cover Card: Black Leather Instruction Sleeve */}
                   <div
                     className="absolute bottom-0 left-0 right-0 h-[210px] bg-[#0a0f1d] border border-white/5 p-5 flex items-center gap-4 z-10 shadow-[0_-15px_30px_rgba(0,0,0,0.85)]"
                     style={{
@@ -460,33 +460,29 @@ export default function Certifications() {
                   >
                     {/* Left Side: Large Icon Container */}
                     <div className="w-[110px] h-[110px] rounded-xl border border-white/5 bg-white/5 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
-                      <Award className="w-14 h-14 text-emerald-400" />
+                      <Layers className="w-14 h-14 text-cyan-400 animate-pulse" />
                     </div>
 
                     {/* Right Side: Details Column */}
                     <div className="flex-1 flex flex-col justify-between h-[110px] min-w-0 text-left text-white">
                       <div className="space-y-1">
                         <div className="flex items-center gap-1.5 text-[8px] font-mono text-neutral-500 uppercase tracking-widest">
-                          <span>GOOGLE_CAREER</span>
-                          <Award className="w-3 h-3 text-emerald-400 shrink-0" />
+                          <span>CREDENTIAL_WALLET</span>
+                          <Shield className="w-3 h-3 text-cyan-400 shrink-0" />
                         </div>
-                        <h4 className="text-[12px] md:text-[13px] font-extrabold tracking-tight leading-tight uppercase font-heading line-clamp-2">
-                          Data Analytics
+                        <h4 className="text-[13px] md:text-[14px] font-extrabold tracking-tight leading-tight uppercase font-heading">
+                          IBM Badges
                         </h4>
-                        <p className="text-[7px] font-mono text-neutral-500 font-semibold truncate">ID: GOOG-42219</p>
+                        <p className="text-[9px] font-mono text-cyan-400/90 font-bold uppercase mt-1">
+                          Hover & Click to See Next
+                        </p>
                       </div>
 
                       <div className="pt-2 border-t border-white/5 flex justify-between items-center text-[8px]">
-                        <span className="text-neutral-500 font-mono">// GOOG_COMPLETION</span>
-                        <a
-                        href="https://www.credly.com/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="font-mono font-bold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider"
-                      >
-                        Verify Badge ↗
-                      </a>
+                        <span className="text-neutral-500 font-mono">// PORTFOLIO_DECK</span>
+                        <span className="font-mono font-bold text-cyan-400 uppercase tracking-wider">
+                          Active Pouch
+                        </span>
                       </div>
                     </div>
                   </div>
