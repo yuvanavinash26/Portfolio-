@@ -497,6 +497,7 @@ export default function Certifications() {
                       >
                         Verify Badge ↗
                       </a>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
