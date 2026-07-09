@@ -84,41 +84,94 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
     drawImageRef.current = drawImage;
   });
 
-  // 1. Preload 160 Images on Mount (Guaranteed to execute exactly once)
+  // 1. Preload Images on Mount (Critical first 8 frames block loader; rest load progressively)
   useEffect(() => {
     let active = true;
     const loadedImages: HTMLImageElement[] = [];
-    let loadedCount = 0;
+    
+    // Allocate space in arrays
+    for (let i = 0; i < TOTAL_FRAMES; i++) {
+      loadedImages.push(null as any);
+    }
 
-    const checkLoadingComplete = () => {
-      loadedCount++;
-      const percent = (loadedCount / TOTAL_FRAMES) * 100;
-      onProgressRef.current(percent);
+    const CRITICAL_FRAMES = 8;
+    let criticalLoaded = 0;
+    let totalLoaded = 0;
 
-      if (loadedCount === TOTAL_FRAMES) {
-        if (active) {
-          setImages(loadedImages);
-          imagesRef.current = loadedImages;
+    const loadFrame = (index: number, isCritical: boolean) => {
+      const img = new Image();
+      const pad = String(index).padStart(3, "0");
 
-          // Draw the very first frame immediately
-          setTimeout(() => {
-            if (loadedImages[0]) {
-              drawImageRef.current(loadedImages[0]);
+      const onLoad = () => {
+        if (!active) return;
+        loadedImages[index] = img;
+
+        if (isCritical) {
+          criticalLoaded++;
+          const percent = (criticalLoaded / CRITICAL_FRAMES) * 100;
+          onProgressRef.current(percent);
+
+          if (criticalLoaded === CRITICAL_FRAMES) {
+            if (active) {
+              setImages([...loadedImages]);
+              imagesRef.current = loadedImages;
+              
+              // Draw the very first frame immediately
+              setTimeout(() => {
+                if (loadedImages[0]) {
+                  drawImageRef.current(loadedImages[0]);
+                }
+                onLoadingCompleteRef.current();
+                // Load remaining non-critical frames in the background
+                loadRemaining();
+              }, 150);
             }
-            onLoadingCompleteRef.current();
-          }, 300);
+          }
+        } else {
+          totalLoaded++;
+          // Periodically update the React state in chunks to avoid layout thrashing
+          if (totalLoaded % 10 === 0 || totalLoaded === (TOTAL_FRAMES - CRITICAL_FRAMES)) {
+            if (active) {
+              setImages([...loadedImages]);
+            }
+          }
         }
-      }
+      };
+
+      img.onload = onLoad;
+      img.onerror = onLoad; // Count failures to avoid gettting stuck
+      img.src = `/sequence/frame_${pad}_delay-0.063s.webp`;
     };
 
-    for (let i = 0; i < TOTAL_FRAMES; i++) {
-      const img = new Image();
-      const pad = String(i).padStart(3, "0");
-      img.src = `/sequence/frame_${pad}_delay-0.063s.webp`;
-      img.onload = checkLoadingComplete;
-      img.onerror = checkLoadingComplete;
-      loadedImages.push(img);
+    // Load critical frames first
+    for (let i = 0; i < CRITICAL_FRAMES; i++) {
+      loadFrame(i, true);
     }
+
+    const loadRemaining = () => {
+      let currentIdx = CRITICAL_FRAMES;
+      const CHUNK_SIZE = 4;
+
+      const loadNextChunk = () => {
+        if (!active) return;
+        const limit = Math.min(TOTAL_FRAMES, currentIdx + CHUNK_SIZE);
+        for (let i = currentIdx; i < limit; i++) {
+          loadFrame(i, false);
+        }
+        currentIdx = limit;
+        if (currentIdx < TOTAL_FRAMES) {
+          setTimeout(loadNextChunk, 30); // small delay to yield execution thread to browser
+        }
+      };
+
+      if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+        (window as any).requestIdleCallback(() => {
+          loadNextChunk();
+        });
+      } else {
+        setTimeout(loadNextChunk, 100);
+      }
+    };
 
     return () => {
       active = false;
