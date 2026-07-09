@@ -416,48 +416,45 @@ export default function Certifications() {
                           open: { y: openY, scale: openScale, rotate: openRotate, zIndex: openZIndex }
                         }}
                         transition={{ type: "spring", stiffness: 220, damping: 20 }}
-                        className={`absolute inset-x-4 h-[210px] rounded-2xl ${card.bg} border border-white/10 p-4 flex flex-col justify-between ${card.textColor} shadow-2xl`}
+                        className={`absolute inset-x-4 h-[210px] rounded-2xl ${card.bg} border border-white/10 p-5 flex items-center gap-4 ${card.textColor} shadow-2xl`}
                         style={{ pointerEvents: isWalletOpen && !isTop ? "none" : "auto" }}
                       >
-                        {/* 1. Brand Header */}
-                        <div className="flex justify-between items-center text-[8px] font-mono opacity-80 uppercase tracking-widest">
-                          <span>{card.issuer}</span>
-                          <Award className={`w-3.5 h-3.5 ${card.iconColor}`} />
+                        {/* Left Side: Large Badge Image */}
+                        <div className="w-[110px] h-[110px] rounded-xl border border-white/10 bg-white/5 flex items-center justify-center overflow-hidden shrink-0 shadow-inner p-1 bg-neutral-900/10">
+                          {card.badgeImage ? (
+                            <img src={card.badgeImage} alt={card.title} className="w-full h-full object-contain" />
+                          ) : (
+                            <Award className={`w-14 h-14 ${card.iconColor}`} />
+                          )}
                         </div>
-                        
-                        {/* 2. Badge Graphic Centered */}
-                        <div className="flex justify-center my-1.5">
-                          <div className="w-16 h-16 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
-                            {card.badgeImage ? (
-                              <img src={card.badgeImage} alt={card.title} className="w-full h-full object-cover" />
-                            ) : (
-                              <Award className={`w-8 h-8 ${card.iconColor}`} />
-                            )}
+
+                        {/* Right Side: Details Column */}
+                        <div className="flex-1 flex flex-col justify-between h-[110px] min-w-0 text-left">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-1.5 text-[8px] font-mono opacity-80 uppercase tracking-widest">
+                              <span className="truncate">{card.issuer}</span>
+                              <Award className={`w-3 h-3 ${card.iconColor} shrink-0`} />
+                            </div>
+                            <h4 className="text-[12px] md:text-[13px] font-extrabold tracking-tight leading-tight uppercase font-heading line-clamp-2">
+                              {card.title}
+                            </h4>
+                            <p className="text-[7px] font-mono opacity-65 font-semibold truncate">ID: {card.credId.length > 18 ? card.credId.substring(0, 18) + "..." : card.credId}</p>
                           </div>
-                        </div>
 
-                        {/* 3. Title & ID Centered */}
-                        <div className="text-center px-1">
-                          <h4 className="text-[12px] font-extrabold tracking-tight leading-tight uppercase font-heading">
-                            {card.title}
-                          </h4>
-                          <p className="text-[7px] font-mono opacity-65 mt-0.5 font-semibold">ID: {card.credId.length > 22 ? card.credId.substring(0, 22) + "..." : card.credId}</p>
-                        </div>
-
-                        {/* 4. Action Row */}
-                        <div className={`pt-2 border-t ${card.dividerColor} flex justify-between items-center text-[8px]`}>
-                          <span className="font-mono opacity-60">// SECURE_VERIFY</span>
-                          <a
-                            href={card.verifyLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => {
-                              e.stopPropagation(); // Stop parent click events from triggering a card cycle
-                            }}
-                            className={`font-mono font-bold hover:underline transition-colors uppercase tracking-wider ${card.textColor}`}
-                          >
-                            Verify Badge ↗
-                          </a>
+                          <div className={`pt-2 border-t ${card.dividerColor} flex justify-between items-center text-[8px]`}>
+                            <span className="font-mono opacity-60">// SECURE_VERIFY</span>
+                            <a
+                              href={card.verifyLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => {
+                                e.stopPropagation(); // Stop parent click events from triggering a card cycle
+                              }}
+                              className={`font-mono font-bold hover:underline transition-colors uppercase tracking-wider ${card.textColor}`}
+                            >
+                              Verify Badge ↗
+                            </a>
+                          </div>
                         </div>
                       </motion.div>
                     );
@@ -465,34 +462,33 @@ export default function Certifications() {
 
                   {/* Pocket Cover Card: Black (Google) */}
                   <div
-                    className="absolute bottom-0 left-0 right-0 h-[210px] bg-[#0a0f1d] border border-white/5 p-4 z-10 flex flex-col justify-between shadow-[0_-15px_30px_rgba(0,0,0,0.85)]"
+                    className="absolute bottom-0 left-0 right-0 h-[210px] bg-[#0a0f1d] border border-white/5 p-5 flex items-center gap-4 z-10 shadow-[0_-15px_30px_rgba(0,0,0,0.85)]"
                     style={{
                       borderRadius: "28px 28px 32px 32px",
                       clipPath: "polygon(0 0, 30% 0, 35% 15px, 65% 15px, 70% 0, 100% 0, 100% 100%, 0 100%)"
                     }}
                   >
-                    <div className="flex justify-between items-center text-[8px] font-mono text-neutral-500 uppercase tracking-widest">
-                      <span>GOOGLE_CAREER</span>
-                      <Award className="w-3.5 h-3.5 text-emerald-400" />
+                    {/* Left Side: Large Icon Container */}
+                    <div className="w-[110px] h-[110px] rounded-xl border border-white/5 bg-white/5 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+                      <Award className="w-14 h-14 text-emerald-400" />
                     </div>
 
-                    {/* Badge Graphic Centered */}
-                    <div className="flex justify-center my-1.5">
-                      <div className="w-16 h-16 rounded-xl border border-white/5 bg-white/5 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
-                        <Award className="w-8 h-8 text-emerald-400" />
+                    {/* Right Side: Details Column */}
+                    <div className="flex-1 flex flex-col justify-between h-[110px] min-w-0 text-left text-white">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1.5 text-[8px] font-mono text-neutral-500 uppercase tracking-widest">
+                          <span>GOOGLE_CAREER</span>
+                          <Award className="w-3 h-3 text-emerald-400 shrink-0" />
+                        </div>
+                        <h4 className="text-[12px] md:text-[13px] font-extrabold tracking-tight leading-tight uppercase font-heading line-clamp-2">
+                          Data Analytics
+                        </h4>
+                        <p className="text-[7px] font-mono text-neutral-500 font-semibold truncate">ID: GOOG-42219</p>
                       </div>
-                    </div>
 
-                    <div className="text-center px-1 text-white">
-                      <h4 className="text-[12px] font-extrabold tracking-tight leading-tight uppercase font-heading">
-                        Data Analytics
-                      </h4>
-                      <p className="text-[7px] font-mono text-neutral-500 mt-0.5">ID: GOOG-42219</p>
-                    </div>
-
-                    <div className="pt-2 border-t border-white/5 flex justify-between items-center text-[8px]">
-                      <span className="text-neutral-500 font-mono">// GOOG_COMPLETION</span>
-                      <a
+                      <div className="pt-2 border-t border-white/5 flex justify-between items-center text-[8px]">
+                        <span className="text-neutral-500 font-mono">// GOOG_COMPLETION</span>
+                        <a
                         href="https://www.credly.com/"
                         target="_blank"
                         rel="noopener noreferrer"
