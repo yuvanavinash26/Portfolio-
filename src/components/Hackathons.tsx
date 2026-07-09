@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence, useTransform } from "framer-motion";
-import { Terminal, ExternalLink, Activity, BookOpen, Zap, Cpu, Globe, Database, Play } from "lucide-react";
+import { Terminal, ExternalLink, Activity, BookOpen, Zap, Cpu, Globe, Database, Play, Shield } from "lucide-react";
 
 interface ProjectData {
   id: number;
@@ -122,6 +122,29 @@ const PROJECTS: ProjectData[] = [
     transition: "Knowledge particles connect into an expanding neural network.",
     icon: <Cpu className="w-5 h-5 text-fuchsia-400" />,
     link: "https://edumindai1.netlify.app/"
+  },
+  {
+    id: 6,
+    title: "SAFECIRCLE AI",
+    category: "AI Safety Ecosystem",
+    type: "Hackathon Project",
+    badge: "🏆 HACKATHON BUILD",
+    description: "SafeCircle AI is an AI-powered safety companion built during a 24-hour hackathon. It features voice-activated SOS alerts, AI panic/scream detection, real-time live location sharing, fake calls, and secure analytics.",
+    highlights: [
+      "AI Safe Route Recommendations",
+      "Real-time Live Location Sharing",
+      "Voice-Activated SOS Trigger",
+      "AI panic & scream detection",
+      "Fake Call Generator",
+      "Safety Analytics Dashboard",
+      "Interactive Live Maps (Leaflet)",
+      "Modern Glassmorphism UI"
+    ],
+    techStack: ["React", "TypeScript", "Tailwind CSS", "Node.js", "Express", "MongoDB", "Socket.io", "Leaflet", "Framer Motion"],
+    role: "Team Lead & Full-Stack Developer",
+    transition: "Safety radar sweeps outwards, forming a secure glassmorphic community protective mesh.",
+    icon: <Shield className="w-5 h-5 text-rose-400" />,
+    link: "https://safe-circle-mauve.vercel.app/"
   }
 ];
 
@@ -200,6 +223,16 @@ const JOURNEY_IMAGES = [
     src: "/project-15.jpg",
     title: "Final Deployment",
     caption: "Pushing code to production and celebrating team success."
+  },
+  {
+    src: "/project-16.png",
+    title: "SafeCircle AI SOS Dashboard",
+    caption: "SOS hub monitoring active dispatches, incident logs, and safety network scores."
+  },
+  {
+    src: "/project-17.png",
+    title: "SafeCircle AI Guardian Landing",
+    caption: "Personal AI safety companion landing page featuring neighborhood ratings."
   }
 ];
 
@@ -352,6 +385,73 @@ function DarkBidVisual() {
   );
 }
 
+function SafeCircleVisual() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center p-6 bg-rose-950/5">
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(244,63,94,0.03)_1px,transparent_1px)] bg-[size:16px_16px] rounded-xl" />
+      
+      {/* Safety Radar Scanner / Compass Grid */}
+      <div className="absolute w-36 h-36 md:w-44 md:h-44 rounded-full border border-rose-500/10 flex items-center justify-center">
+        <div className="absolute w-24 h-24 md:w-32 md:h-32 rounded-full border border-dashed border-rose-500/15 flex items-center justify-center">
+          <div className="absolute w-16 h-16 md:w-20 md:h-20 rounded-full border border-rose-500/20 flex items-center justify-center">
+            {/* Pulsing center node (User location) */}
+            <motion.div
+              animate={{ scale: [1, 2.2, 1], opacity: [0.8, 0, 0.8] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut" }}
+              className="absolute w-6 h-6 rounded-full bg-rose-500/30"
+            />
+            <div className="w-3.5 h-3.5 rounded-full bg-rose-500 border border-white shadow-[0_0_10px_rgba(244,63,94,0.6)] z-10" />
+          </div>
+        </div>
+        
+        {/* Radar Sweeper */}
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-rose-500/10 pointer-events-none origin-center"
+        />
+      </div>
+
+      {/* Interactive elements: live locations of contacts */}
+      <motion.div
+        animate={{ y: [-3, 3, -3] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-8 right-12 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"
+      />
+      <motion.div
+        animate={{ y: [3, -3, 3] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute bottom-8 left-16 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"
+      />
+      
+      {/* Route Path (SVG) */}
+      <svg viewBox="0 0 200 200" className="absolute w-full h-full text-emerald-400 opacity-40 z-0 pointer-events-none">
+        <motion.path
+          d="M 40 160 Q 90 100 120 70 T 170 30"
+          fill="transparent"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeDasharray="4,4"
+        />
+        <motion.path
+          d="M 40 160 Q 90 100 120 70 T 170 30"
+          fill="transparent"
+          stroke="#10b981"
+          strokeWidth="2"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </svg>
+
+      <div className="absolute bottom-3 left-4 right-4 flex justify-between items-center text-[8px] font-mono text-rose-400">
+        <span>RADAR_SCANNER: ACTIVE</span>
+        <span className="text-emerald-400 animate-pulse font-bold">● SAFE ROUTE ROUTED</span>
+      </div>
+    </div>
+  );
+}
+
 const renderVisualComponent = (title: string) => {
   switch (title) {
     case "CARESYNC AI":
@@ -364,30 +464,26 @@ const renderVisualComponent = (title: string) => {
       return <EcoGridVisual />;
     case "DARKBID":
       return <DarkBidVisual />;
+    case "SAFECIRCLE AI":
+      return <SafeCircleVisual />;
     default:
       return null;
   }
 };
 
 function RailCard({ img }: { img: { src: string; title: string; caption: string } }) {
-  const [hovered, setHovered] = useState(false);
   return (
     <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       style={{
         flexShrink: 0,
         width: 440,
         height: 285,
         borderRadius: 18,
         overflow: "hidden",
-        border: hovered ? "1.5px solid rgba(6,182,212,0.7)" : "1.5px solid rgba(255,255,255,0.08)",
-        boxShadow: hovered
-          ? "0 0 0 2px rgba(6,182,212,0.25), 0 14px 50px rgba(6,182,212,0.22)"
-          : "0 6px 36px rgba(0,0,0,0.65)",
+        border: "1.5px solid rgba(255,255,255,0.08)",
+        boxShadow: "0 6px 36px rgba(0,0,0,0.65)",
         position: "relative",
-        transform: hovered ? "scale(1.04) translateY(-5px)" : "scale(1)",
-        transition: "all 0.32s cubic-bezier(0.22,1,0.36,1)",
+        transform: "scale(1)",
       }}
     >
       <img
@@ -397,8 +493,7 @@ function RailCard({ img }: { img: { src: string; title: string; caption: string 
           width: "100%", height: "100%",
           objectFit: "cover",
           display: "block",
-          transform: hovered ? "scale(1.08)" : "scale(1)",
-          transition: "transform 0.5s cubic-bezier(0.22,1,0.36,1)",
+          transform: "scale(1)",
         }}
         onError={(e) => {
           const el = e.currentTarget.parentElement;
@@ -438,16 +533,10 @@ export default function Hackathons() {
   const [railHoverL, setRailHoverL] = useState(false);
   const [railHoverR, setRailHoverR] = useState(false);
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    let step = 0;
-    if (latest < 0.143) step = 0;
-    else if (latest < 0.286) step = 1;
-    else if (latest < 0.429) step = 2;
-    else if (latest < 0.572) step = 3;
-    else if (latest < 0.715) step = 4;
-    else if (latest < 0.858) step = 5;
-    else step = 6; // Outro Orbit
+  const totalSteps = PROJECTS.length + 2;
 
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const step = Math.min(Math.floor(latest * totalSteps), totalSteps - 1);
     if (step !== activeStep) {
       setActiveStep(step);
     }
@@ -457,8 +546,8 @@ export default function Hackathons() {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const offsetPercent = [0.05, 0.20, 0.34, 0.48, 0.62, 0.76, 0.92];
-    const targetScroll = scrollTop + rect.top + (offsetPercent[stepIndex] * rect.height);
+    const offsetPercent = 0.05 + (stepIndex / (totalSteps - 1)) * 0.87;
+    const targetScroll = scrollTop + rect.top + (offsetPercent * rect.height);
     window.scrollTo({ top: targetScroll, behavior: "smooth" });
   };
 
@@ -469,7 +558,7 @@ export default function Hackathons() {
     railOffsetRef.current = RAIL_TOTAL;
     const tick = () => {
       if (!railPausedRef.current) {
-        railOffsetRef.current += 3.5;
+        railOffsetRef.current += 5.5; // Increased speed for smoother and faster scrolling
         if (railOffsetRef.current >= RAIL_TOTAL * 2) railOffsetRef.current -= RAIL_TOTAL;
         if (railOffsetRef.current < RAIL_TOTAL) railOffsetRef.current += RAIL_TOTAL;
         if (railTrackRef.current) {
@@ -491,7 +580,7 @@ export default function Hackathons() {
     }
   };
 
-  const activeProject = activeStep >= 1 && activeStep <= 5 ? PROJECTS[activeStep - 1] : null;
+  const activeProject = activeStep >= 1 && activeStep <= PROJECTS.length ? PROJECTS[activeStep - 1] : null;
 
   const activeColorClass =
     activeStep === 1 ? "text-cyan-400" :
@@ -499,13 +588,15 @@ export default function Hackathons() {
         activeStep === 3 ? "text-amber-400" :
           activeStep === 4 ? "text-indigo-400" :
             activeStep === 5 ? "text-fuchsia-400" :
-              "text-neutral-600";
+              activeStep === 6 ? "text-rose-400" :
+                "text-neutral-600";
 
   return (
     <section
       id="hackathons"
       ref={containerRef}
-      className="relative bg-transparent h-[800vh] w-full z-20 border-t border-white/5"
+      className="relative bg-transparent w-full z-20 border-t border-white/5"
+      style={{ height: `${(PROJECTS.length + 3) * 100}vh` }}
     >
       <style dangerouslySetInnerHTML={{
         __html: `
@@ -555,10 +646,10 @@ export default function Hackathons() {
             className="absolute inset-0 transition-opacity duration-1000"
             style={{ opacity: activeStep === 5 ? 1 : 0, background: "linear-gradient(to bottom, #170116, #40073e, #170116)" }}
           />
-          {/* Step 6: Project Journey */}
+          {/* Step 6: SafeCircle AI — deep rose/crimson security tone */}
           <div
             className="absolute inset-0 transition-opacity duration-1000"
-            style={{ opacity: activeStep === 6 ? 1 : 0, background: "linear-gradient(to bottom, #010410, #0c1a40, #010410)" }}
+            style={{ opacity: activeStep === 6 ? 1 : 0, background: "linear-gradient(to bottom, #1a0208, #3b0514, #1a0208)" }}
           />
           {/* Step 7: Outro Orbit — deep navy */}
           <div
@@ -705,8 +796,6 @@ export default function Hackathons() {
                 {/* ── Photo Rail — strip above, arrows below ── */}
                 <div
                   style={{ width: "calc(100% + 3rem)", marginLeft: "-1.5rem", marginTop: 8 }}
-                  onMouseEnter={() => { railPausedRef.current = true; }}
-                  onMouseLeave={() => { railPausedRef.current = false; }}
                 >
                   {/* Scrolling strip */}
                   <div style={{
@@ -754,8 +843,8 @@ export default function Hackathons() {
               </motion.div>
             )}
 
-            {/* Steps 1-5: Product Presentation */}
-            {activeStep >= 1 && activeStep <= 5 && activeProject && (
+            {/* Steps 1 to PROJECTS.length: Product Presentation */}
+            {activeStep >= 1 && activeStep <= PROJECTS.length && activeProject && (
               <motion.div
                 key={`project-${activeStep}`}
                 initial={{ opacity: 0 }}
@@ -895,8 +984,8 @@ export default function Hackathons() {
               </motion.div>
             )}
 
-            {/* Step 6: Outro Orbit */}
-            {activeStep === 6 && (
+            {/* Step PROJECTS.length + 1: Outro Orbit */}
+            {activeStep === PROJECTS.length + 1 && (
               <motion.div
                 key="outro"
                 initial={{ opacity: 0 }}
@@ -922,7 +1011,7 @@ export default function Hackathons() {
                     className="relative w-full h-full flex items-center justify-center"
                   >
                     {PROJECTS.map((p, idx) => {
-                      const angle = (idx * 360) / 5;
+                      const angle = (idx * 360) / PROJECTS.length;
                       const radius = 140; // distance from center in px
                       return (
                         <div
@@ -975,7 +1064,7 @@ export default function Hackathons() {
         {/* Dynamic Progress Indicator Dots / Step Buttons */}
         <div className="flex justify-between items-center text-[9px] font-mono text-neutral-500 uppercase border-t border-white/5 pt-3 z-10">
           <div className="flex gap-2.5 items-center">
-            {Array.from({ length: 7 }).map((_, idx) => (
+            {Array.from({ length: PROJECTS.length + 2 }).map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => scrollToStep(idx)}
@@ -991,7 +1080,7 @@ export default function Hackathons() {
             ))}
           </div>
           <div>
-            <span>SYSTEM STATE: {activeStep === 6 ? "COMPLETE" : `STEP_0${activeStep}`}</span>
+            <span>SYSTEM STATE: {activeStep === PROJECTS.length + 1 ? "COMPLETE" : `STEP_0${activeStep}`}</span>
           </div>
         </div>
 

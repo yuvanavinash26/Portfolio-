@@ -50,7 +50,8 @@ My goal is to construct software that automates workflows and solves real-world 
   1. CARESYNC AI        - AI healthcare intelligence & hospital digital twins (Next.js, React, APIs)
   2. EcoGrid            - Smart energy & water consumption analytics dashboard (Python, Flask)
   3. Skill Gap Navigator - AI career roadmap recommendation engine (Web Dev, AI APIs)
-  4. Portfolio Website  - Responsive scrollytelling visual portfolio (Next.js, Framer Motion)`;
+  4. SafeCircle AI      - AI safety companion & emergency SOS network (React, Socket.io, Node.js)
+  5. Portfolio Website  - Responsive scrollytelling visual portfolio (Next.js, Framer Motion)`;
     } else if (trimmed === "startup") {
       reply = `Future Startup Vision:
   "To build highly impactful technology products and launch software startups that automate operations, optimize logistics, and solve meaningful problems at scale."`;

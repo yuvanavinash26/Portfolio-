@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, ExternalLink, Terminal, HeartPulse, Leaf, Compass, AppWindow } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, Terminal, HeartPulse, Leaf, Compass, AppWindow, Shield } from "lucide-react";
 
 interface Project {
   id: number;
@@ -43,6 +43,15 @@ const PROJECTS: Project[] = [
   },
   {
     id: 4,
+    title: "SafeCircle AI",
+    category: "AI Safety Ecosystem",
+    description: "An AI-powered safety platform featuring voice-activated SOS, real-time live location sharing, AI panic detection, fake calls, and secure analytics.",
+    tags: ["React", "TypeScript", "Tailwind CSS", "Node.js", "Express", "Socket.io"],
+    link: "https://safe-circle-mauve.vercel.app/",
+    icon: <Shield className="w-5 h-5 text-blue-400" />
+  },
+  {
+    id: 5,
     title: "Portfolio Website",
     category: "Interactive Scrollytelling",
     description: "A futuristic personal portfolio demonstrating advanced UI/UX design, interactive experiences, and modern web technologies.",
@@ -68,6 +77,8 @@ const JOURNEY_IMAGES = [
   "/project-13.jpg",
   "/project-14.jpg",
   "/project-15.jpg",
+  "/project-16.png",
+  "/project-17.png",
 ];
 
 // ─── Photo Rail ────────────────────────────────────────────────────────────────
