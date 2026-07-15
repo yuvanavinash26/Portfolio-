@@ -89,12 +89,15 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
     let active = true;
     const loadedImages: HTMLImageElement[] = [];
     
+    const isMobileDevice = typeof window !== "undefined" && window.innerWidth < 768;
+    const framesToLoad = isMobileDevice ? 1 : TOTAL_FRAMES;
+    const criticalFrames = isMobileDevice ? 1 : 8;
+
     // Allocate space in arrays
-    for (let i = 0; i < TOTAL_FRAMES; i++) {
+    for (let i = 0; i < framesToLoad; i++) {
       loadedImages.push(null as any);
     }
 
-    const CRITICAL_FRAMES = 8;
     let criticalLoaded = 0;
     let totalLoaded = 0;
 
@@ -108,10 +111,10 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
 
         if (isCritical) {
           criticalLoaded++;
-          const percent = (criticalLoaded / CRITICAL_FRAMES) * 100;
+          const percent = (criticalLoaded / criticalFrames) * 100;
           onProgressRef.current(percent);
 
-          if (criticalLoaded === CRITICAL_FRAMES) {
+          if (criticalLoaded === criticalFrames) {
             if (active) {
               setImages([...loadedImages]);
               imagesRef.current = loadedImages;
@@ -122,15 +125,17 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
                   drawImageRef.current(loadedImages[0]);
                 }
                 onLoadingCompleteRef.current();
-                // Load remaining non-critical frames in the background
-                loadRemaining();
+                if (!isMobileDevice) {
+                  // Load remaining non-critical frames in the background
+                  loadRemaining();
+                }
               }, 150);
             }
           }
         } else {
           totalLoaded++;
           // Periodically update the React state in chunks to avoid layout thrashing
-          if (totalLoaded % 10 === 0 || totalLoaded === (TOTAL_FRAMES - CRITICAL_FRAMES)) {
+          if (totalLoaded % 10 === 0 || totalLoaded === (framesToLoad - criticalFrames)) {
             if (active) {
               setImages([...loadedImages]);
             }
@@ -144,22 +149,22 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
     };
 
     // Load critical frames first
-    for (let i = 0; i < CRITICAL_FRAMES; i++) {
+    for (let i = 0; i < criticalFrames; i++) {
       loadFrame(i, true);
     }
 
     const loadRemaining = () => {
-      let currentIdx = CRITICAL_FRAMES;
+      let currentIdx = criticalFrames;
       const CHUNK_SIZE = 4;
 
       const loadNextChunk = () => {
         if (!active) return;
-        const limit = Math.min(TOTAL_FRAMES, currentIdx + CHUNK_SIZE);
+        const limit = Math.min(framesToLoad, currentIdx + CHUNK_SIZE);
         for (let i = currentIdx; i < limit; i++) {
           loadFrame(i, false);
         }
         currentIdx = limit;
-        if (currentIdx < TOTAL_FRAMES) {
+        if (currentIdx < framesToLoad) {
           setTimeout(loadNextChunk, 30); // small delay to yield execution thread to browser
         }
       };
@@ -185,7 +190,8 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
       const canvas = canvasRef.current;
       if (!canvas) return;
 
-      const dpr = window.devicePixelRatio || 1;
+      const isMobileDevice = window.innerWidth < 768;
+      const dpr = isMobileDevice ? 1 : (window.devicePixelRatio || 1);
       const rect = canvas.getBoundingClientRect();
 
       canvas.width = rect.width * dpr;
@@ -213,7 +219,7 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
       if ((window as unknown as { isNavigating: boolean }).isNavigating) return;
 
       const imgs = imagesRef.current;
-      if (imgs.length === 0) return;
+      if (imgs.length <= 1) return;
 
       const frameIndex = Math.floor(progress * (imgs.length - 1));
       const clampedIndex = Math.max(0, Math.min(imgs.length - 1, frameIndex));
@@ -231,7 +237,7 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
     const handleNavComplete = () => {
       const progress = smoothProgress.get();
       const imgs = imagesRef.current;
-      if (imgs.length === 0) return;
+      if (imgs.length <= 1) return;
 
       const frameIndex = Math.floor(progress * (imgs.length - 1));
       const clampedIndex = Math.max(0, Math.min(imgs.length - 1, frameIndex));

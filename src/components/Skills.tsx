@@ -7,11 +7,8 @@ import {
   Layers,
   Database,
   Layout,
-  Settings,
   GitBranch,
   Cpu,
-  Compass,
-  Wrench,
   BookOpen,
   Activity,
   Award,
@@ -133,47 +130,9 @@ function UILayers() {
   );
 }
 
-// Card 04: Automation Systems - Rotating Gears & Connections
-function AutomationGears() {
-  return (
-    <div className="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-500 flex items-center justify-center pointer-events-none">
-      <div className="relative w-28 h-28 flex items-center justify-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          className="absolute left-4 top-4"
-        >
-          <Settings className="w-12 h-12 text-cyan-400" />
-        </motion.div>
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-          className="absolute right-4 bottom-4"
-        >
-          <Settings className="w-8 h-8 text-blue-400" />
-        </motion.div>
-      </div>
-    </div>
-  );
-}
 
-// Card 05: Cloud & DevOps - Orbiting Nodes
-function CloudOrbit() {
-  return (
-    <div className="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-500 flex items-center justify-center pointer-events-none">
-      <div className="relative w-28 h-28 flex items-center justify-center">
-        <Compass className="w-10 h-10 text-cyan-400 animate-pulse absolute" />
-        <motion.div
-          className="w-20 h-20 border border-dashed border-blue-500/35 rounded-full absolute"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-        >
-          <div className="w-2.5 h-2.5 rounded-full bg-indigo-500 absolute -top-1.5 left-1/2 -translate-x-1/2" />
-        </motion.div>
-      </div>
-    </div>
-  );
-}
+
+
 
 // Card 06: Database Systems - Node Network
 function NodeNetwork() {
@@ -245,31 +204,7 @@ function IoTSignals() {
   );
 }
 
-// Card 08: Developer Toolkit Floating Rotating Icons
-function FloatingIcons() {
-  return (
-    <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none flex items-center justify-around px-8">
-      <motion.div
-        animate={{ y: [0, -12, 0], rotate: [0, 180, 360] }}
-        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <Terminal className="w-7 h-7 text-blue-400" />
-      </motion.div>
-      <motion.div
-        animate={{ y: [0, 12, 0], rotate: [360, 180, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-      >
-        <Wrench className="w-7 h-7 text-cyan-400" />
-      </motion.div>
-      <motion.div
-        animate={{ y: [-6, 6, -6], rotate: [0, -180, -360] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-      >
-        <BookOpen className="w-7 h-7 text-indigo-400" />
-      </motion.div>
-    </div>
-  );
-}
+
 
 // ================= MUZLI-STYLE FLOATING TECH STACK BUBBLE CLUSTER =================
 
@@ -566,7 +501,7 @@ interface SkillCardData {
   hoverElement: React.ReactNode;
 }
 
-const LANE_1_CARDS: SkillCardData[] = [
+const SKILL_CARDS: SkillCardData[] = [
   {
     title: "Full-Stack Development",
     icon: <Terminal className="w-6 h-6 text-blue-400" />,
@@ -589,23 +524,6 @@ const LANE_1_CARDS: SkillCardData[] = [
     hoverElement: <UILayers />
   },
   {
-    title: "Automation Systems",
-    icon: <Settings className="w-6 h-6 text-blue-400" />,
-    description: "Writing scripts to eliminate repetitive operations, fetch bulk datasets, and build efficient pipelines.",
-    tags: ["Python", "Bash", "RPA", "Scraping"],
-    hoverElement: <AutomationGears />
-  }
-];
-
-const LANE_2_CARDS: SkillCardData[] = [
-  {
-    title: "Cloud & DevOps",
-    icon: <Compass className="w-6 h-6 text-cyan-400" />,
-    description: "Deploying production builds, configuring virtualized environments, and managing web hosts.",
-    tags: ["AWS", "Docker", "Vercel", "Netlify", "CI/CD"],
-    hoverElement: <CloudOrbit />
-  },
-  {
     title: "Database Systems",
     icon: <GitBranch className="w-6 h-6 text-indigo-400" />,
     description: "Modeling data relationships, composing search commands, and keeping records safe and secure.",
@@ -618,13 +536,6 @@ const LANE_2_CARDS: SkillCardData[] = [
     description: "Interfacing physical circuitry with web servers, fetching sensor data, and programming controllers.",
     tags: ["Arduino", "Raspberry Pi", "Hardware", "Sensors"],
     hoverElement: <IoTSignals />
-  },
-  {
-    title: "Developer Toolkit",
-    icon: <Wrench className="w-6 h-6 text-cyan-400" />,
-    description: "Utilizing professional setups, executing diagnostic scripts, and using collaborative systems.",
-    tags: ["Git", "GitHub", "VS Code", "Postman", "NPM"],
-    hoverElement: <FloatingIcons />
   }
 ];
 
@@ -801,29 +712,14 @@ export default function Skills() {
 
       {/* Sliding Marquee Card Lanes (Horizontal Sliders to optimize space) */}
       <div className="marquee-parent flex flex-col gap-6 w-full select-none mb-24 relative z-20">
-        {/* Lane 1: Sliding Left */}
+        {/* Single Lane: Sliding Left */}
         <div className="overflow-hidden flex w-full relative">
           <div className="animate-marquee-left py-4">
-            {LANE_1_CARDS.map((card, idx) => (
-              <SkillCard key={`lane1-${idx}`} card={card} />
+            {SKILL_CARDS.map((card, idx) => (
+              <SkillCard key={`skill-${idx}`} card={card} />
             ))}
-            {LANE_1_CARDS.map((card, idx) => (
-              <SkillCard key={`lane1-dup-${idx}`} card={card} />
-            ))}
-          </div>
-          {/* Edge Fades for Cinematic Depth */}
-          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black to-transparent pointer-events-none z-15" />
-          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black to-transparent pointer-events-none z-15" />
-        </div>
-
-        {/* Lane 2: Sliding Right */}
-        <div className="overflow-hidden flex w-full relative">
-          <div className="animate-marquee-right py-4">
-            {LANE_2_CARDS.map((card, idx) => (
-              <SkillCard key={`lane2-${idx}`} card={card} />
-            ))}
-            {LANE_2_CARDS.map((card, idx) => (
-              <SkillCard key={`lane2-dup-${idx}`} card={card} />
+            {SKILL_CARDS.map((card, idx) => (
+              <SkillCard key={`skill-dup-${idx}`} card={card} />
             ))}
           </div>
           {/* Edge Fades for Cinematic Depth */}
@@ -886,7 +782,7 @@ export default function Skills() {
                 
                 <div className="mt-4 flex items-end justify-between gap-3 z-10">
                   <div>
-                    <AnimatedCounter target={20} suffixClass="text-cyan-400" />
+                    <AnimatedCounter target={10} suffixClass="text-cyan-400" />
                     <span className="text-xs font-sans font-semibold text-neutral-400 group-hover:text-neutral-200 transition-colors block tracking-wide mt-1.5">Projects Built</span>
                   </div>
                   <button

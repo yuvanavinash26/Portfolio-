@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion, MotionValue, useTransform } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 
@@ -8,20 +9,28 @@ interface OverlayProps {
 }
 
 export default function Overlay({ scrollYProgress }: OverlayProps) {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
   // Section 1: Center Aligned (Scroll range 0% - 28%)
   const opacity1 = useTransform(scrollYProgress, [0, 0.20, 0.28], [1, 1, 0]);
   const y1 = useTransform(scrollYProgress, [0, 0.28], [0, -100]);
-  const blur1 = useTransform(scrollYProgress, [0, 0.20, 0.28], ["blur(0px)", "blur(0px)", "blur(12px)"]);
+  const blurVal1 = useTransform(scrollYProgress, [0, 0.20, 0.28], ["blur(0px)", "blur(0px)", "blur(12px)"]);
+  const blur1 = isMobile ? "none" : blurVal1;
 
   // Section 2: Left Aligned (Scroll range 25% - 62%)
   const opacity2 = useTransform(scrollYProgress, [0.25, 0.35, 0.55, 0.62], [0, 1, 1, 0]);
   const y2 = useTransform(scrollYProgress, [0.25, 0.35, 0.55, 0.62], [60, 0, 0, -60]);
-  const blur2 = useTransform(scrollYProgress, [0.25, 0.35, 0.55, 0.62], ["blur(12px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
+  const blurVal2 = useTransform(scrollYProgress, [0.25, 0.35, 0.55, 0.62], ["blur(12px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
+  const blur2 = isMobile ? "none" : blurVal2;
 
   // Section 3: Right Aligned (Scroll range 58% - 95%)
   const opacity3 = useTransform(scrollYProgress, [0.58, 0.68, 0.88, 0.95], [0, 1, 1, 0]);
   const y3 = useTransform(scrollYProgress, [0.58, 0.68, 0.88, 0.95], [60, 0, 0, -60]);
-  const blur3 = useTransform(scrollYProgress, [0.58, 0.68, 0.88, 0.95], ["blur(12px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
+  const blurVal3 = useTransform(scrollYProgress, [0.58, 0.68, 0.88, 0.95], ["blur(12px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
+  const blur3 = isMobile ? "none" : blurVal3;
 
   // Scroll Indicator (Scroll range 0% - 10%)
   const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);

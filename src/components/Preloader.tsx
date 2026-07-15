@@ -124,14 +124,19 @@ export default function Preloader({ progress, isLoading }: PreloaderProps) {
     return () => clearInterval(interval);
   }, [isLoading]);
 
-  // Generate matrix rain columns
-  const matrixCols = useRef(
-    Array.from({ length: 25 }, (_, i) => ({
+  // Generate matrix rain columns dynamically after mount to prevent hydration mismatch and optimize for mobile
+  const [matrixCols, setMatrixCols] = useState<{ delay: number; left: string; speed: number }[]>([]);
+
+  useEffect(() => {
+    const isMobileDevice = typeof window !== "undefined" && window.innerWidth < 768;
+    const count = isMobileDevice ? 8 : 25;
+    const cols = Array.from({ length: count }, (_, i) => ({
       delay: Math.random() * 4,
-      left: `${(i / 25) * 100}%`,
+      left: `${(i / count) * 100}%`,
       speed: 3 + Math.random() * 5,
-    }))
-  );
+    }));
+    setMatrixCols(cols);
+  }, []);
 
   return (
     <AnimatePresence>
@@ -160,9 +165,8 @@ export default function Preloader({ progress, isLoading }: PreloaderProps) {
             </div>
           )}
 
-          {/* Matrix rain background */}
           <div className="absolute inset-0 z-0 overflow-hidden opacity-40">
-            {matrixCols.current.map((col, i) => (
+            {matrixCols.map((col, i) => (
               <MatrixColumn key={i} {...col} />
             ))}
           </div>

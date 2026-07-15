@@ -21,7 +21,12 @@ export default function AboutMe() {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [autoFlipped, setAutoFlipped] = useState(false);
 
+  const [isMobile, setIsMobile] = useState(false);
   const inView = useInView(containerRef, { once: false, amount: 0.15 });
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   useEffect(() => {
     let timerStart: NodeJS.Timeout;
@@ -199,7 +204,7 @@ export default function AboutMe() {
                 ))}
 
                 {/* Crackling Wire Spark particles along the wire */}
-                {inView && [...Array(5)].map((_, i) => (
+                {inView && !isMobile && [...Array(5)].map((_, i) => (
                   <motion.div
                     key={`wire-spark-${i}`}
                     className="absolute w-1 h-1 bg-cyan-300 rounded-full"
@@ -287,7 +292,7 @@ export default function AboutMe() {
               </svg>
 
               {/* Electric Sparks around trigger clip connection */}
-              {inView && (
+              {inView && !isMobile && (
                 <div className="absolute top-[115px] w-16 h-16 pointer-events-none z-40 flex items-center justify-center">
                   {[...Array(6)].map((_, i) => (
                     <motion.div
