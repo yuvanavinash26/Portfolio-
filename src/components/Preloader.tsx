@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Sparkles } from "lucide-react";
 
 interface PreloaderProps {
@@ -43,7 +43,7 @@ export default function Preloader({ progress: externalProgress, isLoading }: Pre
 
   const welcomeWords = ["Welcome", "to", "My", "Portfolio"];
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -54,7 +54,7 @@ export default function Preloader({ progress: externalProgress, isLoading }: Pre
     },
   };
 
-  const wordVariants = {
+  const wordVariants: Variants = {
     hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
     visible: {
       opacity: 1,
@@ -62,7 +62,7 @@ export default function Preloader({ progress: externalProgress, isLoading }: Pre
       filter: "blur(0px)",
       transition: {
         duration: 0.7,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as const,
       },
     },
   };
@@ -76,7 +76,7 @@ export default function Preloader({ progress: externalProgress, isLoading }: Pre
             opacity: 0,
             scale: 1.04,
             filter: "blur(12px)",
-            transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1] }
+            transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1] as const }
           }}
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black overflow-hidden select-none"
         >
