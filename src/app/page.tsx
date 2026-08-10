@@ -45,7 +45,7 @@ export default function Home() {
     const timer = setTimeout(() => {
       timerReady.current = true;
       tryDismiss();
-    }, 1000);
+    }, 3500);
     return () => clearTimeout(timer);
   }, [tryDismiss]);
 
