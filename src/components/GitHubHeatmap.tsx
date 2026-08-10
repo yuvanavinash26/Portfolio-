@@ -1,27 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { GitPullRequest, GitFork, GitCommit, BookOpen, ExternalLink } from "lucide-react";
+import { GitPullRequest, GitFork, GitCommit, BookOpen } from "lucide-react";
 
 interface Repo {
   name: string;
   html_url: string;
   created_at: string;
   language: string | null;
-}
-
-interface ContributionCell {
-  date: string;
-  count: number;
-  level: number;
-  isCurrentYear: boolean;
-  dayOfWeek: number;
-  month: number;
-}
-
-interface MonthLabel {
-  label: string;
-  colIndex: number;
 }
 
 interface CommitActivity {
@@ -41,7 +27,6 @@ export default function GitHubHeatmap() {
   const [selectedYear, setSelectedYear] = useState<number>(2026);
   const [showAllActivity, setShowAllActivity] = useState<boolean>(false);
   const PREVIEW_COUNT = 2;
-  const [tooltip, setTooltip] = useState<string | null>(null);
   
   const [totalCommits, setTotalCommits] = useState<number>(40);
   const [publicRepos, setPublicRepos] = useState<number>(11);
@@ -118,40 +103,6 @@ export default function GitHubHeatmap() {
   }, []);
 
   const yearContributions = allContributions.filter(c => c.date.startsWith(selectedYear.toString()));
-  const yearContributionsTotal = yearContributions.reduce((acc, curr) => acc + curr.count, 0);
-
-  const { cells, monthLabels } = (() => {
-    const contribMap = new Map(yearContributions.map(c => [c.date, c]));
-    const startDate = new Date(selectedYear, 0, 1);
-    const startDayOfWeek = startDate.getDay();
-    const gridStart = new Date(startDate);
-    gridStart.setDate(startDate.getDate() - startDayOfWeek);
-
-    const cellsList: ContributionCell[] = [];
-    const labelsList: MonthLabel[] = [];
-    let currentMonth = -1;
-
-    for (let i = 0; i < 371; i++) {
-      const d = new Date(gridStart);
-      d.setDate(gridStart.getDate() + i);
-      const dateStr = d.toISOString().split("T")[0];
-      const isCurrentYear = d.getFullYear() === selectedYear;
-      const info = contribMap.get(dateStr);
-      const count = isCurrentYear && info ? info.count : 0;
-      const level = isCurrentYear && info ? info.level : 0;
-
-      cellsList.push({ date: dateStr, count, level, isCurrentYear, dayOfWeek: d.getDay(), month: d.getMonth() });
-
-      if (i % 7 === 0 && isCurrentYear) {
-        const m = d.getMonth();
-        if (m !== currentMonth) {
-          labelsList.push({ label: d.toLocaleDateString("en-US", { month: "short" }), colIndex: Math.floor(i / 7) });
-          currentMonth = m;
-        }
-      }
-    }
-    return { cells: cellsList, monthLabels: labelsList };
-  })();
 
   const timelineActivities = (() => {
     if (selectedYear === 2025) {
@@ -244,112 +195,29 @@ export default function GitHubHeatmap() {
           Contributions <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Heatmap</span>
         </h2>
 
-        {/* Outer Flex Container for Heatmap + Year Picker */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-
-          {/* Main GitHub styled grid block */}
-          <div className="flex-1 bg-[#0d1117] border border-[#30363d] rounded-xl p-4 relative overflow-hidden">
-
-            {/* Heatmap header */}
-            <div className="flex items-center mb-4 border-b border-[#21262d] pb-2">
-              <span className="text-sm font-normal text-[#f0f6fc]">
-                <span className="font-semibold text-white">{yearContributionsTotal} contributions</span> in {selectedYear}
-              </span>
-            </div>
-
-            {/* Scrollable grid container */}
-            <div className="relative">
-              <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#30363d] scrollbar-track-transparent">
-                <div className="min-w-[720px] flex flex-col gap-1 select-none">
-
-                  {/* Month headers row */}
-                  <div className="flex text-[9px] text-[#8b949e] h-4 relative mb-1 font-mono">
-                    {monthLabels.map((ml, idx) => (
-                      <span key={idx} className="absolute transition-all duration-300" style={{ left: `${25 + ml.colIndex * 13}px` }}>
-                        {ml.label}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Day labels + Heatmap columns */}
-                  <div className="flex gap-[3px]">
-                    <div className="flex flex-col justify-between text-[9px] text-[#8b949e] pr-2 h-[82px] py-1 select-none font-mono">
-                      <span>Mon</span>
-                      <span>Wed</span>
-                      <span>Fri</span>
-                    </div>
-
-                    {/* Matrix of days */}
-                    <div className="grid grid-flow-col grid-rows-7 gap-[3px] flex-grow">
-                      {cells.map((cell, idx) => {
-                        let bg = "bg-[#161b22] border border-[#21262d]";
-                        if (cell.level === 1) bg = "bg-[#0e4429] border border-[#1b432e]";
-                        if (cell.level === 2) bg = "bg-[#006d32] border border-[#0b532f]";
-                        if (cell.level === 3) bg = "bg-[#26a641] border border-[#2d8d47]";
-                        if (cell.level === 4) bg = "bg-[#39d353] border border-[#4be065]";
-                        if (!cell.isCurrentYear) bg = "bg-transparent border-transparent pointer-events-none";
-
-                        return (
-                          <div
-                            key={idx}
-                            className={`w-[10px] h-[10px] rounded-[2px] transition-colors duration-150 cursor-pointer ${bg} hover:ring-1 hover:ring-white/20`}
-                            onMouseEnter={() => {
-                              if (cell.isCurrentYear) {
-                                const formattedDate = new Date(cell.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-                                setTooltip(`${cell.count === 0 ? "No" : cell.count} contributions on ${formattedDate}`);
-                              }
-                            }}
-                            onMouseLeave={() => setTooltip(null)}
-                          />
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Tooltip Overlay */}
-              {tooltip && (
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-12 bg-[#21262d] border border-[#30363d] text-white font-mono text-[10px] px-3 py-1.5 rounded shadow-xl z-30 pointer-events-none transition-all duration-150">
-                  {tooltip}
-                </div>
-              )}
-            </div>
-
-            {/* Heatmap Footer */}
-            <div className="flex items-center justify-between text-[11px] text-[#8b949e] mt-4 pt-2 border-t border-[#21262d] font-mono">
-              <a href="https://docs.github.com/articles/why-are-my-contributions-not-showing-on-my-profile" target="_blank" rel="noreferrer"
-                className="hover:text-[#58a6ff] hover:underline flex items-center gap-1 transition-all">
-                Learn how we count contributions <ExternalLink className="w-3 h-3" />
-              </a>
-              <div className="flex items-center gap-1.5 select-none">
-                <span>Less</span>
-                <div className="w-[10px] h-[10px] bg-[#161b22] border border-[#21262d] rounded-[2px]" />
-                <div className="w-[10px] h-[10px] bg-[#0e4429] border border-[#1b432e] rounded-[2px]" />
-                <div className="w-[10px] h-[10px] bg-[#006d32] border border-[#0b532f] rounded-[2px]" />
-                <div className="w-[10px] h-[10px] bg-[#26a641] border border-[#2d8d47] rounded-[2px]" />
-                <div className="w-[10px] h-[10px] bg-[#39d353] border border-[#4be065] rounded-[2px]" />
-                <span>More</span>
-              </div>
+        {/* Year selector header controls for activity timeline */}
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold font-mono text-neutral-300">Year:</span>
+            <div className="flex gap-2">
+              {[2026, 2025].map(year => {
+                const active = selectedYear === year;
+                return (
+                  <button key={year} onClick={() => { setSelectedYear(year); setShowAllActivity(false); }}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-lg font-mono transition-all border ${
+                      active
+                        ? "bg-[#2f81f7] text-white border-transparent shadow-[0_0_12px_rgba(47,129,247,0.3)]"
+                        : "text-[#8b949e] border-[#30363d] hover:bg-[#21262d] hover:text-[#f0f6fc]"
+                    }`}>
+                    {year}
+                  </button>
+                );
+              })}
             </div>
           </div>
-
-          {/* Year Switcher Panel */}
-          <div className="md:w-28 flex md:flex-col gap-2">
-            {[2026, 2025].map(year => {
-              const active = selectedYear === year;
-              return (
-                <button key={year} onClick={() => { setSelectedYear(year); setShowAllActivity(false); }}
-                  className={`flex-1 md:flex-none text-left px-4 py-2 text-xs font-semibold rounded-lg font-mono transition-all border ${
-                    active
-                      ? "bg-[#2f81f7] text-white border-transparent shadow-[0_0_12px_rgba(47,129,247,0.3)]"
-                      : "text-[#8b949e] border-[#30363d] hover:bg-[#21262d] hover:text-[#f0f6fc]"
-                  }`}>
-                  {year}
-                </button>
-              );
-            })}
-          </div>
+          <span className="text-xs font-mono text-neutral-400">
+            Total: <span className="font-semibold text-white">{totalCommits} commits</span> / <span className="font-semibold text-white">{publicRepos} repos</span>
+          </span>
         </div>
 
         {/* Contribution Activity Section */}
