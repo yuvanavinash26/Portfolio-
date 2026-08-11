@@ -2,7 +2,7 @@
 
 import { motion, useMotionValue, useTransform, useInView } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
-import { Sparkles, Terminal, Activity } from "lucide-react";
+import { Sparkles, Terminal, Activity, Download } from "lucide-react";
 import Link from "next/link";
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -119,6 +119,13 @@ export default function AboutMe() {
 
             {/* Subpage CTA Actions */}
             <div className="mt-8 flex flex-wrap gap-4 z-30">
+              <a
+                href="/resume.pdf"
+                download="Yuvan_Avinash_Resume.pdf"
+                className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 hover:text-white px-5 py-3 border border-emerald-500/20 bg-emerald-500/5 rounded-full hover:bg-emerald-500 hover:border-emerald-500 hover:shadow-[0_0_15px_rgba(16,185,129,0.35)] transition-all duration-300"
+              >
+                <Download className="w-4 h-4" /> Download Resume
+              </a>
               <Link
                 href="/terminal"
                 className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-blue-400 hover:text-white px-5 py-3 border border-blue-500/20 bg-blue-500/5 rounded-full hover:bg-blue-500 hover:border-blue-500 hover:shadow-[0_0_15px_rgba(59,130,246,0.35)] transition-all duration-300"
