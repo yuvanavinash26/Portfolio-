@@ -122,7 +122,11 @@ export default function AboutMe() {
               <a
                 href="/resume.pdf"
                 download="Yuvan_Avinash_Resume.pdf"
-                className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 hover:text-white px-5 py-3 border border-emerald-500/20 bg-emerald-500/5 rounded-full hover:bg-emerald-500 hover:border-emerald-500 hover:shadow-[0_0_15px_rgba(16,185,129,0.35)] transition-all duration-300"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.dispatchEvent(new CustomEvent("open-resume-modal"));
+                }}
+                className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 hover:text-white px-5 py-3 border border-emerald-500/20 bg-emerald-500/5 rounded-full hover:bg-emerald-500 hover:border-emerald-500 hover:shadow-[0_0_15px_rgba(16,185,129,0.35)] transition-all duration-300 cursor-pointer"
               >
                 <Download className="w-4 h-4" /> Download Resume
               </a>

@@ -63,7 +63,11 @@ export default function Overlay({ scrollYProgress }: OverlayProps) {
           <a
             href="/resume.pdf"
             download="Yuvan_Avinash_Resume.pdf"
-            className="px-5 py-2.5 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-white font-bold rounded-full border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.2)] transition-all duration-300 text-[10px] md:text-xs tracking-wider uppercase font-mono flex items-center gap-2"
+            onClick={(e) => {
+              e.preventDefault();
+              window.dispatchEvent(new CustomEvent("open-resume-modal"));
+            }}
+            className="px-5 py-2.5 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-white font-bold rounded-full border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.2)] transition-all duration-300 text-[10px] md:text-xs tracking-wider uppercase font-mono flex items-center gap-2 cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             Download Resume

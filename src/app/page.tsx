@@ -14,6 +14,7 @@ import InteractiveTerminal from "@/components/InteractiveTerminal";
 import GitHubHeatmap from "@/components/GitHubHeatmap";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import ResumeModal from "@/components/ResumeModal";
 
 const SECTION_BG_COLORS: Record<string, { color1: string; color2: string }> = {
   home: { color1: "#000000", color2: "#010a24" },
@@ -144,6 +145,7 @@ export default function Home() {
         <Certifications />
         <Contact />
         <Footer />
+        <ResumeModal />
       </div>
     </motion.main>
   );
