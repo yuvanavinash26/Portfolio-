@@ -88,7 +88,7 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
   useEffect(() => {
     let active = true;
     const loadedImages: HTMLImageElement[] = [];
-    
+
     const isMobileDevice = typeof window !== "undefined" && window.innerWidth < 768;
     const framesToLoad = isMobileDevice ? 1 : TOTAL_FRAMES;
     const criticalFrames = isMobileDevice ? 1 : 8;
@@ -118,7 +118,7 @@ export default function ScrollyCanvas({ onProgress, onLoadingComplete }: Scrolly
             if (active) {
               setImages([...loadedImages]);
               imagesRef.current = loadedImages;
-              
+
               // Draw the very first frame immediately
               setTimeout(() => {
                 if (loadedImages[0]) {

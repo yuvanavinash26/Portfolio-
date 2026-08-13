@@ -23,6 +23,13 @@ export const metadata: Metadata = {
   authors: [{ name: "Yuvan Avinash" }],
 };
 
+export const viewport = {
+  width: 1280,
+  initialScale: 0.35,
+  minimumScale: 0.1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

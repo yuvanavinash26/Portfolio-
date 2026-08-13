@@ -205,8 +205,8 @@ export default function DynamicIslandNav() {
         layout
         transition={{ type: "spring", stiffness: 220, damping: 25 }}
         className={`glass-panel flex items-center justify-between overflow-hidden shadow-2xl transition-all duration-700 ${theme.shadow} ${theme.border} ${isScrolled
-            ? `px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-gradient-to-r ${theme.bg}`
-            : "px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-full bg-white/5 border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.02)]"
+          ? `px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-gradient-to-r ${theme.bg}`
+          : "px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-full bg-white/5 border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.02)]"
           }`}
       >
         <div className="flex items-center justify-between w-full">
@@ -229,8 +229,8 @@ export default function DynamicIslandNav() {
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
                   className={`relative text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] md:text-xs font-mono font-bold tracking-tighter xs:tracking-normal sm:tracking-wide uppercase px-1.5 py-1 sm:px-2.5 sm:py-1.5 rounded-full transition-all duration-300 flex items-center gap-1 sm:gap-1.5 ${isActive
-                      ? theme.activeText
-                      : "text-neutral-300 hover:text-white"
+                    ? theme.activeText
+                    : "text-neutral-300 hover:text-white"
                     }`}
                 >
                   {isActive && (

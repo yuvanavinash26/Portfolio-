@@ -15,6 +15,7 @@ import GitHubHeatmap from "@/components/GitHubHeatmap";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ResumeModal from "@/components/ResumeModal";
+import DesktopViewportAutoScaler from "@/components/DesktopViewportAutoScaler";
 
 const SECTION_BG_COLORS: Record<string, { color1: string; color2: string }> = {
   home: { color1: "#000000", color2: "#010a24" },
@@ -121,6 +122,7 @@ export default function Home() {
       }}
       className="relative min-h-screen transition-colors duration-500"
     >
+      <DesktopViewportAutoScaler />
       {/* Premium Preloader overlay */}
       <Preloader progress={progress} isLoading={isLoading} />
 
