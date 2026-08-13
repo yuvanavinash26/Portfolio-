@@ -215,9 +215,6 @@ export default function GitHubHeatmap() {
               })}
             </div>
           </div>
-          <span className="text-xs font-mono text-neutral-400">
-            Total: <span className="font-semibold text-white">{totalCommits} commits</span> / <span className="font-semibold text-white">{publicRepos} repos</span>
-          </span>
         </div>
 
         {/* Contribution Activity Section */}
