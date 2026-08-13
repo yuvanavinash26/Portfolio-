@@ -145,6 +145,28 @@ const PROJECTS: ProjectData[] = [
     transition: "Safety radar sweeps outwards, forming a secure glassmorphic community protective mesh.",
     icon: <Shield className="w-5 h-5 text-rose-400" />,
     link: "https://safe-circle-mauve.vercel.app/"
+  },
+  {
+    id: 7,
+    title: "SMART WASTE SEGREGATION",
+    category: "Automated IoT & Computer Vision",
+    type: "Competition Project (SV Scientifica-2024)",
+    badge: "🤖 IOT & ML BUILD",
+    description: "Automated Waste Segregation System featuring real-time object detection, utilizing various sensors and programmed with Arduino and VS Code. Classifies and sorts waste using sensor data and machine learning to enhance recycling efficiency and automation.",
+    highlights: [
+      "Real-Time Object Detection",
+      "Multi-Sensor Hardware Integration",
+      "Arduino & VS Code Architecture",
+      "Machine Learning Waste Sorting",
+      "SV Scientifica-2024 Showcase",
+      "Sustainability & Recycling Automation"
+    ],
+    techStack: ["Arduino", "Sensors", "Machine Learning", "VS Code", "Python", "Computer Vision"],
+    role: "Lead Embedded Systems & IoT Developer",
+    transition: "Sensor array scans objects, triggering robotic servo channels for automated waste sorting.",
+    icon: <Cpu className="w-5 h-5 text-teal-400" />,
+    link: "https://www.linkedin.com/posts/yuvan-avinash_automation-wastemanagement-sustainability-activity-7303619516540841984-FE8y?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE2bl3wB-hdul5Q7Skhxroc05e9yLfOLLlo",
+    videoLink: "https://www.linkedin.com/posts/yuvan-avinash_automation-wastemanagement-sustainability-activity-7303619516540841984-FE8y?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE2bl3wB-hdul5Q7Skhxroc05e9yLfOLLlo"
   }
 ];
 
@@ -452,6 +474,41 @@ function SafeCircleVisual() {
   );
 }
 
+function SmartWasteVisual() {
+  return (
+    <div className="relative w-full h-full min-h-[190px] rounded-xl overflow-hidden border border-teal-500/20 bg-[#040c14] p-4 flex flex-col justify-between">
+      <div className="flex justify-between items-center z-10 font-mono text-[9px]">
+        <span className="text-teal-400 font-bold flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+          ARDUINO_NODE: ACTIVE
+        </span>
+        <span className="text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+          ML OBJECT SORTING: 99.4% ACCURACY
+        </span>
+      </div>
+
+      <div className="relative flex-1 flex items-center justify-center my-2">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute w-32 h-32 rounded-full border border-dashed border-teal-500/30"
+        />
+        <div className="relative z-10 flex flex-col items-center">
+          <div className="p-3 bg-teal-500/10 border border-teal-500/30 rounded-xl text-teal-400 shadow-[0_0_20px_rgba(20,184,166,0.3)]">
+            <Cpu className="w-8 h-8 animate-pulse" />
+          </div>
+          <span className="text-[10px] font-mono font-bold text-white mt-2">SV Scientifica-2024</span>
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center text-[9px] font-mono text-gray-400 border-t border-teal-500/10 pt-2 z-10">
+        <span>SENSORS: ULTRASONIC / INFRARED</span>
+        <span className="text-teal-300">AUTO-SEGREGATION: ON</span>
+      </div>
+    </div>
+  );
+}
+
 const renderVisualComponent = (title: string) => {
   switch (title) {
     case "CARESYNC AI":
@@ -466,6 +523,8 @@ const renderVisualComponent = (title: string) => {
       return <DarkBidVisual />;
     case "SAFECIRCLE AI":
       return <SafeCircleVisual />;
+    case "SMART WASTE SEGREGATION":
+      return <SmartWasteVisual />;
     default:
       return null;
   }

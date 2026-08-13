@@ -51,7 +51,8 @@ My goal is to construct software that automates workflows and solves real-world 
   2. EcoGrid            - Smart energy & water consumption analytics dashboard (Python, Flask)
   3. Skill Gap Navigator - AI career roadmap recommendation engine (Web Dev, AI APIs)
   4. SafeCircle AI      - AI safety companion & emergency SOS network (React, Socket.io, Node.js)
-  5. Portfolio Website  - Responsive scrollytelling visual portfolio (Next.js, Framer Motion)`;
+  5. Smart Waste Segregation - Automated IoT & ML waste sorting system (Arduino, Sensors, VS Code)
+  6. Portfolio Website  - Responsive scrollytelling visual portfolio (Next.js, Framer Motion)`;
     } else if (trimmed === "startup") {
       reply = `Future Startup Vision:
   "To build highly impactful technology products and launch software startups that automate operations, optimize logistics, and solve meaningful problems at scale."`;

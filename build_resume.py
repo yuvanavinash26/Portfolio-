@@ -227,6 +227,7 @@ def build_pdf():
     
     projects = [
         "<b>CareSync AI</b> — AI-driven healthcare coordination platform demo built for a hackathon.",
+        "<b>Smart Waste Segregation</b> — Automated IoT & ML waste sorting system built with Arduino & computer vision.",
         "<b>SafeCircle AI</b> — Guardian/SOS safety platform with a live dashboard and landing experience.",
         "<b>EduMind AI</b> — AI-assisted learning product taken from concept through launch.",
         "<b>EcoGrid</b> — Sustainability-focused prototype exploring smart-grid concepts.",

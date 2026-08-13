@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, ExternalLink, Terminal, HeartPulse, Leaf, Compass, AppWindow, Shield } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, Terminal, HeartPulse, Leaf, Compass, AppWindow, Shield, Cpu } from "lucide-react";
 
 interface Project {
   id: number;
@@ -58,6 +58,15 @@ const PROJECTS: Project[] = [
     tags: ["Next.js", "Framer Motion", "Tailwind CSS", "Canvas Render"],
     link: "#",
     icon: <AppWindow className="w-5 h-5 text-blue-400" />
+  },
+  {
+    id: 6,
+    title: "Smart Waste Segregation",
+    category: "Automated IoT & Computer Vision",
+    description: "Automated Waste Segregation System featuring real-time object detection, multi-sensor hardware integration, and machine learning to sort waste efficiently.",
+    tags: ["Arduino", "Sensors", "Machine Learning", "VS Code", "IoT"],
+    link: "https://www.linkedin.com/posts/yuvan-avinash_automation-wastemanagement-sustainability-activity-7303619516540841984-FE8y?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE2bl3wB-hdul5Q7Skhxroc05e9yLfOLLlo",
+    icon: <Cpu className="w-5 h-5 text-emerald-400" />
   }
 ];
 
