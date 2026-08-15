@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://yuvan-portfolio-chi.vercel.app"),
   openGraph: {
     title: "Yuvan Avinash | Portfolio",
-    description: "Yuvan Avinash — AI & Data Science Engineer / Full Stack Developer Portfolio showcasing projects, technical skills, certifications, and experience.",
+    description: "Yuvan Avinash — Full Stack Developer Portfolio showcasing projects, technical skills, certifications, and experience.",
     url: "https://yuvan-portfolio-chi.vercel.app",
     siteName: "Yuvan Avinash Portfolio",
     type: "website",
