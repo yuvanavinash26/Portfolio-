@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Yuvan Avinash | Portfolio",
-    description: "Yuvan Avinash — AI & Data Science Engineer / Full Stack Developer Portfolio showcasing projects, technical skills, certifications, and experience.",
+    description: "Yuvan Avinash — Full Stack Developer Portfolio showcasing projects, technical skills, certifications, and experience.",
   },
 };
 
