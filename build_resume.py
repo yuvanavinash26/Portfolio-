@@ -140,7 +140,7 @@ def build_pdf():
     story.append(Paragraph(contact_text, style_contact))
     
     links_text = (
-        '<a href="https://yuvanavinash.vercel.app"><font color="#1C4D63"><u>Portfolio</u></font></a> &nbsp;|&nbsp; '
+        '<a href="https://yuvan-portfolio-chi.vercel.app/"><font color="#1C4D63"><u>Portfolio</u></font></a> &nbsp;|&nbsp; '
         '<a href="https://github.com/yuvanavinash26"><font color="#1C4D63"><u>GitHub</u></font></a> &nbsp;|&nbsp; '
         '<a href="https://www.linkedin.com/in/yuvan-avinash"><font color="#1C4D63"><u>LinkedIn</u></font></a>'
     )
