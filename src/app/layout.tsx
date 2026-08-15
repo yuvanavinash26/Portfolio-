@@ -17,10 +17,33 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Yuvan Avinash | Creative Developer",
-  description: "High-end scrollytelling portfolio showcasing interactive web development, graphics, and performance optimization.",
-  keywords: ["Creative Developer", "Next.js", "WebGL", "Framer Motion", "Canvas Scroll Animation"],
+  title: "Yuvan Avinash | Portfolio",
+  description: "Yuvan Avinash — Full Stack Developer Portfolio showcasing projects, technical skills, certifications, and experience.",
+  keywords: [
+    "Yuvan Avinash",
+    "Portfolio",
+    "Full Stack Developer",
+    "Next.js",
+    "React",
+    "Machine Learning",
+    "Software Engineer"
+  ],
   authors: [{ name: "Yuvan Avinash" }],
+  creator: "Yuvan Avinash",
+  metadataBase: new URL("https://yuvan-portfolio-chi.vercel.app"),
+  openGraph: {
+    title: "Yuvan Avinash | Portfolio",
+    description: "Yuvan Avinash — AI & Data Science Engineer / Full Stack Developer Portfolio showcasing projects, technical skills, certifications, and experience.",
+    url: "https://yuvan-portfolio-chi.vercel.app",
+    siteName: "Yuvan Avinash Portfolio",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Yuvan Avinash | Portfolio",
+    description: "Yuvan Avinash — AI & Data Science Engineer / Full Stack Developer Portfolio showcasing projects, technical skills, certifications, and experience.",
+  },
 };
 
 export const viewport = {

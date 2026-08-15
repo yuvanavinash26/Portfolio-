@@ -53,8 +53,8 @@ const PROJECTS: Project[] = [
   {
     id: 5,
     title: "Portfolio Website",
-    category: "Interactive Scrollytelling",
-    description: "A futuristic personal portfolio demonstrating advanced UI/UX design, interactive experiences, and modern web technologies.",
+    category: "Interactive Web Experience",
+    description: "A futuristic personal portfolio demonstrating modern UI/UX design, interactive experiences, and full-stack web technologies.",
     tags: ["Next.js", "Framer Motion", "Tailwind CSS", "Canvas Render"],
     link: "#",
     icon: <AppWindow className="w-5 h-5 text-blue-400" />
