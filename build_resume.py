@@ -2,15 +2,16 @@ import os
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, HRFlowable, Table, TableStyle, PageBreak, KeepTogether
+    SimpleDocTemplate, Paragraph, Spacer, HRFlowable, Table, TableStyle, PageBreak
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
 
 def build_pdf():
     pdf_filename = r"public/resume.pdf"
+    pdf_filename_alt = r"public/Yuvan_Avinash_Resume.pdf"
     
-    # Page setup - 0.5 in margins (36 pt)
+    # Page setup - 0.5 in margins (36 pt all around)
     doc = SimpleDocTemplate(
         pdf_filename,
         pagesize=letter,
@@ -22,14 +23,14 @@ def build_pdf():
     
     styles = getSampleStyleSheet()
     
-    # Custom colors matching original PDF theme
+    # Custom colors matching theme
     HEADER_BLUE = colors.HexColor("#1C4D63")
     TEXT_DARK = colors.HexColor("#222222")
     TEXT_MUTED = colors.HexColor("#555555")
     LINK_BLUE = colors.HexColor("#1C4D63")
     LINE_COLOR = colors.HexColor("#1C4D63")
     
-    # Custom Paragraph Styles
+    # Custom Paragraph Styles - Standard 9.5-11pt fonts for crisp legibility
     style_name = ParagraphStyle(
         'MainName',
         parent=styles['Normal'],
@@ -67,7 +68,7 @@ def build_pdf():
         fontSize=9.5,
         leading=13,
         textColor=LINK_BLUE,
-        spaceAfter=8
+        spaceAfter=6
     )
     
     style_section_title = ParagraphStyle(
@@ -79,6 +80,7 @@ def build_pdf():
         textColor=HEADER_BLUE,
         spaceBefore=10,
         spaceAfter=3,
+        keepWithNext=True,
         textTransform='uppercase'
     )
     
@@ -100,8 +102,8 @@ def build_pdf():
         fontSize=9.5,
         leading=13.5,
         textColor=TEXT_DARK,
-        leftIndent=15,
-        firstLineIndent=-10,
+        leftIndent=14,
+        firstLineIndent=-9,
         spaceAfter=4
     )
     
@@ -118,14 +120,15 @@ def build_pdf():
         'EntrySubtitle',
         parent=styles['Normal'],
         fontName='Helvetica-Oblique',
-        fontSize=9,
-        leading=12,
+        fontSize=9.0,
+        leading=12.5,
         textColor=TEXT_MUTED,
         spaceAfter=3
     )
 
     story = []
     
+    # ==================== PAGE 1 ====================
     # 1. Header
     story.append(Paragraph("YUVAN AVINASH", style_name))
     story.append(Paragraph("Computer Science Engineer & Full-Stack Developer", style_subtitle))
@@ -138,8 +141,8 @@ def build_pdf():
     
     links_text = (
         '<a href="https://yuvanavinash.vercel.app"><font color="#1C4D63"><u>Portfolio</u></font></a> &nbsp;|&nbsp; '
-        '<a href="https://github.com/yuvanavinash"><font color="#1C4D63"><u>GitHub</u></font></a> &nbsp;|&nbsp; '
-        '<a href="https://linkedin.com/in/yuvanavinash"><font color="#1C4D63"><u>LinkedIn</u></font></a>'
+        '<a href="https://github.com/yuvanavinash26"><font color="#1C4D63"><u>GitHub</u></font></a> &nbsp;|&nbsp; '
+        '<a href="https://www.linkedin.com/in/yuvan-avinash"><font color="#1C4D63"><u>LinkedIn</u></font></a>'
     )
     story.append(Paragraph(links_text, style_links))
     
@@ -237,8 +240,15 @@ def build_pdf():
     for proj in projects:
         story.append(Paragraph(f"● &nbsp; {proj}", style_bullet))
 
+    # ==================== PAGE BREAK TO PAGE 2 ====================
+    story.append(PageBreak())
+
+    # ==================== PAGE 2 ====================
+    # Header minimal info for Page 2
+    story.append(Paragraph("<b>YUVAN AVINASH</b> &nbsp;|&nbsp; <font color='#555555'>Resume — Page 2</font>", ParagraphStyle('Page2Header', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=10, leading=13, textColor=HEADER_BLUE)))
+    story.append(HRFlowable(width="100%", thickness=1.0, color=LINE_COLOR, spaceBefore=3, spaceAfter=10))
+
     # 6. EDUCATION
-    story.append(Spacer(1, 4))
     story.append(Paragraph("EDUCATION", style_section_title))
     story.append(HRFlowable(width="100%", thickness=0.75, color=LINE_COLOR, spaceBefore=1, spaceAfter=6))
     
@@ -255,7 +265,7 @@ def build_pdf():
     ]))
     story.append(table_e1)
     story.append(Paragraph("● &nbsp; Relevant interests: Software Engineering, Web Development, Artificial Intelligence, Automation, System Design.", style_bullet))
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 6))
 
     # Edu 2
     e2_left = Paragraph("<b>Higher Secondary & Secondary Education</b> — <b>Sudharsanam Vidyaashram</b>", style_entry_title)
@@ -270,25 +280,24 @@ def build_pdf():
     ]))
     story.append(table_e2)
     story.append(Paragraph("● &nbsp; Scored 95% in Class 10 Board Examinations; received Highest Academic Honors; active in technical and leadership activities.", style_bullet))
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 10))
 
     # 7. CERTIFICATIONS
     story.append(Paragraph("CERTIFICATIONS", style_section_title))
     story.append(HRFlowable(width="100%", thickness=0.75, color=LINE_COLOR, spaceBefore=1, spaceAfter=6))
     
     certs = [
-        "<b>Advanced Full-Stack Engineering</b> — Meta / Coursera (2026) — React, Next.js, Django, Database Optimization",
-        "<b>Cloud Computing Architect</b> — AWS Academy (2025) — Cloud Architecture, EC2, S3, IAM Roles",
-        "<b>Machine Learning Foundations</b> — Stanford / Coursera (2025) — Supervised Learning, Regressions, Cost Functions",
-        "<b>Data Analytics Specialist</b> — Google Career Certificates (2025) — SQL, R Programming, Tableau Dashboards",
-        "<b>Artificial Intelligence Fundamentals</b> — IBM / Cognitive Class (2024) — Python, Neural Networks, Deep Learning Models",
-        "<b>IBM SkillsBuild Badges:</b> AI Fundamentals, AI Foundations, Craft Precise Prompts, Web Dev Fundamentals (Credly-verified)"
+        "<b>Craft Precise Prompts for AI Models</b> — IBM SkillsBuild — Prompt Engineering / Generative AI",
+        "<b>AI Fundamentals: Foundations for Understanding AI</b> — IBM SkillsBuild — Artificial Intelligence",
+        "<b>Web Development Fundamentals</b> — IBM SkillsBuild — Web Development",
+        "<b>IBM SkillsBuild Digital Credentials:</b> AI Fundamentals, AI Foundations, Craft Precise Prompts, Web Dev Fundamentals (Credly-verified)"
     ]
     for cert in certs:
         story.append(Paragraph(f"● &nbsp; {cert}", style_bullet))
 
+    story.append(Spacer(1, 10))
+
     # 8. BEYOND CODING
-    story.append(Spacer(1, 4))
     story.append(Paragraph("BEYOND CODING", style_section_title))
     story.append(HRFlowable(width="100%", thickness=0.75, color=LINE_COLOR, spaceBefore=1, spaceAfter=6))
     
@@ -303,6 +312,14 @@ def build_pdf():
 
     doc.build(story)
     print("PDF generated successfully at:", pdf_filename)
+    try:
+        import shutil
+        shutil.copyfile(pdf_filename, pdf_filename_alt)
+        print("PDF duplicate saved to:", pdf_filename_alt)
+    except Exception as e:
+        print("Copy failed:", e)
 
 if __name__ == '__main__':
     build_pdf()
+
+

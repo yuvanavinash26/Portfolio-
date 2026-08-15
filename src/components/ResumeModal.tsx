@@ -182,12 +182,41 @@ export default function ResumeModal() {
             </div>
 
             {/* Embedded PDF View */}
-            <div className="relative flex-1 w-full bg-[#050811] overflow-hidden">
-              <iframe
-                src="/resume.pdf#toolbar=1"
+            <div className="relative flex-1 w-full bg-[#050811] overflow-hidden flex flex-col items-center justify-center">
+              <object
+                data="/resume.pdf#toolbar=1"
+                type="application/pdf"
                 className="w-full h-full border-none"
-                title="Yuvan Avinash Resume PDF Preview"
-              />
+              >
+                <iframe
+                  src="/resume.pdf"
+                  className="w-full h-full border-none"
+                  title="Yuvan Avinash Resume PDF Preview"
+                >
+                  <div className="flex flex-col items-center justify-center h-full p-8 text-center text-white space-y-4">
+                    <FileText className="w-14 h-14 text-cyan-400 animate-pulse" />
+                    <p className="text-sm font-medium text-neutral-300">
+                      Your browser does not support inline PDF preview.
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <a
+                        href="/resume.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-5 py-2.5 bg-cyan-500 text-black font-bold rounded-xl shadow-lg hover:bg-cyan-400 transition-all flex items-center gap-2 text-xs"
+                      >
+                        <ExternalLink className="w-4 h-4" /> Open Resume PDF in New Tab
+                      </a>
+                      <button
+                        onClick={() => handleDownload(true)}
+                        className="px-5 py-2.5 bg-white/10 text-white font-bold rounded-xl border border-white/20 hover:bg-white/20 transition-all flex items-center gap-2 text-xs"
+                      >
+                        <Download className="w-4 h-4" /> Download PDF
+                      </button>
+                    </div>
+                  </div>
+                </iframe>
+              </object>
             </div>
           </motion.div>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { Award, CheckCircle, Brain, Calendar, Shield, Layers } from "lucide-react";
+import { Award, CheckCircle, Brain, Shield, Layers } from "lucide-react";
 import { motion } from "framer-motion";
 
 const ACHIEVEMENTS = [
@@ -14,34 +14,28 @@ const ACHIEVEMENTS = [
 
 const ADDITIONAL_CERTS = [
   {
-    title: "Artificial Intelligence Fundamentals",
-    issuer: "IBM / Cognitive Class",
-    date: "2024",
-    skills: "Python, Neural Networks, Deep Learning Models"
+    title: "Craft Precise Prompts for AI Models",
+    issuer: "IBM SkillsBuild",
+    category: "Prompt Engineering / Generative AI",
+    description: "Learned how to create effective prompts for AI models, use prompt templates, and apply prompt engineering best practices.",
+    credential: "IBM SkillsBuild Digital Credential",
+    date: "July 2026"
   },
   {
-    title: "Cloud Computing Architect",
-    issuer: "AWS Academy",
-    date: "2025",
-    skills: "Cloud Architecture, EC2, S3, IAM Roles"
+    title: "AI Fundamentals: Foundations for Understanding AI",
+    issuer: "IBM SkillsBuild",
+    category: "Artificial Intelligence",
+    description: "Learned the fundamental concepts and foundations of Artificial Intelligence.",
+    credential: "IBM SkillsBuild Digital Credential",
+    date: "July 2026"
   },
   {
-    title: "Machine Learning Foundations",
-    issuer: "Stanford / Coursera",
-    date: "2025",
-    skills: "Supervised Learning, Regressions, Cost Functions"
-  },
-  {
-    title: "Data Analytics Specialist",
-    issuer: "Google Career Certificates",
-    date: "2025",
-    skills: "SQL, R Programming, Tableau Dashboards"
-  },
-  {
-    title: "Advanced Full-Stack Engineering",
-    issuer: "Meta / Coursera",
-    date: "2026",
-    skills: "React, Next.js, Django, Database Optimization"
+    title: "Web Development Fundamentals",
+    issuer: "IBM SkillsBuild",
+    category: "Web Development",
+    description: "Learned the fundamental concepts and practices involved in modern web development.",
+    credential: "IBM SkillsBuild Digital Credential",
+    date: "July 2026"
   }
 ];
 
@@ -236,22 +230,16 @@ export default function Certifications() {
                 <div className="space-y-4">
                   {ADDITIONAL_CERTS.map((cert, idx) => (
                     <div key={idx} className="border-b border-white/5 pb-3.5 last:border-0 last:pb-0 space-y-1.5">
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <h4 className="text-xs text-white font-bold">{cert.title}</h4>
-                          <p className="text-[9px] text-neutral-400 font-medium">
-                            Issuer: <span className="text-neutral-200">{cert.issuer}</span>
-                          </p>
-                        </div>
-                        <div className="text-neutral-500 flex items-center gap-1 text-[9px] font-mono shrink-0">
-                          <Calendar className="w-3 h-3 text-neutral-600" />
-                          {cert.date}
-                        </div>
+                      <div>
+                        <h4 className="text-xs text-white font-bold leading-snug">{cert.title}</h4>
+                        <p className="text-[9px] text-cyan-400 font-medium mt-0.5">
+                          Issued by: <span className="text-neutral-200">{cert.issuer}</span>
+                        </p>
                       </div>
                       
-                      <div className="text-[9px] font-mono text-neutral-400">
-                        Skills: <span className="text-cyan-400 font-semibold">{cert.skills}</span>
-                      </div>
+                      <p className="text-[10px] text-neutral-300 leading-relaxed font-sans">
+                        {cert.description}
+                      </p>
                     </div>
                   ))}
                 </div>
